@@ -139,7 +139,20 @@ Copy-Item .env.example .env
 # Hoặc tạo file .env mới
 ```
 
-### 5.2. Cấu Hình .env
+### 5.2. Tạo MySQL Database
+1. Cài đặt MySQL Server (hoặc sử dụng XAMPP MySQL)
+2. Tạo database mới:
+   ```sql
+   CREATE DATABASE mon88_click CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+3. Tạo user và cấp quyền (nếu cần):
+   ```sql
+   CREATE USER 'mon88_user'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON mon88_click.* TO 'mon88_user'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
+
+### 5.3. Cấu Hình .env
 Mở file `.env` và cấu hình:
 
 ```env
@@ -153,8 +166,13 @@ LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=error
 
-DB_CONNECTION=sqlite
-DB_DATABASE=C:\inetpub\wwwroot\mon88.click\database\database.sqlite
+# MySQL Database Configuration
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=mon88_click
+DB_USERNAME=root
+DB_PASSWORD=your_password
 
 BROADCAST_CONNECTION=log
 CACHE_STORE=file
@@ -168,15 +186,13 @@ SOCCER_API_USERNAME=Zr1NN
 SOCCER_API_TOKEN=DqCDvCP0ye
 ```
 
-### 5.3. Generate Application Key
+**Lưu ý**: 
+- Thay `DB_USERNAME` và `DB_PASSWORD` bằng thông tin MySQL của bạn
+- Nếu dùng XAMPP MySQL: `DB_USERNAME=root`, `DB_PASSWORD=` (để trống nếu chưa set)
+
+### 5.4. Generate Application Key
 ```powershell
 php artisan key:generate
-```
-
-### 5.4. Tạo Database SQLite
-```powershell
-# Tạo file database nếu chưa có
-New-Item -ItemType File -Path "database\database.sqlite" -Force
 ```
 
 ### 5.5. Chạy Migrations
@@ -252,8 +268,11 @@ icacls "C:\inetpub\wwwroot\mon88.click" /grant "IIS_IUSRS:(OI)(CI)F" /T
 ```
 
 ### Lỗi Database
-- Kiểm tra file `database/database.sqlite` tồn tại
-- Kiểm tra quyền ghi cho thư mục `database/`
+- Kiểm tra MySQL Server đang chạy
+- Kiểm tra database `mon88_click` đã được tạo
+- Kiểm tra thông tin kết nối trong file `.env` (DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD)
+- Kiểm tra MySQL user có quyền truy cập database
+- Test kết nối bằng MySQL client hoặc phpMyAdmin
 
 ### Assets không load
 - Chạy lại `npm run build`
