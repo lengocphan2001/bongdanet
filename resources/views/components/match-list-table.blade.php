@@ -320,9 +320,16 @@
                                 $cornerEvents = $match['corner_events'] ?? [];
                                 $homeTeamId = $match['home_team_id'] ?? null;
                                 $awayTeamId = $match['away_team_id'] ?? null;
-                                // Get current score
-                                $homeScore = $match['score'] ? explode('-', $match['score'])[0] : '0';
-                                $awayScore = $match['score'] ? explode('-', $match['score'])[1] : '0';
+                                // Get halftime score (not fulltime)
+                                $htScore = $match['half_time'] ?? $match['scores']['ht_score'] ?? null;
+                                if ($htScore) {
+                                    $htScores = explode('-', $htScore);
+                                    $homeHtScore = $htScores[0] ?? '0';
+                                    $awayHtScore = $htScores[1] ?? '0';
+                                } else {
+                                    $homeHtScore = '0';
+                                    $awayHtScore = '0';
+                                }
                             @endphp
                             <div class="flex flex-col">
                                 <span class="text-xs text-gray-600 cursor-pointer hover:text-blue-600 relative group">
@@ -392,7 +399,7 @@
                             </div>
                                 </span>
                                 <span class="text-xs text-red-600 font-medium">
-                                    {{ $homeScore }}-{{ $awayScore }}
+                                    {{ $homeHtScore }}-{{ $awayHtScore }}
                                 </span>
                             </div>
                         </td>
@@ -504,12 +511,24 @@
                         
                             {{-- Corners (C/H-T) - no popup for upcoming matches --}}
                             <td class="px-2 py-3 whitespace-nowrap text-left relative w-20">
+                                @php
+                                    // Get halftime score (not fulltime)
+                                    $htScore = $match['half_time'] ?? $match['scores']['ht_score'] ?? null;
+                                    if ($htScore) {
+                                        $htScores = explode('-', $htScore);
+                                        $homeHtScore = $htScores[0] ?? '0';
+                                        $awayHtScore = $htScores[1] ?? '0';
+                                        $htScoreDisplay = $homeHtScore . '-' . $awayHtScore;
+                                    } else {
+                                        $htScoreDisplay = '-';
+                                    }
+                                @endphp
                                 <div class="flex flex-col">
                                     <span class="text-xs text-gray-600">
                                         {{ ($match['home_total_corners'] ?? 0) }}-{{ ($match['away_total_corners'] ?? 0) }}
                                     </span>
                                     <span class="text-xs text-red-600 font-medium">
-                                        {{ $match['score'] ?: '-' }}
+                                        {{ $htScoreDisplay }}
                                     </span>
                                 </div>
                             </td>
@@ -1213,16 +1232,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const homeTeamId = match.home_team_id;
         const awayTeamId = match.away_team_id;
         
-        // Get current score
-        let homeScore = '0';
-        let awayScore = '0';
-        if (match.score) {
-            const scoreParts = match.score.split('-');
-            if (scoreParts.length === 2) {
-                homeScore = scoreParts[0].trim();
-                awayScore = scoreParts[1].trim();
+        // Get halftime score (not fulltime)
+        let homeHtScore = '0';
+        let awayHtScore = '0';
+        const htScore = match.half_time || match.scores?.ht_score || null;
+        if (htScore) {
+            const htScoreParts = htScore.split('-');
+            if (htScoreParts.length === 2) {
+                homeHtScore = htScoreParts[0].trim();
+                awayHtScore = htScoreParts[1].trim();
             }
         }
+        const htScoreDisplay = htScore ? `${homeHtScore}-${awayHtScore}` : '-';
         
         // Build corner events HTML
         const cornerIconPath = '{{ asset("assets/images/stast/corner.svg") }}';
@@ -1266,7 +1287,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${homeCorners}-${awayCorners}
                     </span>
                     <span class="text-xs text-red-600 font-medium">
-                        ${match.score || '-'}
+                        ${htScoreDisplay}
                     </span>
                 </div>
             </td>
@@ -1313,7 +1334,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                     </span>
                     <span class="text-xs text-red-600 font-medium">
-                        ${homeScore}-${awayScore}
+                        ${htScoreDisplay}
                     </span>
                 </div>
             </td>

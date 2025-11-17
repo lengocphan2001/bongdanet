@@ -25,8 +25,10 @@ class LivescoreController extends Controller
         $cacheKey = 'livescore:grouped_matches';
         
         $data = Cache::remember($cacheKey, 10, function () {
-            // Fetch live scores from API
-            $liveResponse = $this->soccerApiService->getLivescores();
+            // Fetch live scores from API - only basic data needed, no events/stats/odds
+            $liveResponse = $this->soccerApiService->getLivescores([
+                'include' => '' // No includes - only basic match data
+            ]);
             
             $allMatches = [];
             
@@ -101,8 +103,10 @@ class LivescoreController extends Controller
     public function getLivescoreData()
     {
         // Don't cache for API endpoint - always get fresh data
-        // Fetch live scores from API
-        $liveResponse = $this->soccerApiService->getLivescores();
+        // Fetch live scores from API - only basic data needed, no events/stats/odds
+        $liveResponse = $this->soccerApiService->getLivescores([
+            'include' => '' // No includes - only basic match data
+        ]);
         
         $allMatches = [];
         

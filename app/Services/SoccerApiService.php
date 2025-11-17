@@ -326,10 +326,15 @@ class SoccerApiService
     {
         $defaultParams = [
             't' => 'live',
-            'include' => 'events,lineups,stats,odds,incidents,odds_prematch,odds_inplay',
+            'include' => 'events,stats,odds,odds_prematch,odds_inplay',
         ];
 
         $params = array_merge($defaultParams, $params);
+        
+        // If include is explicitly set to empty string, remove it from params
+        if (isset($params['include']) && $params['include'] === '') {
+            unset($params['include']);
+        }
         
         // Create cache key based on params
         $cacheKey = 'soccer_api:livescores:' . md5(json_encode($params));
@@ -645,7 +650,7 @@ class SoccerApiService
             't' => 'team',
             'id' => $teamId,
             'season_id' => $seasonId,
-            'include' => 'events,lineups,stats,odds,incidents',
+            'include' => 'events,lineups,stats,odds',
         ];
         
         $response = $this->makeRequest('fixtures', $params);
@@ -678,7 +683,7 @@ class SoccerApiService
             $params = [
                 't' => 'match',
                 'id' => $matchId,
-                'include' => 'events,lineups,stats,odds,odds_prematch,odds_inplay,incidents',
+                'include' => 'events,stats,odds,odds_prematch,odds_inplay',
             ];
             $matchResponse = $this->makeRequest('fixtures', $params);
             
