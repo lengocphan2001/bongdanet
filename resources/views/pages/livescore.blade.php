@@ -342,8 +342,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 const cursorClass = matchId ? 'cursor-pointer' : '';
                 
                 html += `
-                    <div class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors ${cursorClass}" ${onClick}>
-                        <div class="flex items-center">
+                    <div class="px-2 sm:px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors ${cursorClass}" ${onClick}>
+                        <div class="flex flex-col sm:hidden space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5">
+                                    ${isLive ? `
+                                        <svg class="w-3.5 h-3.5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    ` : ''}
+                                    <span class="text-xs ${timeClass}">${timeDisplay}</span>
+                                </div>
+                                ${matchId ? `
+                                    <a href="${matchDetailUrl}" 
+                                       class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-2 py-1 rounded transition-colors">
+                                        ${currentScore}
+                                    </a>
+                                ` : `
+                                    <div class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                        ${currentScore}
+                                    </div>
+                                `}
+                                <div class="bg-gray-600 text-white text-xs font-medium px-2 py-1 rounded">
+                                    ${htScore}
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <div class="flex-1 text-right pr-2 truncate">${homeTeam}</div>
+                                <div class="flex-1 text-left pl-2 truncate">${awayTeam}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hidden sm:flex items-center">
                             <div class="flex items-center space-x-1.5 w-20 flex-shrink-0">
                                 ${isLive ? `
                                     <svg class="w-3.5 h-3.5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -352,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ` : ''}
                                 <span class="text-sm ${timeClass}">${timeDisplay}</span>
                             </div>
-                            <div class="flex-1 text-sm text-gray-900 text-right pr-4">
+                            <div class="flex-1 text-sm text-gray-900 text-right pr-4 truncate">
                                 ${homeTeam}
                             </div>
                             ${matchId ? `
@@ -365,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${currentScore}
                                 </div>
                             `}
-                            <div class="flex-1 text-sm text-gray-900 text-left pl-4">
+                            <div class="flex-1 text-sm text-gray-900 text-left pl-4 truncate">
                                 ${awayTeam}
                             </div>
                             <div class="bg-gray-600 text-white text-xs font-medium px-2 py-1 rounded ml-4 min-w-[45px] text-center flex-shrink-0">

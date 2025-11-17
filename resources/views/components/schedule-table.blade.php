@@ -68,26 +68,26 @@
             
             {{-- Schedule Table --}}
             <div class="bg-white overflow-hidden border border-gray-200 rounded-lg">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                <div class="overflow-x-auto -mx-2 sm:mx-0">
+                    <table class="min-w-[480px] sm:min-w-[600px] w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-2 sm:px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">Giờ</th>
-                                <th class="px-2 sm:px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
-                                <th class="px-2 sm:px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase" style="min-width: 80px;"></th>
-                                <th class="px-2 sm:px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
+                                <th class="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 50px;">Giờ</th>
+                                <th class="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 120px;"></th>
+                                <th class="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 70px;"></th>
+                                <th class="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 120px;"></th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($matches as $match)
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     {{-- Time --}}
-                                    <td class="px-2 sm:px-4 py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                    <td class="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                                         {{ $match['time'] ?? '-' }}
                                     </td>
                                     
                                     {{-- Home Team --}}
-                                    <td class="px-2 sm:px-4 py-3 text-xs sm:text-sm text-gray-900">
+                                    <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900">
                                         <div class="flex items-center space-x-1 sm:space-x-2 justify-end">
                                             @if (!empty($match['home_team_info']['img'] ?? null))
                                                 <img src="{{ $match['home_team_info']['img'] }}" 
@@ -99,14 +99,14 @@
                                     </td>
                                     
                                     {{-- Score button (green with ?-?) --}}
-                                    <td class="px-2 sm:px-4 py-3 whitespace-nowrap text-center" style="min-width: 80px;">
-                                        <div class="inline-block bg-green-600 text-white text-xs sm:text-sm font-medium px-2 sm:px-4 py-1 rounded min-w-[50px] sm:min-w-[60px] text-center">
+                                    <td class="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-center">
+                                        <div class="inline-block bg-green-600 text-white text-xs sm:text-sm font-medium px-2 sm:px-4 py-1 rounded min-w-[45px] sm:min-w-[60px] text-center">
                                             ?-?
                                         </div>
                                     </td>
                                     
                                     {{-- Away Team --}}
-                                    <td class="px-2 sm:px-4 py-3 text-xs sm:text-sm text-gray-900">
+                                    <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900">
                                         <div class="flex items-center space-x-1 sm:space-x-2 justify-start">
                                             <span class="truncate">{{ $match['away_team'] ?? '-' }}</span>
                                             @if (!empty($match['away_team_info']['img'] ?? null))
@@ -162,42 +162,44 @@
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden border border-gray-200 rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">Giờ</th>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
-                                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase" style="min-width: 80px;"></th>
-                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                ${matches.map(match => `
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                            ${match.time || '-'}
-                                        </td>
-                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                            <div class="flex items-center space-x-2 justify-end">
-                                                ${match.home_team_info?.img ? `<img src="${match.home_team_info.img}" alt="${match.home_team}" class="w-6 h-6 object-contain">` : ''}
-                                                <span>${match.home_team || '-'}</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-4 py-3 whitespace-nowrap text-center" style="min-width: 80px;">
-                                            <div class="inline-block bg-green-600 text-white text-sm font-medium px-4 py-1 rounded min-w-[60px] text-center">
-                                                ?-?
-                                            </div>
-                                        </td>
-                                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                            <div class="flex items-center space-x-2 justify-start">
-                                                <span>${match.away_team || '-'}</span>
-                                                ${match.away_team_info?.img ? `<img src="${match.away_team_info.img}" alt="${match.away_team}" class="w-6 h-6 object-contain">` : ''}
-                                            </div>
-                                        </td>
+                        <div class="overflow-x-auto -mx-2 sm:mx-0">
+                            <table class="min-w-[480px] sm:min-w-[600px] w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 50px;">Giờ</th>
+                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 120px;"></th>
+                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 70px;"></th>
+                                        <th class="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-bold text-gray-700 uppercase whitespace-nowrap" style="min-width: 120px;"></th>
                                     </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    ${matches.map(match => `
+                                        <tr class="hover:bg-gray-50 transition-colors">
+                                            <td class="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                                ${match.time || '-'}
+                                            </td>
+                                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900">
+                                                <div class="flex items-center space-x-1 sm:space-x-2 justify-end">
+                                                    ${match.home_team_info?.img ? `<img src="${match.home_team_info.img}" alt="${match.home_team}" class="w-4 h-4 sm:w-6 sm:h-6 object-contain flex-shrink-0">` : ''}
+                                                    <span class="truncate">${match.home_team || '-'}</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-center">
+                                                <div class="inline-block bg-green-600 text-white text-xs sm:text-sm font-medium px-2 sm:px-4 py-1 rounded min-w-[45px] sm:min-w-[60px] text-center">
+                                                    ?-?
+                                                </div>
+                                            </td>
+                                            <td class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900">
+                                                <div class="flex items-center space-x-1 sm:space-x-2 justify-start">
+                                                    <span class="truncate">${match.away_team || '-'}</span>
+                                                    ${match.away_team_info?.img ? `<img src="${match.away_team_info.img}" alt="${match.away_team}" class="w-4 h-4 sm:w-6 sm:h-6 object-contain flex-shrink-0">` : ''}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 `;
             }
