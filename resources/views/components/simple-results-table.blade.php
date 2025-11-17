@@ -79,25 +79,47 @@
             {{-- Match Results --}}
             <div class="bg-white divide-y divide-gray-200">
                 @foreach ($matches as $match)
-                    <div class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors">
+                    @php
+                        $matchId = $match['match_id'] ?? null;
+                        $score = $match['score'] ?? '0-0';
+                    @endphp
+                    {{-- Mobile Layout --}}
+                    <div class="sm:hidden px-2 py-3 hover:bg-gray-50 transition-colors border-b border-gray-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-xs text-gray-700">{{ $match['time'] ?? '-' }}</div>
+                            @if($matchId)
+                                <a href="{{ route('match.detail', $matchId) }}" 
+                                   class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-2 py-1 rounded transition-colors">
+                                    {{ $score }}
+                                </a>
+                            @else
+                                <div class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                    {{ $score }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex-1 text-right pr-2 truncate">{{ $match['home_team'] ?? '-' }}</div>
+                            <div class="flex-1 text-left pl-2 truncate">{{ $match['away_team'] ?? '-' }}</div>
+                        </div>
+                    </div>
+                    
+                    {{-- Desktop Layout --}}
+                    <div class="hidden sm:flex items-center px-4 py-3 hover:bg-gray-50 transition-colors">
                         {{-- Time --}}
                         <div class="w-20 text-sm text-gray-700">
                             {{ $match['time'] ?? '-' }}
                         </div>
                         
                         {{-- Home Team --}}
-                        <div class="flex-1 text-sm text-gray-900 text-right">
+                        <div class="flex-1 text-sm text-gray-900 text-right truncate pr-4">
                             {{ $match['home_team'] ?? '-' }}
                         </div>
                         
                         {{-- Full-time Score (green) - Clickable link to match detail --}}
-                        @php
-                            $matchId = $match['match_id'] ?? null;
-                            $score = $match['score'] ?? '0-0';
-                        @endphp
                         @if($matchId)
                             <a href="{{ route('match.detail', $matchId) }}" 
-                               class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold px-3 py-1 rounded mx-4 min-w-[50px] text-center transition-colors cursor-pointer">
+                               class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold px-3 py-1 rounded mx-4 min-w-[50px] text-center transition-colors cursor-pointer flex-shrink-0">
                                 {{ $score }}
                             </a>
                         @else

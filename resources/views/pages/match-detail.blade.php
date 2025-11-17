@@ -12,38 +12,38 @@
     ]" />
 
     {{-- Main Content Area --}}
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-2 sm:px-4 py-4">
         {{-- Page Title --}}
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">
+        <h1 class="text-lg sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 break-words">
             Kết quả trận {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}, {{ $displayTime ? str_replace(':', 'h', $displayTime) : '' }} ngày {{ $displayDate ?? '' }}
         </h1>
 
         {{-- Match Summary Box (Green) --}}
-        <div class="bg-[#1a5f2f] rounded-lg shadow-lg mb-6 p-6">
+        <div class="bg-[#1a5f2f] rounded-lg shadow-lg mb-4 sm:mb-6 p-4 sm:p-6">
             {{-- League/Stage Info --}}
             <div class="text-center text-white mb-4">
-                <p class="text-sm font-medium">
+                <p class="text-xs sm:text-sm font-medium break-words">
                     Kqbd {{ $league['name'] ?? '' }} {{ $match['stage_name'] ?? '' }} {{ $displayTime ? str_replace(':', 'h', $displayTime) : '' }} Ngày {{ $displayDate ?? '' }}/{{ !empty($matchDate) ? date('Y', strtotime($matchDate)) : date('Y') }}
                 </p>
             </div>
 
             {{-- Teams and Score --}}
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-4 space-y-4 sm:space-y-0">
                 {{-- Home Team --}}
-                <div class="flex-1 flex flex-col items-center">
+                <div class="flex-1 flex flex-col items-center w-full sm:w-auto">
                     @if (!empty($homeTeam['img']))
-                        <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-16 h-16 mb-2">
+                        <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-12 h-12 sm:w-16 sm:h-16 mb-2">
                     @endif
-                    <span class="text-white font-medium text-center">{{ $homeTeam['name'] ?? '' }}</span>
+                    <span class="text-white font-medium text-center text-sm sm:text-base break-words px-2">{{ $homeTeam['name'] ?? '' }}</span>
                 </div>
 
                 {{-- Score --}}
-                <div class="flex-1 flex flex-col items-center mx-4">
-                    <div class="text-4xl font-bold text-white mb-2">
+                <div class="flex-1 flex flex-col items-center mx-0 sm:mx-4 w-full sm:w-auto">
+                    <div class="text-2xl sm:text-4xl font-bold text-white mb-2">
                         {{ ($scores['home_score'] ?? '') !== '' ? ($scores['home_score'] ?? '?') : '?' }} - {{ ($scores['away_score'] ?? '') !== '' ? ($scores['away_score'] ?? '?') : '?' }}
                     </div>
                     @if ($match['status'] == 1 || $match['status_name'] == 'Inplay')
-                        <a href="#" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
+                        <a href="#" class="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-1 sm:py-2 rounded text-xs sm:text-sm font-medium transition-colors">
                             Xem Live
                         </a>
                     @endif
@@ -55,16 +55,16 @@
                 </div>
 
                 {{-- Away Team --}}
-                <div class="flex-1 flex flex-col items-center">
+                <div class="flex-1 flex flex-col items-center w-full sm:w-auto">
                     @if (!empty($awayTeam['img']))
-                        <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-16 h-16 mb-2">
+                        <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-12 h-12 sm:w-16 sm:h-16 mb-2">
                     @endif
-                    <span class="text-white font-medium text-center">{{ $awayTeam['name'] ?? '' }}</span>
+                    <span class="text-white font-medium text-center text-sm sm:text-base break-words px-2">{{ $awayTeam['name'] ?? '' }}</span>
                 </div>
             </div>
 
             {{-- Match Details --}}
-            <div class="flex justify-center space-x-6 text-white text-sm">
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-6 text-white text-xs sm:text-sm">
                 <div>
                     <span class="font-medium">Địa Điểm:</span>
                     <span>

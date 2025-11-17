@@ -20,14 +20,14 @@
 {{-- Sub Navigation --}}
 {{-- Top Sub-navigation Bar với 3 phần --}}
 <div class="bg-white border-b border-gray-200 mb-0">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-2 sm:px-4">
         <div class="flex items-stretch">
             {{-- Center Section - Title --}}
-            <div class="flex-1 bg-white py-3 px-4 flex items-center justify-center">
-                <h2 class="text-base font-bold text-gray-900 text-center leading-tight">
-                    <span class="whitespace-nowrap">KEOBONGDA | BÓNG ĐÁ SỐ - DỮ LIỆU CHÍNH XÁC VÀ KỊP THỜI NHẤT</span>
-                    <span class="text-blue-600 whitespace-nowrap">BONGDASO</span>
-                    <span class="whitespace-nowrap"> TRỰC TUYẾN MỚI NHẤT</span>
+            <div class="flex-1 bg-white py-2 sm:py-3 px-2 sm:px-4 flex items-center justify-center">
+                <h2 class="text-xs sm:text-sm md:text-base font-bold text-gray-900 text-center leading-tight break-words">
+                    <span class="sm:whitespace-nowrap">KEOBONGDA | BÓNG ĐÁ SỐ - DỮ LIỆU CHÍNH XÁC VÀ KỊP THỜI NHẤT</span>
+                    <span class="text-blue-600 sm:whitespace-nowrap"> BONGDASO</span>
+                    <span class="sm:whitespace-nowrap"> TRỰC TUYẾN MỚI NHẤT</span>
                 </h2>
             </div>
         </div>
@@ -129,14 +129,14 @@
         </div>
     </div>
     
-    <div class="overflow-x-auto overflow-y-visible max-w-full">
-        <table class="w-full divide-y divide-gray-200 relative table-auto" style="table-layout: auto; width: 100%;">
+    <div class="overflow-x-auto overflow-y-visible max-w-full -mx-2 sm:mx-0">
+        <table class="w-full divide-y divide-gray-200 relative table-auto min-w-[600px]" style="table-layout: auto; width: 100%;">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-24 max-w-24">Giải</th>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-16">Giờ</th>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 text-right uppercase tracking-wider w-32 max-w-32">Chủ</th>
-                    <th class="px-2 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-16">Tỷ số</th>
+                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-24 max-w-24">Giải</th>
+                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-16">Giờ</th>
+                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-700 text-right uppercase tracking-wider w-32 max-w-32">Chủ</th>
+                    <th class="px-2 sm:px-2 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-16">Tỷ số</th>
                     <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-32 max-w-32">Khách</th>
                     <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-20">C/H-T</th>
                     <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-20">Số liệu</th>

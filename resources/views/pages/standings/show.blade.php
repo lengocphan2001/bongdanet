@@ -12,21 +12,21 @@
     ]" />
 
     {{-- Main Content Area --}}
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-2 sm:px-4 py-4">
         <div class="flex flex-col lg:flex-row gap-4">
             {{-- Left Column - Main Content --}}
-            <main class="flex-1 min-w-0">
+            <main class="flex-1 min-w-0 order-1 lg:order-1">
 
                 {{-- Page Title --}}
-                <h1 class="text-2xl font-bold text-gray-900 mb-4">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 break-words">
                     Bảng xếp hạng {{ $league['name'] ?? 'N/A' }} - BXH bóng đá mới nhất
                 </h1>
 
                 {{-- League Selection Tabs --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4">
                     <div class="flex flex-wrap gap-2">
                         <a href="{{ route('standings.show', $league['id']) }}" 
-                           class="px-4 py-2 text-sm font-medium text-white bg-[#1a5f2f] rounded hover:bg-[#155027] transition-colors">
+                           class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-[#1a5f2f] rounded hover:bg-[#155027] transition-colors">
                             {{ $league['name'] ?? 'N/A' }}
                         </a>
                         {{-- Add more league tabs here if needed --}}

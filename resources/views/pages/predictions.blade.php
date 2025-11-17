@@ -15,17 +15,17 @@
     ]" />
 
     {{-- Main Content Area --}}
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-2 sm:px-4 py-4">
         <div class="flex flex-col lg:flex-row gap-4">
             {{-- Left Column - Main Content --}}
-            <main class="flex-1 min-w-0">
+            <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-2xl font-bold text-gray-900 mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Nhận định bóng đá hôm nay - Soi kèo dự đoán bóng đá NET tối đêm nay
                 </h1>
 
                 {{-- League Navigation Tabs --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-wrap gap-2">
                         @php
                             $leagueSlugs = [
@@ -45,7 +45,7 @@
                         @endphp
                         @foreach($leagueSlugs as $slug => $name)
                             <a href="{{ route('predictions.league', $slug) }}" 
-                               class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 transition-colors">
+                               class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 transition-colors">
                                 {{ $name }}
                             </a>
                         @endforeach
@@ -53,7 +53,7 @@
                 </div>
 
                 {{-- Information Box --}}
-                <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
                     <div class="space-y-4 text-sm text-gray-700 leading-relaxed">
                         <p>
                             <strong>Nhận định bóng đá Net hôm nay:</strong> Soi kèo và dự đoán tỷ số bóng đá ngày mai chính xác. Soi kèo bóng đá cùng chuyên gia ở các giải đấu hàng đầu hiện nay như: Ngoại hạng Anh, Bundesliga, Ý, Tây Ban Nha, Cúp C1, Cúp C2 và V-league......Tab nhận định và dự đoán bao gồm:
@@ -91,9 +91,9 @@
                             $teams = ($prediction->home_team ?? 'N/A') . ' vs ' . ($prediction->away_team ?? 'N/A');
                             $matchUrl = route('prediction.detail', $prediction->id);
                         @endphp
-                        <a href="{{ $matchUrl }}" class="block p-4 hover:bg-green-50 transition-colors group">
-                            <div class="flex items-center space-x-3">
-                                <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <a href="{{ $matchUrl }}" class="block p-3 sm:p-4 hover:bg-green-50 transition-colors group">
+                            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                                <svg class="w-4 h-4 text-green-600 flex-shrink-0 hidden sm:block" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
                                 </svg>
                                 <div class="flex-1 min-w-0">
@@ -105,7 +105,7 @@
                                             <span class="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">{{ $matchTime->format('H:i') }}</span>
                                         @endif
                                     </div>
-                                    <p class="text-sm text-gray-900 group-hover:text-green-600">
+                                    <p class="text-xs sm:text-sm text-gray-900 group-hover:text-green-600 break-words">
                                         <span class="font-medium">Nhận định, soi kèo</span> 
                                         <span class="text-gray-700 group-hover:text-green-600">{{ $teams }}, {{ $timeDisplay }}: {{ Str::limit($prediction->title, 50) }}</span>
                                     </p>
@@ -113,7 +113,7 @@
                                         <p class="text-xs text-gray-500 mt-1">{{ $prediction->league_name }}</p>
                                     @endif
                                 </div>
-                                <div class="w-20 h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
+                                <div class="w-full sm:w-20 h-24 sm:h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
                                     @if($prediction->thumbnail)
                                         <img src="{{ Storage::url($prediction->thumbnail) }}" alt="{{ $teams }}" class="w-full h-full object-cover">
                                     @else
@@ -157,9 +157,9 @@
                                     $teams = ($prediction->home_team ?? 'N/A') . ' vs ' . ($prediction->away_team ?? 'N/A');
                                     $matchUrl = route('prediction.detail', $prediction->id);
                                 @endphp
-                                <a href="{{ $matchUrl }}" class="block p-4 hover:bg-green-50 transition-colors group">
-                                    <div class="flex items-center space-x-3">
-                                        <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <a href="{{ $matchUrl }}" class="block p-3 sm:p-4 hover:bg-green-50 transition-colors group">
+                                    <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                                        <svg class="w-4 h-4 text-green-600 flex-shrink-0 hidden sm:block" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
                                         </svg>
                                         <div class="flex-1 min-w-0">
@@ -168,12 +168,12 @@
                                                     <span class="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded">{{ $matchTime->format('H:i') }}</span>
                                                 @endif
                                             </div>
-                                            <p class="text-sm text-gray-900 group-hover:text-green-600">
+                                            <p class="text-xs sm:text-sm text-gray-900 group-hover:text-green-600 break-words">
                                                 <span class="font-medium">Nhận định, soi kèo</span> 
                                                 <span class="text-gray-700 group-hover:text-green-600">{{ $teams }}, {{ $timeDisplay }}: {{ Str::limit($prediction->title, 50) }}</span>
                                             </p>
                                         </div>
-                                        <div class="w-20 h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
+                                        <div class="w-full sm:w-20 h-24 sm:h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
                                             @if($prediction->thumbnail)
                                                 <img src="{{ Storage::url($prediction->thumbnail) }}" alt="{{ $teams }}" class="w-full h-full object-cover">
                                             @else
@@ -191,7 +191,7 @@
             </main>
 
             {{-- Right Sidebar --}}
-            <aside class="w-fit lg:w-80 flex-shrink-0 space-y-4">
+            <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2">
                 <x-soi-keo-mini activeItem="Soi kèo Anh" />
                 <x-match-schedule activeDate="H.nay" />
                 <x-fifa-ranking />

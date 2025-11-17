@@ -11,21 +11,21 @@
     ]" />
 
     {{-- Main Content Area --}}
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-2 sm:px-4 py-4">
         <div class="flex flex-col lg:flex-row gap-4">
             {{-- Left Column - Main Content --}}
-            <main class="flex-1 min-w-0">
+            <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-2xl font-bold text-gray-900 mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Lịch thi đấu bóng đá hôm nay - Lịch bóng đá trực tuyến
                 </h1>
 
                 {{-- Date Selection Dropdown --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-                    <div class="flex items-center space-x-3">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                         <label for="date-select" class="text-sm font-medium text-gray-700 whitespace-nowrap">Chọn ngày:</label>
                         <select id="date-select" onchange="window.location.href='{{ route('schedule') }}?date=' + this.value" 
-                                class="px-4 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f2f] focus:border-[#1a5f2f]">
+                                class="w-full sm:w-auto px-4 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f2f] focus:border-[#1a5f2f]">
                             @foreach ($dateOptions ?? [] as $option)
                                 <option value="{{ $option['value'] }}" {{ $option['value'] == ($date ?? $today ?? date('Y-m-d')) ? 'selected' : '' }}>
                                     {{ $option['label'] }}
@@ -51,11 +51,11 @@
                         ['name' => 'Cúp C1 Châu Á', 'id' => 511],
                     ];
                 @endphp
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-wrap gap-2">
                         @foreach($leagueFilters as $filter)
                             <a href="{{ route('schedule.league', $filter['id']) }}" 
-                               class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 transition-colors">
+                               class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 transition-colors">
                                 {{ $filter['name'] }}
                             </a>
                         @endforeach
@@ -67,7 +67,7 @@
             </main>
 
             {{-- Right Sidebar --}}
-            <aside class="w-fit lg:w-80 flex-shrink-0 space-y-4">
+            <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2">
                 <x-football-schedule-menu activeItem="Ngoại Hạng Anh" />
                 <x-fifa-ranking />
                 <x-match-schedule activeDate="H.nay" />

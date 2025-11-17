@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
     {
         // Create admin user if not exists
         User::firstOrCreate(
-            ['email' => 'admin@bongdanet.co'],
+            ['email' => 'admin@keobongda.co'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('admin123'), // Change this password!
@@ -25,7 +25,7 @@ class AdminUserSeeder extends Seeder
         );
 
         $this->command->info('Admin user created!');
-        $this->command->info('Email: admin@bongdanet.co');
+        $this->command->info('Email: admin@keobongda.co');
         $this->command->info('Password: admin123');
         $this->command->warn('⚠️  Please change the password after first login!');
     }

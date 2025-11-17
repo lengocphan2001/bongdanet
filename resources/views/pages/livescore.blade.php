@@ -22,15 +22,15 @@
     ]" />
 
     {{-- Main Content Area --}}
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-2 sm:px-4 py-4">
         <div class="flex flex-col lg:flex-row gap-4">
             {{-- Left Sidebar --}}
-            <aside class="w-fit lg:w-80 flex-shrink-0">
+            <aside class="w-full lg:w-80 flex-shrink-0 order-2 lg:order-1">
                 <x-football-schedule-menu activeItem="Ngoại Hạng Anh" />
             </aside>
             
             {{-- Left Column - Main Content --}}
-            <main class="flex-1 min-w-0">
+            <main class="flex-1 min-w-0 order-1 lg:order-2">
                 <div class="space-y-4" id="livescore-content">
                     @if(empty($groupedMatches))
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
@@ -137,9 +137,41 @@
                                             $isLive = $match['is_live'] ?? false;
                                         @endphp
                                         
-                                        <div class="px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors {{ $matchId ? 'cursor-pointer' : '' }}"
+                                        <div class="px-2 sm:px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors {{ $matchId ? 'cursor-pointer' : '' }}"
                                              @if($matchId) onclick="window.location.href='{{ route('match.detail', $matchId) }}'" @endif>
-                                            <div class="flex items-center">
+                                            {{-- Mobile Layout --}}
+                                            <div class="flex flex-col sm:hidden space-y-2">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center space-x-1.5">
+                                                        @if($isLive)
+                                                            <svg class="w-3.5 h-3.5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M8 5v14l11-7z"/>
+                                                            </svg>
+                                                        @endif
+                                                        <span class="text-xs {{ $shouldBlink ? 'live-minute-blink' : 'text-gray-700' }}">{{ $timeDisplay }}</span>
+                                                    </div>
+                                                    @if($matchId)
+                                                        <a href="{{ route('match.detail', $matchId) }}" 
+                                                           class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-2 py-1 rounded transition-colors">
+                                                            {{ $currentScore }}
+                                                        </a>
+                                                    @else
+                                                        <div class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                                            {{ $currentScore }}
+                                                        </div>
+                                                    @endif
+                                                    <div class="bg-gray-600 text-white text-xs font-medium px-2 py-1 rounded">
+                                                        {{ $htScore }}
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center justify-between text-xs">
+                                                    <div class="flex-1 text-right pr-2 truncate">{{ $homeTeam }}</div>
+                                                    <div class="flex-1 text-left pl-2 truncate">{{ $awayTeam }}</div>
+                                                </div>
+                                            </div>
+                                            
+                                            {{-- Desktop Layout --}}
+                                            <div class="hidden sm:flex items-center">
                                                 {{-- Left: Time and Play Icon --}}
                                                 <div class="flex items-center space-x-1.5 w-20 flex-shrink-0">
                                                     @if($isLive)
@@ -151,7 +183,7 @@
                                                 </div>
                                                 
                                                 {{-- Home Team --}}
-                                                <div class="flex-1 text-sm text-gray-900 text-right pr-4">
+                                                <div class="flex-1 text-sm text-gray-900 text-right pr-4 truncate">
                                                     {{ $homeTeam }}
                                                 </div>
                                                 
@@ -168,7 +200,7 @@
                                                 @endif
                                                 
                                                 {{-- Away Team --}}
-                                                <div class="flex-1 text-sm text-gray-900 text-left pl-4">
+                                                <div class="flex-1 text-sm text-gray-900 text-left pl-4 truncate">
                                                     {{ $awayTeam }}
                                                 </div>
                                                 
@@ -187,7 +219,7 @@
             </main>
 
             {{-- Right Sidebar --}}
-            <aside class="w-fit lg:w-80 flex-shrink-0 space-y-4">
+            <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-3">
                 <x-football-results-menu activeItem="Ngoại Hạng Anh" />
                 <x-match-schedule activeDate="H.nay" />
                 <x-fifa-ranking />

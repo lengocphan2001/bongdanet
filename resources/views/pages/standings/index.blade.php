@@ -11,17 +11,17 @@
     ]" />
 
     {{-- Main Content Area --}}
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-2 sm:px-4 py-4">
         <div class="flex flex-col lg:flex-row gap-4">
             {{-- Left Column - Main Content --}}
-            <main class="flex-1 min-w-0">
+            <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-2xl font-bold text-gray-900 mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Bảng xếp hạng bóng đá - Danh sách các giải đấu
                 </h1>
 
                 {{-- Search Box --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="relative">
                         <input 
                             type="text" 
@@ -47,13 +47,13 @@
                 </div>
 
                 {{-- Leagues Grid --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
                     @if(empty($leagues))
                         <div class="text-center py-8 text-gray-500">
                             Không có dữ liệu giải đấu
                         </div>
                     @else
-                        <div id="leagues-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div id="leagues-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                             @foreach($leagues as $league)
                                 <a href="{{ route('standings.show', $league['id']) }}" 
                                    class="league-item block p-4 border border-gray-200 rounded-lg hover:border-[#1a5f2f] hover:bg-green-50 transition-all"
@@ -84,14 +84,14 @@
                         
                         {{-- Pagination --}}
                         @if($totalPages > 1)
-                            <div class="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
-                                <div class="text-sm text-gray-700">
+                            <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 pt-4 space-y-3 sm:space-y-0">
+                                <div class="text-xs sm:text-sm text-gray-700 text-center sm:text-left">
                                     Hiển thị <span class="font-medium">{{ (($currentPage - 1) * $perPage) + 1 }}</span> đến 
                                     <span class="font-medium">{{ min($currentPage * $perPage, $total) }}</span> trong tổng số 
                                     <span class="font-medium">{{ $total }}</span> giải đấu
                                 </div>
                                 
-                                <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-1 sm:space-x-2 flex-wrap justify-center">
                                     {{-- Previous Button --}}
                                     @if($currentPage > 1)
                                         <a href="{{ route('standings.index', ['page' => $currentPage - 1]) }}" 
@@ -156,11 +156,11 @@
             </main>
 
             {{-- Right Sidebar --}}
-            <aside class="w-fit lg:w-80 flex-shrink-0 space-y-4">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <h3 class="font-bold text-gray-900 mb-3">BẢNG XẾP HẠNG BÓNG ĐÁ</h3>
+            <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+                    <h3 class="font-bold text-gray-900 mb-3 text-sm sm:text-base">BẢNG XẾP HẠNG BÓNG ĐÁ</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('standings.index') }}" class="text-sm text-gray-700 hover:text-[#1a5f2f]">Bảng xếp hạng bóng đá</a></li>
+                        <li><a href="{{ route('standings.index') }}" class="text-xs sm:text-sm text-gray-700 hover:text-[#1a5f2f]">Bảng xếp hạng bóng đá</a></li>
                     </ul>
                 </div>
             </aside>

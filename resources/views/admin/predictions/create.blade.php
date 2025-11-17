@@ -3,8 +3,8 @@
 @section('title', 'Thêm Nhận định Mới')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">Thêm Nhận định Mới</h1>
+<div class="bg-white rounded-lg shadow-md p-3 sm:p-6">
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Thêm Nhận định Mới</h1>
 
     <form method="POST" action="{{ route('admin.predictions.store') }}" id="prediction-form" enctype="multipart/form-data" onsubmit="return submitForm()">
         @csrf
@@ -41,7 +41,7 @@
             @enderror
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <!-- Left Column -->
             <div class="space-y-4">
                 <div>

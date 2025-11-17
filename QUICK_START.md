@@ -103,10 +103,16 @@ php artisan route:clear
 php artisan view:clear
 ```
 
-### Chạy Migrations
+### Chạy Migrations và Seed Admin
 ```powershell
 php artisan migrate --force
+php artisan db:seed --class=AdminUserSeeder
 ```
+
+**Thông tin admin**:
+- Email: `admin@bongdanet.co`
+- Password: `admin123`
+- ⚠️ Đổi mật khẩu sau lần đăng nhập đầu tiên!
 
 ### Tạo Storage Link
 ```powershell

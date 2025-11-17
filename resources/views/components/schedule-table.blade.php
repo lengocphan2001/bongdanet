@@ -68,57 +68,59 @@
             
             {{-- Schedule Table --}}
             <div class="bg-white overflow-hidden border border-gray-200 rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">Giờ</th>
-                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
-                            <th class="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase" style="min-width: 80px;"></th>
-                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($matches as $match)
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                {{-- Time --}}
-                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $match['time'] ?? '-' }}
-                                </td>
-                                
-                                {{-- Home Team --}}
-                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                    <div class="flex items-center space-x-2 justify-end">
-                                        @if (!empty($match['home_team_info']['img'] ?? null))
-                                            <img src="{{ $match['home_team_info']['img'] }}" 
-                                                 alt="{{ $match['home_team'] }}" 
-                                                 class="w-6 h-6 object-contain">
-                                        @endif
-                                        <span>{{ $match['home_team'] ?? '-' }}</span>
-                                    </div>
-                                </td>
-                                
-                                {{-- Score button (green with ?-?) --}}
-                                <td class="px-4 py-3 whitespace-nowrap text-center" style="min-width: 80px;">
-                                    <div class="inline-block bg-green-600 text-white text-sm font-medium px-4 py-1 rounded min-w-[60px] text-center">
-                                        ?-?
-                                    </div>
-                                </td>
-                                
-                                {{-- Away Team --}}
-                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                    <div class="flex items-center space-x-2 justify-start">
-                                        <span>{{ $match['away_team'] ?? '-' }}</span>
-                                        @if (!empty($match['away_team_info']['img'] ?? null))
-                                            <img src="{{ $match['away_team_info']['img'] }}" 
-                                                 alt="{{ $match['away_team'] }}" 
-                                                 class="w-6 h-6 object-contain">
-                                        @endif
-                                    </div>
-                                </td>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-2 sm:px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">Giờ</th>
+                                <th class="px-2 sm:px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
+                                <th class="px-2 sm:px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase" style="min-width: 80px;"></th>
+                                <th class="px-2 sm:px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase"></th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($matches as $match)
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    {{-- Time --}}
+                                    <td class="px-2 sm:px-4 py-3 whitespace-nowrap text-xs sm:text-sm text-gray-900">
+                                        {{ $match['time'] ?? '-' }}
+                                    </td>
+                                    
+                                    {{-- Home Team --}}
+                                    <td class="px-2 sm:px-4 py-3 text-xs sm:text-sm text-gray-900">
+                                        <div class="flex items-center space-x-1 sm:space-x-2 justify-end">
+                                            @if (!empty($match['home_team_info']['img'] ?? null))
+                                                <img src="{{ $match['home_team_info']['img'] }}" 
+                                                     alt="{{ $match['home_team'] }}" 
+                                                     class="w-4 h-4 sm:w-6 sm:h-6 object-contain flex-shrink-0">
+                                            @endif
+                                            <span class="truncate">{{ $match['home_team'] ?? '-' }}</span>
+                                        </div>
+                                    </td>
+                                    
+                                    {{-- Score button (green with ?-?) --}}
+                                    <td class="px-2 sm:px-4 py-3 whitespace-nowrap text-center" style="min-width: 80px;">
+                                        <div class="inline-block bg-green-600 text-white text-xs sm:text-sm font-medium px-2 sm:px-4 py-1 rounded min-w-[50px] sm:min-w-[60px] text-center">
+                                            ?-?
+                                        </div>
+                                    </td>
+                                    
+                                    {{-- Away Team --}}
+                                    <td class="px-2 sm:px-4 py-3 text-xs sm:text-sm text-gray-900">
+                                        <div class="flex items-center space-x-1 sm:space-x-2 justify-start">
+                                            <span class="truncate">{{ $match['away_team'] ?? '-' }}</span>
+                                            @if (!empty($match['away_team_info']['img'] ?? null))
+                                                <img src="{{ $match['away_team_info']['img'] }}" 
+                                                     alt="{{ $match['away_team'] }}" 
+                                                     class="w-4 h-4 sm:w-6 sm:h-6 object-contain flex-shrink-0">
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         @endif
     @endforeach

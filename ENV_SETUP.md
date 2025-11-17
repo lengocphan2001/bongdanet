@@ -104,6 +104,14 @@ SOCCER_API_TOKEN=DqCDvCP0ye
 
 5. **Cấu hình Soccer API**: Kiểm tra và cập nhật thông tin API nếu cần
 
+6. **Seed Admin User**: Sau khi chạy migrations, seed admin user:
+   ```powershell
+   php artisan db:seed --class=AdminUserSeeder
+   ```
+   - Email: `admin@bongdanet.co`
+   - Password: `admin123`
+   - ⚠️ **Quan trọng**: Đổi mật khẩu ngay sau lần đăng nhập đầu tiên!
+
 ## Lưu Ý Bảo Mật
 
 - **KHÔNG** commit file `.env` lên Git
