@@ -151,6 +151,7 @@ php artisan migrate --force
 - **Hướng dẫn XAMPP chi tiết**: Xem file `DEPLOYMENT_XAMPP.md`
 - **Hướng dẫn IIS**: Xem file `DEPLOYMENT.md`
 - **Cấu hình SSL/HTTPS**: Xem file `SSL_SETUP.md` ⭐
+- **Khắc phục lỗi SSL 526**: Xem file `SSL_TROUBLESHOOTING.md` 🔧
 - **Cấu hình environment**: Xem file `ENV_SETUP.md`
 - **Script deploy XAMPP**: Xem file `deploy-xampp.ps1`
 - **Script deploy IIS**: Xem file `deploy.ps1`

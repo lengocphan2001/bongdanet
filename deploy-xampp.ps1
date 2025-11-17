@@ -115,6 +115,19 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Migrations completed!" -ForegroundColor Green
 Write-Host ""
 
+# Step 7.5: Seed Database (Admin User)
+Write-Host "Step 7.5: Seeding database (admin user)..." -ForegroundColor Yellow
+php artisan db:seed --class=AdminUserSeeder
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Warning: Seeding may have failed. Check the output above." -ForegroundColor Yellow
+} else {
+    Write-Host "Admin user seeded successfully!" -ForegroundColor Green
+    Write-Host "  Email: admin@bongdanet.co" -ForegroundColor Gray
+    Write-Host "  Password: admin123" -ForegroundColor Gray
+    Write-Host "  ⚠️  Please change the password after first login!" -ForegroundColor Yellow
+}
+Write-Host ""
+
 # Step 8: Create Storage Link
 Write-Host "Step 8: Creating storage link..." -ForegroundColor Yellow
 php artisan storage:link

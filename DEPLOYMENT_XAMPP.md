@@ -219,12 +219,27 @@ php artisan key:generate
 php artisan migrate --force
 ```
 
-### 7.6. Tạo Storage Link
+### 7.6. Seed Admin User
+```powershell
+php artisan db:seed --class=AdminUserSeeder
+```
+
+**Thông tin đăng nhập admin**:
+- **Email**: `admin@bongdanet.co`
+- **Password**: `admin123`
+- ⚠️ **Lưu ý**: Đổi mật khẩu ngay sau lần đăng nhập đầu tiên!
+
+**Hoặc seed tất cả**:
+```powershell
+php artisan db:seed
+```
+
+### 7.7. Tạo Storage Link
 ```powershell
 php artisan storage:link
 ```
 
-### 7.7. Optimize Laravel
+### 7.8. Optimize Laravel
 ```powershell
 php artisan config:cache
 php artisan route:cache

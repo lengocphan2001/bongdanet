@@ -320,6 +320,15 @@ openssl s_client -connect mon88.click:443 -servername mon88.click
 
 ## Troubleshooting
 
+### Lỗi 526: Invalid SSL Certificate (Cloudflare)
+
+**Xem hướng dẫn chi tiết**: `SSL_TROUBLESHOOTING.md`
+
+**Giải pháp nhanh**:
+1. Nếu chưa có SSL trên origin server: Đổi Cloudflare SSL mode → **Flexible**
+2. Nếu đã có SSL: Kiểm tra certificate files và cấu hình Apache
+3. Kiểm tra port 443 đã mở và Apache đang lắng nghe
+
 ### Lỗi "Your connection is not private"
 1. Kiểm tra certificate đã được cài đặt đúng
 2. Kiểm tra domain trong certificate khớp với domain thực tế
