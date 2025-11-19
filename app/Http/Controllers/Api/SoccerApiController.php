@@ -159,10 +159,15 @@ class SoccerApiController extends ApiController
         // Get live matches - no cache
         $liveResponse = $this->soccerApiService->getLivescores(['_bypass_cache' => true]);
         
-        // Get fixture notstart matches of today using fixtures API with odds_prematch
+        // Get fixture notstart matches of today using fixtures API with odds_prematch, sorted by time, filtered past matches
         // Always bypass cache - get fresh data from API every time
         $today = date('Y-m-d');
-        $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, ['include' => 'odds_prematch', '_bypass_cache' => true]);
+        $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, [
+            'include' => 'odds_prematch',
+            '_bypass_cache' => true,
+            '_sort_by_time' => true,
+            '_filter_past_matches' => true
+        ]);
         
         $liveMatches = [];
         $upcomingMatches = [];
@@ -177,6 +182,7 @@ class SoccerApiController extends ApiController
             $totalMatches = count($upcomingResponse['data']);
             $filteredByStatus = 0;
             
+            // Data is already sorted by time from API
             foreach ($upcomingResponse['data'] as $apiMatch) {
                 // Only include matches with status = 0 (notstarted)
                 $matchStatus = $apiMatch['status'] ?? null;
@@ -202,21 +208,6 @@ class SoccerApiController extends ApiController
                 'final_count' => count($upcomingMatches),
                 'date' => $today,
             ]);
-            
-            // Sort upcoming matches by starting datetime
-            usort($upcomingMatches, function($a, $b) {
-                $datetimeA = $a['starting_datetime'] ?? null;
-                $datetimeB = $b['starting_datetime'] ?? null;
-                
-                if ($datetimeA === null && $datetimeB === null) return 0;
-                if ($datetimeA === null) return 1; // Put null at the end
-                if ($datetimeB === null) return -1; // Put null at the end
-                
-                $timestampA = strtotime($datetimeA);
-                $timestampB = strtotime($datetimeB);
-                
-                return $timestampA <=> $timestampB; // Ascending order (earliest first)
-            });
         }
 
         // Extract unique bookmakers

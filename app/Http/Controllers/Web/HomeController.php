@@ -23,9 +23,13 @@ class HomeController extends Controller
         // No cache - fetch fresh data directly from API
         // Fetch live scores from API
         $liveResponse = $this->soccerApiService->getLivescores();
-        // Get fixture notstart matches of today using fixtures API with odds_prematch
+        // Get fixture notstart matches of today using fixtures API with odds_prematch, sorted by time, filtered past matches
         $today = date('Y-m-d');
-        $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, ['include' => 'odds_prematch']);
+        $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, [
+            'include' => 'odds_prematch',
+            '_sort_by_time' => true,
+            '_filter_past_matches' => true
+        ]);
         
         $liveMatches = [];
         $upcomingMatches = [];
@@ -42,6 +46,7 @@ class HomeController extends Controller
             $filteredByStatus = 0;
             
             // Filter to include only matches with status = 0 (notstarted) of today
+            // Data is already sorted by time from API
             foreach ($upcomingResponse['data'] as $apiMatch) {
                 // Only include matches with status = 0 (notstarted)
                 $matchStatus = $apiMatch['status'] ?? null;
@@ -67,21 +72,6 @@ class HomeController extends Controller
                 'final_count' => count($upcomingMatches),
                 'date' => $today,
             ]);
-            
-            // Sort upcoming matches by starting datetime
-            usort($upcomingMatches, function($a, $b) {
-                $datetimeA = $a['starting_datetime'] ?? null;
-                $datetimeB = $b['starting_datetime'] ?? null;
-                
-                if ($datetimeA === null && $datetimeB === null) return 0;
-                if ($datetimeA === null) return 1; // Put null at the end
-                if ($datetimeB === null) return -1; // Put null at the end
-                
-                $timestampA = strtotime($datetimeA);
-                $timestampB = strtotime($datetimeB);
-                
-                return $timestampA <=> $timestampB; // Ascending order (earliest first)
-            });
         }
 
         // Extract unique bookmakers from all matches

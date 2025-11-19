@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -437,17 +438,103 @@ class SoccerApiService
         $bypassCache = isset($params['_bypass_cache']) && $params['_bypass_cache'];
         unset($params['_bypass_cache']); // Remove from params before making request
         
+        // Check if should sort by time
+        $sortByTime = isset($params['_sort_by_time']) && $params['_sort_by_time'];
+        unset($params['_sort_by_time']); // Remove from params before making request
+        
+        // Check if should filter past matches
+        $filterPastMatches = isset($params['_filter_past_matches']) && $params['_filter_past_matches'];
+        unset($params['_filter_past_matches']); // Remove from params before making request
+        
         // Create cache key based on params
         $cacheKey = 'soccer_api:schedule:' . md5(json_encode($params));
         
         // If bypass cache, fetch fresh data directly without cache
         if ($bypassCache) {
-            return $this->makeRequest('fixtures', $params);
+            $response = $this->makeRequest('fixtures', $params);
+            // Filter past matches if requested
+            if ($filterPastMatches && $response && isset($response['data']) && is_array($response['data'])) {
+                $this->filterPastMatches($response['data']);
+            }
+            // Sort by time if requested
+            if ($sortByTime && $response && isset($response['data']) && is_array($response['data'])) {
+                $this->sortMatchesByTime($response['data']);
+            }
+            return $response;
         }
         
         // Cache for 1 week (7 days) for schedule page
-        return Cache::remember($cacheKey, 604800, function () use ($params) {
+        $response = Cache::remember($cacheKey, 604800, function () use ($params) {
             return $this->makeRequest('fixtures', $params);
+        });
+        
+        // Filter past matches if requested (after cache retrieval)
+        if ($filterPastMatches && $response && isset($response['data']) && is_array($response['data'])) {
+            $this->filterPastMatches($response['data']);
+        }
+        
+        // Sort by time if requested (after cache retrieval)
+        if ($sortByTime && $response && isset($response['data']) && is_array($response['data'])) {
+            $this->sortMatchesByTime($response['data']);
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * Filter out past matches (matches that have already started)
+     * 
+     * @param array $matches Array of match data from API
+     * @return void
+     */
+    protected function filterPastMatches(array &$matches): void
+    {
+        $timezone = config('app.timezone', 'Asia/Ho_Chi_Minh');
+        $now = Carbon::now($timezone);
+        
+        $matches = array_filter($matches, function($match) use ($now, $timezone) {
+            // Get match datetime from API response
+            $matchDatetime = $match['time']['datetime'] ?? $match['time']['date'] ?? null;
+            
+            if (!$matchDatetime) {
+                // If no datetime, exclude the match
+                return false;
+            }
+            
+            try {
+                $matchDateTime = Carbon::parse($matchDatetime, $timezone);
+                // Only include matches with datetime >= current time
+                return $matchDateTime->greaterThanOrEqualTo($now);
+            } catch (\Exception $e) {
+                // If parsing fails, exclude the match
+                return false;
+            }
+        });
+        
+        // Re-index array after filtering
+        $matches = array_values($matches);
+    }
+    
+    /**
+     * Sort matches array by starting datetime (earliest first)
+     * 
+     * @param array $matches Array of match data from API
+     * @return void
+     */
+    protected function sortMatchesByTime(array &$matches): void
+    {
+        usort($matches, function($a, $b) {
+            $datetimeA = $a['time']['datetime'] ?? $a['time']['date'] ?? $a['starting_datetime'] ?? null;
+            $datetimeB = $b['time']['datetime'] ?? $b['time']['date'] ?? $b['starting_datetime'] ?? null;
+            
+            if ($datetimeA === null && $datetimeB === null) return 0;
+            if ($datetimeA === null) return 1; // Put null at the end
+            if ($datetimeB === null) return -1; // Put null at the end
+            
+            $timestampA = strtotime($datetimeA);
+            $timestampB = strtotime($datetimeB);
+            
+            return $timestampA <=> $timestampB; // Ascending order (earliest first)
         });
     }
 
