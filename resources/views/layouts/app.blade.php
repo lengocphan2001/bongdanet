@@ -16,6 +16,22 @@
 </head>
 <body class="font-sans antialiased bg-white">
     <div id="app">
+        {{-- Modal Quảng Cáo --}}
+        @php
+            use App\Models\Banner;
+            $modalBanners = Banner::active()->byType('modal')->ordered()->get();
+            $stickyBanners = Banner::active()->byType('sticky')->ordered()->get();
+        @endphp
+        
+        @foreach($modalBanners as $banner)
+            <x-ad-modal :banner="$banner" />
+        @endforeach
+
+        {{-- Sticky Banner ở đầu trang --}}
+        @foreach($stickyBanners as $banner)
+            <x-ad-sticky :banner="$banner" />
+        @endforeach
+
         @include('partials.header')
 
         <main>

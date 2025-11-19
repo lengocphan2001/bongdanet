@@ -15,6 +15,8 @@
         
         if (str_contains($currentRoute, 'admin.predictions')) {
             $activeItem = 'predictions';
+        } elseif (str_contains($currentRoute, 'admin.banners')) {
+            $activeItem = 'banners';
         } elseif (str_contains($currentRoute, 'admin.users')) {
             $activeItem = 'users';
         } elseif (str_contains($currentRoute, 'admin.settings')) {

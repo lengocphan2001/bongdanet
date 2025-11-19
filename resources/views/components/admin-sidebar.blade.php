@@ -44,6 +44,21 @@
             {{-- Divider --}}
             <div class="border-t border-gray-200 my-2"></div>
 
+            {{-- Banners --}}
+            <a href="{{ route('admin.banners.index') }}" 
+               class="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {{ $activeItem === 'banners' ? 'bg-[#1a5f2f] text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path>
+                </svg>
+                <span>Banner Quảng Cáo</span>
+                @if($activeItem === 'banners')
+                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                @endif
+            </a>
+
+            {{-- Divider --}}
+            <div class="border-t border-gray-200 my-2"></div>
+
             {{-- Content Management Section --}}
             <div class="px-4 py-2">
                 <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Quản lý nội dung</p>

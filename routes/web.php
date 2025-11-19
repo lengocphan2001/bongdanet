@@ -43,6 +43,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Protected admin routes
     Route::middleware('admin')->group(function () {
         Route::resource('predictions', \App\Http\Controllers\Admin\PredictionController::class);
+        Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
+        Route::post('/banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
         Route::post('/upload-image', [\App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('upload.image');
     });
 });
