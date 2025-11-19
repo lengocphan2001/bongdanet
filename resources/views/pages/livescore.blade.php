@@ -428,22 +428,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    // Update every 2 minutes (reduced from 1 minute to save API calls)
-    // Only refresh if page is visible (not in background tab)
-    function checkAndUpdateLivescore() {
-        // Only refresh if page is visible (not in background tab)
-        if (document.hidden) {
-            return;
-        }
-        
-        updateLivescore();
-    }
-    
     // Initial load
     updateLivescore();
     
-    // Update every 2 minutes (120 seconds)
-    setInterval(checkAndUpdateLivescore, 120000); // 120000ms = 120 seconds (2 minutes)
+    // Auto-refresh: update every 1 minute (60 seconds) - even when tab is hidden
+    setInterval(updateLivescore, 60000); // 60000ms = 60 seconds (1 minute)
 });
 </script>
 @endsection

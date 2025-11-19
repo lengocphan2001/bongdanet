@@ -157,12 +157,7 @@
 
             {{-- Right Sidebar --}}
             <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-                    <h3 class="font-bold text-gray-900 mb-3 text-sm sm:text-base">BẢNG XẾP HẠNG BÓNG ĐÁ</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{{ route('standings.index') }}" class="text-xs sm:text-sm text-gray-700 hover:text-[#1a5f2f]">Bảng xếp hạng bóng đá</a></li>
-                    </ul>
-                </div>
+                <x-football-standings-menu />
             </aside>
         </div>
     </div>

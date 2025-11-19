@@ -339,8 +339,8 @@ class SoccerApiService
         // Create cache key based on params
         $cacheKey = 'soccer_api:livescores:' . md5(json_encode($params));
         
-        // Cache for 30 seconds (live data changes frequently but we can reduce API calls)
-        return Cache::remember($cacheKey, 30, function () use ($params) {
+        // Cache for 10 seconds (live data changes frequently, need fresh data)
+        return Cache::remember($cacheKey, 10, function () use ($params) {
             return $this->makeRequest('livescores', $params);
         });
     }
@@ -1142,6 +1142,12 @@ class SoccerApiService
             ],
             'half_time' => $apiMatch['scores']['ht_score'] ?? null,
             'full_time' => $apiMatch['scores']['ft_score'] ?? null,
+            // Live match data for real-time updates
+            'minute' => $apiMatch['time']['minute'] ?? null,
+            'extra_minute' => $apiMatch['time']['extra_minute'] ?? null,
+            'status_period' => $apiMatch['status_period'] ?? null,
+            'status_name' => $apiMatch['status_name'] ?? null,
+            'scores' => $apiMatch['scores'] ?? [], // Full scores object for live updates
             'stats' => $stats,
             'odds_1x2' => $odds1X2,
             'odds_over_under' => $oddsOverUnder,

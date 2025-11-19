@@ -1618,33 +1618,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     const selectedElement = document.getElementById('betting-provider-selected');
                     const selectedBookmaker = selectedElement ? selectedElement.textContent.trim() : null;
                     
-        // Function to get current date in Vietnam timezone (UTC+7)
-        // This ensures we always get the correct date even when auto-refreshing
-        function getTodayVietnam() {
-            // Use Intl.DateTimeFormat to get date in Vietnam timezone
-            // This is the most reliable way to get the correct date
-            const formatter = new Intl.DateTimeFormat('en-CA', {
-                timeZone: 'Asia/Ho_Chi_Minh',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-            return formatter.format(new Date());
-        }
-        
-        // Always calculate current date to ensure it's up-to-date on each refresh
-        const today = getTodayVietnam();
-        
-        // Debug: log the date being used (can be removed in production)
-        console.log('Fetching schedule for date:', today);
-        
-        // Fetch live matches and upcoming matches in parallel
-        Promise.all([
-            fetch('{{ route("api.all.matches.table") }}').then(response => response.json()),
-            fetch(`{{ route("api.schedule.matches.table") }}?date=${today}`).then(response => response.json())
-        ])
-            .then(([allMatchesData, scheduleData]) => {
-                // Process live matches
+        // Fetch all matches (live + upcoming) from single API
+        fetch('{{ route("api.all.matches.table") }}')
+            .then(response => response.json())
+            .then(allMatchesData => {
+                // Process all matches data
                 if (allMatchesData.success && allMatchesData.data) {
                     // Update bookmakers dropdown if new bookmakers are available
                     if (allMatchesData.data.bookmakers && Array.isArray(allMatchesData.data.bookmakers) && allMatchesData.data.bookmakers.length > 0) {
@@ -1655,56 +1633,67 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (allMatchesData.data.live && Array.isArray(allMatchesData.data.live)) {
                         updateMatchesTbody('live-matches-tbody', allMatchesData.data.live, selectedBookmaker);
                     }
-                    }
                     
-                // Process upcoming matches from schedule API (today's matches)
-                let upcomingMatches = [];
-                if (scheduleData.success && scheduleData.data && scheduleData.data.scheduleMatches) {
-                    upcomingMatches = scheduleData.data.scheduleMatches;
-                }
-                
-                // Update upcoming matches section
-                        const upcomingTbody = document.getElementById('upcoming-matches-tbody');
-                        const upcomingHeader = document.querySelector('thead tr td[colspan="9"]');
-                        
-                        // Show/hide upcoming section based on data
-                if (upcomingMatches.length > 0) {
-                            if (!upcomingTbody) {
-                                // Create header if doesn't exist
-                                const table = document.querySelector('table');
-                                if (table) {
-                                    const headerRow = document.createElement('thead');
-                                    headerRow.innerHTML = `
-                                        <tr>
-                                            <td colspan="9" class="px-4 py-3 bg-green-600">
-                                                <h3 class="text-sm font-bold text-white uppercase">NHỮNG TRẬN SẮP BẮT ĐẦU</h3>
-                                            </td>
-                                        </tr>
-                                    `;
-                                    // Insert after live matches tbody
-                                    const liveTbody = document.getElementById('live-matches-tbody');
-                                    if (liveTbody && liveTbody.nextSibling) {
-                                        table.insertBefore(headerRow, liveTbody.nextSibling);
-                                    }
+                    // Process upcoming matches from all-matches-table API
+                    let upcomingMatches = allMatchesData.data.upcoming || [];
+                    
+                    // Filter upcoming matches: only show matches with starting_datetime >= current time
+                    const now = new Date();
+                    upcomingMatches = upcomingMatches.filter(match => {
+                        const startingDatetime = match.starting_datetime;
+                        if (!startingDatetime) {
+                            return false; // Exclude matches without datetime
+                        }
+                        try {
+                            const matchDateTime = new Date(startingDatetime);
+                            return matchDateTime >= now;
+                        } catch (e) {
+                            return false; // Exclude matches with invalid datetime
+                        }
+                    });
+                    
+                    // Update upcoming matches section
+                    const upcomingTbody = document.getElementById('upcoming-matches-tbody');
+                    const upcomingHeader = document.querySelector('thead tr td[colspan="9"]');
+                    
+                    // Show/hide upcoming section based on data
+                    if (upcomingMatches.length > 0) {
+                        if (!upcomingTbody) {
+                            // Create header if doesn't exist
+                            const table = document.querySelector('table');
+                            if (table) {
+                                const headerRow = document.createElement('thead');
+                                headerRow.innerHTML = `
+                                    <tr>
+                                        <td colspan="9" class="px-4 py-3 bg-green-600">
+                                            <h3 class="text-sm font-bold text-white uppercase">NHỮNG TRẬN SẮP BẮT ĐẦU</h3>
+                                        </td>
+                                    </tr>
+                                `;
+                                // Insert after live matches tbody
+                                const liveTbody = document.getElementById('live-matches-tbody');
+                                if (liveTbody && liveTbody.nextSibling) {
+                                    table.insertBefore(headerRow, liveTbody.nextSibling);
                                 }
-                                
-                                // Create tbody if doesn't exist
-                                const newTbody = document.createElement('tbody');
-                                newTbody.id = 'upcoming-matches-tbody';
-                                newTbody.className = 'bg-white divide-y divide-gray-200';
-                                table.appendChild(newTbody);
                             }
                             
-                    // Show tbody and header if they exist
-                    if (upcomingTbody) upcomingTbody.style.display = '';
-                    if (upcomingHeader) upcomingHeader.style.display = '';
-                    
-                    // Matches are already sorted by starting_datetime from API
-                    updateMatchesTbody('upcoming-matches-tbody', upcomingMatches, selectedBookmaker);
-                        } else {
-                            // Hide upcoming section if no data
-                            if (upcomingTbody) upcomingTbody.style.display = 'none';
-                            if (upcomingHeader) upcomingHeader.style.display = 'none';
+                            // Create tbody if doesn't exist
+                            const newTbody = document.createElement('tbody');
+                            newTbody.id = 'upcoming-matches-tbody';
+                            newTbody.className = 'bg-white divide-y divide-gray-200';
+                            table.appendChild(newTbody);
+                        }
+                        
+                        // Show tbody and header if they exist
+                        if (upcomingTbody) upcomingTbody.style.display = '';
+                        if (upcomingHeader) upcomingHeader.style.display = '';
+                        
+                        // Matches are already sorted by starting_datetime from API
+                        updateMatchesTbody('upcoming-matches-tbody', upcomingMatches, selectedBookmaker);
+                    } else {
+                        // Hide upcoming section if no data
+                        if (upcomingTbody) upcomingTbody.style.display = 'none';
+                        if (upcomingHeader) upcomingHeader.style.display = 'none';
                     }
                     
                     // Update tournament modal list with new leagues (live matches only)
@@ -1716,6 +1705,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         setTimeout(() => {
                             updateOddsForBookmaker(selectedBookmaker);
                         }, 100);
+                    }
                 }
             })
             .catch(error => {
@@ -1792,16 +1782,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial load: refresh immediately on page load
     refreshMatchesTable();
     
-    // Only refresh if page is visible (not in background tab)
-    function checkAndRefreshMatchesTable() {
-        if (document.hidden) {
-            return;
-        }
-        refreshMatchesTable();
-    }
-    
-    // Start auto-refresh: refresh every 1 minute (60 seconds)
-    refreshInterval = setInterval(checkAndRefreshMatchesTable, 60000); // 60000ms = 60 seconds (1 minute)
+    // Auto-refresh: refresh every 1 minute (60 seconds) - even when tab is hidden
+    refreshInterval = setInterval(refreshMatchesTable, 60000); // 60000ms = 60 seconds (1 minute)
 
     // Match Details Modal Logic
     const matchDetailsCache = new Map();

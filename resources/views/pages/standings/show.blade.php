@@ -198,6 +198,10 @@
                 </div>
             </main>
 
+            {{-- Right Sidebar --}}
+            <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2">
+                <x-football-standings-menu :activeLeagueId="$league['id'] ?? null" />
+            </aside>
         </div>
     </div>
 </div>
