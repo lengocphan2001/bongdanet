@@ -12,6 +12,6 @@ return [
 
     'base_url' => env('SOCCER_API_BASE_URL', 'https://api.soccersapi.com/v2.2'),
     'username' => env('SOCCER_API_USERNAME', 'Zr1NN'),
-    'token' => env('SOCCER_API_TOKEN', 'HlxImHi2Xa'),
+    'token' => env('SOCCER_API_TOKEN', 'oD3zBL2umv'),
 ];
 

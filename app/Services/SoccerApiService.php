@@ -140,8 +140,8 @@ class SoccerApiService
         // Use a new cache key to force refresh all pages
         $cacheKey = 'soccer_api:leagues_list:all_pages';
         
-        // Cache for 1 hour (leagues list doesn't change frequently)
-        return Cache::remember($cacheKey, 3600, function () {
+        // Cache for 1 week (7 days) for standings page
+        return Cache::remember($cacheKey, 604800, function () {
             $allLeagues = [];
             $page = 1;
             $hasMorePages = true;
@@ -306,8 +306,8 @@ class SoccerApiService
     {
         $cacheKey = 'soccer_api:standings:' . $leagueId . ':' . $seasonId;
         
-        // Cache for 5 minutes (standings change during matches)
-        return Cache::remember($cacheKey, 300, function () use ($leagueId, $seasonId) {
+        // Cache for 1 week (7 days) for standings page
+        return Cache::remember($cacheKey, 604800, function () use ($leagueId, $seasonId) {
             return $this->makeRequest('leagues', [
                 't' => 'standings',
                 'season_id' => $seasonId,
@@ -409,8 +409,8 @@ class SoccerApiService
         // Create cache key based on params
         $cacheKey = 'soccer_api:finished:' . md5(json_encode($params));
         
-        // Cache for 5 minutes (finished matches don't change)
-        return Cache::remember($cacheKey, 300, function () use ($params) {
+        // Cache for 1 week (7 days) for results page
+        return Cache::remember($cacheKey, 604800, function () use ($params) {
             return $this->makeRequest('livescores', $params);
         });
     }
@@ -436,8 +436,8 @@ class SoccerApiService
         // Create cache key based on params
         $cacheKey = 'soccer_api:schedule:' . md5(json_encode($params));
         
-        // Cache for 2 minutes (schedule matches change less frequently)
-        return Cache::remember($cacheKey, 120, function () use ($params) {
+        // Cache for 1 week (7 days) for schedule page
+        return Cache::remember($cacheKey, 604800, function () use ($params) {
             return $this->makeRequest('fixtures', $params);
         });
     }
@@ -462,8 +462,8 @@ class SoccerApiService
         // Create cache key based on params
         $cacheKey = 'soccer_api:schedule_odds:' . md5(json_encode($params));
         
-        // Cache for 2 minutes (odds can change frequently)
-        return Cache::remember($cacheKey, 120, function () use ($params) {
+        // Cache for 1 week (7 days) for odds page
+        return Cache::remember($cacheKey, 604800, function () use ($params) {
             return $this->makeRequest('fixtures', $params);
         });
     }

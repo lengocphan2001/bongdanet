@@ -40,7 +40,8 @@ class ResultsController extends Controller
         // Cache transformed data with date key
         $cacheKey = $isLive ? 'results:live_matches' : 'results:transformed_matches:' . $date;
         
-        $data = Cache::remember($cacheKey, $isLive ? 30 : 300, function () use ($date, $isLive) {
+        // Cache for 1 week (7 days) for results page
+        $data = Cache::remember($cacheKey, $isLive ? 30 : 604800, function () use ($date, $isLive) {
             if ($isLive) {
                 // Fetch live matches
                 $liveResponse = $this->soccerApiService->getLivescores();
@@ -197,7 +198,8 @@ class ResultsController extends Controller
         // Use cache key based on rounds to fetch
         $cacheKey = 'results:league:' . $leagueId . ':rounds:' . md5(implode(',', $roundsToFetch));
         
-        $allMatches = Cache::remember($cacheKey, 300, function () use ($roundsToFetch) {
+        // Cache for 1 week (7 days) for results league page
+        $allMatches = Cache::remember($cacheKey, 604800, function () use ($roundsToFetch) {
             $matches = [];
             
             // Use Http::pool() for parallel API calls

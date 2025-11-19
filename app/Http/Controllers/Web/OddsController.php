@@ -37,7 +37,8 @@ class OddsController extends Controller
         // Cache transformed data
         $cacheKey = 'odds:transformed_matches:' . $date;
         
-        $data = Cache::remember($cacheKey, 120, function () use ($date) {
+        // Cache for 1 week (7 days) for odds page
+        $data = Cache::remember($cacheKey, 604800, function () use ($date) {
             // Fetch schedule matches with odds from API
             $scheduleResponse = $this->soccerApiService->getScheduleMatchesWithOdds($date);
             
@@ -225,7 +226,8 @@ class OddsController extends Controller
         // Fetch fixtures with odds for each round
         $cacheKey = 'odds:league:' . $leagueId . ':rounds:' . md5(implode(',', $roundsToFetch));
         
-        $allMatches = Cache::remember($cacheKey, 120, function () use ($roundsToFetch) {
+        // Cache for 1 week (7 days) for odds league page
+        $allMatches = Cache::remember($cacheKey, 604800, function () use ($roundsToFetch) {
             $matches = [];
             
             // Use Http::pool() for parallel API calls

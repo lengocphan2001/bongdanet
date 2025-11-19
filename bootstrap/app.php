@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+        
+        // Register LogAccess middleware globally
+        $middleware->append(\App\Http\Middleware\LogAccess::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

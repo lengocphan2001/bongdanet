@@ -48,5 +48,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
         Route::post('/banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
         Route::post('/upload-image', [\App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('upload.image');
+        
+        // Access Logs
+        Route::get('/access-logs', [\App\Http\Controllers\Admin\AccessLogController::class, 'index'])->name('access-logs.index');
+        Route::get('/access-logs/{id}', [\App\Http\Controllers\Admin\AccessLogController::class, 'show'])->name('access-logs.show');
+        Route::post('/access-logs/clean', [\App\Http\Controllers\Admin\AccessLogController::class, 'clean'])->name('access-logs.clean');
     });
 });

@@ -38,7 +38,8 @@ class ScheduleController extends Controller
         // Cache transformed data
         $cacheKey = 'schedule:transformed_matches:' . $date;
         
-        $data = Cache::remember($cacheKey, 120, function () use ($date) {
+        // Cache for 1 week (7 days) for schedule page
+        $data = Cache::remember($cacheKey, 604800, function () use ($date) {
             // Fetch schedule matches from API (already cached in service)
             $scheduleResponse = $this->soccerApiService->getScheduleMatches($date);
             
@@ -171,7 +172,8 @@ class ScheduleController extends Controller
         // Fetch fixtures for each round using parallel requests for better performance
         $cacheKey = 'schedule:league:' . $leagueId . ':rounds:' . md5(implode(',', $roundsToFetch));
         
-        $allMatches = Cache::remember($cacheKey, 300, function () use ($roundsToFetch) {
+        // Cache for 1 week (7 days) for schedule league page
+        $allMatches = Cache::remember($cacheKey, 604800, function () use ($roundsToFetch) {
             $matches = [];
             
             // Use Http::pool() for parallel API calls
