@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlockedIP extends Model
 {
+    protected $table = 'blocked_ips';
+    
     protected $fillable = [
         'ip_address',
         'reason',
