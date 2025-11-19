@@ -1619,7 +1619,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     const selectedBookmaker = selectedElement ? selectedElement.textContent.trim() : null;
                     
         // Fetch all matches (live + upcoming) from single API
-        fetch('{{ route("api.all.matches.table") }}')
+        // Add cache busting parameter to ensure fresh data
+        const cacheBuster = new Date().getTime();
+        fetch(`{{ route("api.all.matches.table") }}?t=${cacheBuster}`, {
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        })
             .then(response => response.json())
             .then(allMatchesData => {
                 // Process all matches data

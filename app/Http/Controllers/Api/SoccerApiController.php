@@ -155,11 +155,14 @@ class SoccerApiController extends ApiController
      */
     public function getAllMatchesTable()
     {
-        $liveResponse = $this->soccerApiService->getLivescores();
+        // Always bypass cache - get fresh data from API every time
+        // Get live matches - no cache
+        $liveResponse = $this->soccerApiService->getLivescores(['_bypass_cache' => true]);
         
         // Get upcoming matches using livescores API with t=notstarted
         // This API returns all not started matches regardless of date
-        $upcomingResponse = $this->soccerApiService->getUpcomingMatches();
+        // Always bypass cache - get fresh data from API every time
+        $upcomingResponse = $this->soccerApiService->getUpcomingMatches(['_bypass_cache' => true]);
         
         $liveMatches = [];
         $upcomingMatches = [];

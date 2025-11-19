@@ -331,6 +331,10 @@ class SoccerApiService
 
         $params = array_merge($defaultParams, $params);
         
+        // Check if cache should be bypassed
+        $bypassCache = isset($params['_bypass_cache']) && $params['_bypass_cache'];
+        unset($params['_bypass_cache']); // Remove from params before making request
+        
         // If include is explicitly set to empty string, remove it from params
         if (isset($params['include']) && $params['include'] === '') {
             unset($params['include']);
@@ -339,8 +343,14 @@ class SoccerApiService
         // Create cache key based on params
         $cacheKey = 'soccer_api:livescores:' . md5(json_encode($params));
         
-        // Cache for 10 seconds (live data changes frequently, need fresh data)
-        return Cache::remember($cacheKey, 10, function () use ($params) {
+        // If bypass cache, fetch fresh data directly without cache
+        if ($bypassCache) {
+            return $this->makeRequest('livescores', $params);
+        }
+        
+        // Cache for 3 seconds (live data changes frequently, need fresh data for corners and events)
+        // Reduced cache time to ensure corner and event data updates properly
+        return Cache::remember($cacheKey, 3, function () use ($params) {
             return $this->makeRequest('livescores', $params);
         });
     }
@@ -362,8 +372,17 @@ class SoccerApiService
 
         $params = array_merge($defaultParams, $params);
         
+        // Check if cache should be bypassed
+        $bypassCache = isset($params['_bypass_cache']) && $params['_bypass_cache'];
+        unset($params['_bypass_cache']); // Remove from params before making request
+        
         // Create cache key based on params
         $cacheKey = 'soccer_api:upcoming:' . md5(json_encode($params));
+        
+        // If bypass cache, fetch fresh data directly without cache
+        if ($bypassCache) {
+            return $this->makeRequest('livescores', $params);
+        }
         
         // Cache for 60 seconds (upcoming matches don't change that frequently)
         return Cache::remember($cacheKey, 60, function () use ($params) {
