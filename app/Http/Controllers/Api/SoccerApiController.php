@@ -159,10 +159,10 @@ class SoccerApiController extends ApiController
         // Get live matches - no cache
         $liveResponse = $this->soccerApiService->getLivescores(['_bypass_cache' => true]);
         
-        // Get upcoming matches using livescores API with t=notstarted
-        // This API returns all not started matches regardless of date
+        // Get fixture notstart matches of today using fixtures API with odds_prematch
         // Always bypass cache - get fresh data from API every time
-        $upcomingResponse = $this->soccerApiService->getUpcomingMatches(['_bypass_cache' => true]);
+        $today = date('Y-m-d');
+        $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, ['include' => 'odds_prematch', '_bypass_cache' => true]);
         
         $liveMatches = [];
         $upcomingMatches = [];
@@ -175,9 +175,7 @@ class SoccerApiController extends ApiController
 
         if ($upcomingResponse && isset($upcomingResponse['data']) && is_array($upcomingResponse['data'])) {
             $totalMatches = count($upcomingResponse['data']);
-            $today = date('Y-m-d');
             $filteredByStatus = 0;
-            $filteredByDate = 0;
             
             foreach ($upcomingResponse['data'] as $apiMatch) {
                 // Only include matches with status = 0 (notstarted)
@@ -190,13 +188,10 @@ class SoccerApiController extends ApiController
                 $isFinished = ($matchStatus === 2 || $statusName === 'Finished');
                 
                 // Only include matches that are not started (exclude live and finished)
+                // Only include today's not started matches
                 if ($isNotStarted && !$isLive && !$isFinished) {
                     $filteredByStatus++;
-                    
-                    // Include all not started matches (not filtering by date)
-                    // This will show all upcoming matches regardless of date
                     $upcomingMatches[] = $this->soccerApiService->transformMatchToTableFormat($apiMatch);
-                    $filteredByDate++;
                 }
             }
             
@@ -204,9 +199,8 @@ class SoccerApiController extends ApiController
             \Log::info('Upcoming matches filter', [
                 'total_from_api' => $totalMatches,
                 'filtered_by_status' => $filteredByStatus,
-                'filtered_by_date' => $filteredByDate,
                 'final_count' => count($upcomingMatches),
-                'today' => $today,
+                'date' => $today,
             ]);
             
             // Sort upcoming matches by starting datetime

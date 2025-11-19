@@ -23,12 +23,12 @@ class HomeController extends Controller
         // No cache - fetch fresh data directly from API
         // Fetch live scores from API
         $liveResponse = $this->soccerApiService->getLivescores();
-        // Get upcoming matches using livescores API with t=notstarted
-        $upcomingResponse = $this->soccerApiService->getUpcomingMatches();
+        // Get fixture notstart matches of today using fixtures API with odds_prematch
+        $today = date('Y-m-d');
+        $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, ['include' => 'odds_prematch']);
         
         $liveMatches = [];
         $upcomingMatches = [];
-        $today = date('Y-m-d');
         
         if ($liveResponse && isset($liveResponse['data']) && is_array($liveResponse['data'])) {
             // Transform API data to table format
@@ -41,7 +41,7 @@ class HomeController extends Controller
             $totalMatches = count($upcomingResponse['data']);
             $filteredByStatus = 0;
             
-            // Filter to include all matches with status = 0 (notstarted), regardless of date
+            // Filter to include only matches with status = 0 (notstarted) of today
             foreach ($upcomingResponse['data'] as $apiMatch) {
                 // Only include matches with status = 0 (notstarted)
                 $matchStatus = $apiMatch['status'] ?? null;
@@ -53,7 +53,7 @@ class HomeController extends Controller
                 $isFinished = ($matchStatus === 2 || $statusName === 'Finished');
                 
                 // Only include matches that are not started (exclude live and finished)
-                // Include all not started matches, not just today's
+                // Only include today's not started matches
                 if ($isNotStarted && !$isLive && !$isFinished) {
                     $filteredByStatus++;
                     $upcomingMatches[] = $this->soccerApiService->transformMatchToTableFormat($apiMatch);
@@ -65,6 +65,7 @@ class HomeController extends Controller
                 'total_from_api' => $totalMatches,
                 'filtered_by_status' => $filteredByStatus,
                 'final_count' => count($upcomingMatches),
+                'date' => $today,
             ]);
             
             // Sort upcoming matches by starting datetime

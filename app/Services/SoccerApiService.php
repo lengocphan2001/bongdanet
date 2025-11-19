@@ -433,8 +433,17 @@ class SoccerApiService
 
         $params = array_merge($defaultParams, $params);
         
+        // Check if cache should be bypassed
+        $bypassCache = isset($params['_bypass_cache']) && $params['_bypass_cache'];
+        unset($params['_bypass_cache']); // Remove from params before making request
+        
         // Create cache key based on params
         $cacheKey = 'soccer_api:schedule:' . md5(json_encode($params));
+        
+        // If bypass cache, fetch fresh data directly without cache
+        if ($bypassCache) {
+            return $this->makeRequest('fixtures', $params);
+        }
         
         // Cache for 1 week (7 days) for schedule page
         return Cache::remember($cacheKey, 604800, function () use ($params) {
