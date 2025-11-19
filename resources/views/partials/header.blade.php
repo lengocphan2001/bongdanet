@@ -58,15 +58,6 @@
                     </svg>
                     <span class="text-sm font-medium">BXH BÓNG ĐÁ</span>
                 </a>
-
-                <a href="#" class="flex items-center space-x-2 text-white hover:opacity-80 transition-opacity whitespace-nowrap">
-                    <svg class="w-5 h-5 text-[#22c55e]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 17l3-3 4 4 6-6 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <circle cx="18" cy="8" r="2" fill="currentColor"/>
-                        <path d="M17.5 7.5l1 1" stroke="white" stroke-width="0.5"/>
-                    </svg>
-                    <span class="text-sm font-medium">KÈO BÓNG ĐÁ</span>
-                </a>
             </div>
 
             {{-- Mobile Navigation --}}
@@ -105,13 +96,6 @@
                             <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                         </svg>
                         <span class="text-sm font-medium">BXH BÓNG ĐÁ</span>
-                    </a>
-
-                    <a href="#" class="flex items-center space-x-2 text-white hover:opacity-80 transition-opacity px-2 py-2">
-                        <svg class="w-5 h-5 text-[#22c55e]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 17l3-3 4 4 6-6 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        </svg>
-                        <span class="text-sm font-medium">KÈO BÓNG ĐÁ</span>
                     </a>
                 </div>
             </div>

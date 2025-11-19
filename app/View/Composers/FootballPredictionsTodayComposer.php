@@ -40,7 +40,7 @@ class FootballPredictionsTodayComposer
                         : 'N/A';
                     
                     return [
-                        'type' => 'Nhận định, soi kèo',
+                        'type' => 'Nhận định, nhận định',
                         'teams' => $teams,
                         'time' => $timeDisplay,
                         'comment' => Str::limit($prediction->title, 30),

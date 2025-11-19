@@ -23,8 +23,8 @@
             </main>
             
             {{-- Right Sidebar --}}
-            <aside class="w-full lg:w-fit flex-shrink-0 order-3">
-                <x-betting-analysis-menu activeItem="Soi kèo bóng đá TBN" />
+            <aside class="w-full lg:w-fit flex-shrink-0 order-3 space-y-4">
+                <x-soi-keo-mini />
             </aside>
         </div>
     </div>

@@ -112,7 +112,7 @@
                 {{-- Analysis Section --}}
                 @if($prediction->analysis)
                     <div class="mb-6">
-                        <h2 class="text-xl font-bold text-green-600 mb-4">SOI KÈO, DỰ ĐOÁN TỶ LỆ BÓNG ĐÁ {{ strtoupper($prediction->home_team) }} VS {{ strtoupper($prediction->away_team) }}</h2>
+                        <h2 class="text-xl font-bold text-green-600 mb-4">nhận định, DỰ ĐOÁN TỶ LỆ BÓNG ĐÁ {{ strtoupper($prediction->home_team) }} VS {{ strtoupper($prediction->away_team) }}</h2>
                         <div class="prose max-w-none">
                             {!! $prediction->analysis !!}
                         </div>
@@ -153,7 +153,7 @@
                 <li>
                     <a href="{{ route('predictions') }}" class="text-gray-700 hover:text-green-600 flex items-start space-x-2">
                         <span class="text-green-600 mt-1">•</span>
-                        <span>Nhận định bóng đá - Soi kèo nhà cái chuẩn xác Hot!</span>
+                        <span>Nhận định bóng đá - nhận định nhà cái chuẩn xác Hot!</span>
                     </a>
                 </li>
                 <li>

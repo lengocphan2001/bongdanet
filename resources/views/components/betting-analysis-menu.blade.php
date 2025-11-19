@@ -1,36 +1,36 @@
 @props([
-    'activeItem' => 'Soi kèo bóng đá TBN',
+    'activeItem' => 'NHẬN ĐỊNH BÓNG ĐÁ TBN',
 ])
 
 @php
     $items = [
-        ['label' => 'Soi kèo bóng đá Anh', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá TBN', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Ý', 'url' => '#'],
-        ['label' => 'Soi kèo Cúp C1', 'url' => '#'],
-        ['label' => 'Soi kèo Cúp C2', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Pháp', 'url' => '#'],
-        ['label' => 'Soi kèo V League', 'url' => '#'],
-        ['label' => 'Soi kèo Nhật Bản', 'url' => '#'],
-        ['label' => 'Soi kèo Hàn Quốc', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Brazil', 'url' => '#'],
-        ['label' => 'Soi kèo Argentina', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Mỹ', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Mexico', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Nga', 'url' => '#'],
-        ['label' => 'Soi kèo bóng cỏ', 'url' => '#'],
-        ['label' => 'Soi kèo Bồ Đào Nha', 'url' => '#'],
-        ['label' => 'Soi kèo Thổ Nhĩ Kỳ', 'url' => '#'],
-        ['label' => 'Soi kèo Hà Lan', 'url' => '#'],
-        ['label' => 'Soi kèo Scotland', 'url' => '#'],
-        ['label' => 'Soi kèo bóng đá Úc', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Anh', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ TBN', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Ý', 'url' => '#'],
+        ['label' => 'nhận định Cúp C1', 'url' => '#'],
+        ['label' => 'nhận định Cúp C2', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Pháp', 'url' => '#'],
+        ['label' => 'nhận định V League', 'url' => '#'],
+        ['label' => 'nhận định Nhật Bản', 'url' => '#'],
+        ['label' => 'nhận định Hàn Quốc', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Brazil', 'url' => '#'],
+        ['label' => 'nhận định Argentina', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Mỹ', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Mexico', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Nga', 'url' => '#'],
+        ['label' => 'nhận định bóng cỏ', 'url' => '#'],
+        ['label' => 'nhận định Bồ Đào Nha', 'url' => '#'],
+        ['label' => 'nhận định Thổ Nhĩ Kỳ', 'url' => '#'],
+        ['label' => 'nhận định Hà Lan', 'url' => '#'],
+        ['label' => 'nhận định Scotland', 'url' => '#'],
+        ['label' => 'NHẬN ĐỊNH BÓNG ĐÁ Úc', 'url' => '#'],
     ];
 @endphp
 
 <div class="bg-white shadow-sm border border-gray-200 overflow-hidden w-fit">
     {{-- Header --}}
     <div class="bg-[#f59e0b] py-3 px-4">
-        <h2 class="text-base font-bold text-white uppercase text-center">SOI KÈO BÓNG ĐÁ</h2>
+        <h2 class="text-base font-bold text-white uppercase text-center">NHẬN ĐỊNH BÓNG ĐÁ</h2>
     </div>
     
     {{-- List Items --}}

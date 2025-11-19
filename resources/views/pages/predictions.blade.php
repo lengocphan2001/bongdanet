@@ -21,7 +21,7 @@
             <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
-                    Nhận định bóng đá hôm nay - Soi kèo dự đoán bóng đá NET tối đêm nay
+                    Nhận định bóng đá hôm nay - nhận định dự đoán bóng đá NET tối đêm nay
                 </h1>
 
                 {{-- League Navigation Tabs --}}
@@ -56,14 +56,14 @@
                 <div class="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
                     <div class="space-y-4 text-sm text-gray-700 leading-relaxed">
                         <p>
-                            <strong>Nhận định bóng đá Net hôm nay:</strong> Soi kèo và dự đoán tỷ số bóng đá ngày mai chính xác. Soi kèo bóng đá cùng chuyên gia ở các giải đấu hàng đầu hiện nay như: Ngoại hạng Anh, Bundesliga, Ý, Tây Ban Nha, Cúp C1, Cúp C2 và V-league......Tab nhận định và dự đoán bao gồm:
+                            <strong>Nhận định bóng đá Net hôm nay:</strong> nhận định và dự đoán tỷ số bóng đá ngày mai chính xác. NHẬN ĐỊNH BÓNG ĐÁ cùng chuyên gia ở các giải đấu hàng đầu hiện nay như: Ngoại hạng Anh, Bundesliga, Ý, Tây Ban Nha, Cúp C1, Cúp C2 và V-league......Tab nhận định và dự đoán bao gồm:
                         </p>
                         <ul class="list-disc list-inside space-y-1 ml-4">
                             <li>Dự đoán - Nhận định hôm nay</li>
-                            <li>Soi kèo bóng đá ngày mai</li>
+                            <li>NHẬN ĐỊNH BÓNG ĐÁ ngày mai</li>
                         </ul>
                         <p>
-                            Ngoài ra, bạn đọc cũng có thể xem nhận định kèo nhà cái chắc thắng đêm nay ngay trên BongdaNET với nhiều dự đoán bóng đá chắc thắng như: Soi kèo tài xỉu, soi kèo góc, kèo xiên, kèo thơm bóng đá và siêu máy tính dự đoán bóng đá.
+                            Ngoài ra, bạn đọc cũng có thể xem nhận định kèo nhà cái chắc thắng đêm nay ngay trên BongdaNET với nhiều dự đoán bóng đá chắc thắng như: nhận định tài xỉu, nhận định góc, kèo xiên, kèo thơm bóng đá và siêu máy tính dự đoán bóng đá.
                         </p>
                         <div class="pt-2 border-t border-green-200">
                             <p class="text-green-600 text-xs">
@@ -106,7 +106,7 @@
                                         @endif
                                     </div>
                                     <p class="text-xs sm:text-sm text-gray-900 group-hover:text-green-600 break-words">
-                                        <span class="font-medium">Nhận định, soi kèo</span> 
+                                        <span class="font-medium">Nhận định, nhận định</span> 
                                         <span class="text-gray-700 group-hover:text-green-600">{{ $teams }}, {{ $timeDisplay }}: {{ Str::limit($prediction->title, 50) }}</span>
                                     </p>
                                     @if($prediction->league_name)
@@ -169,7 +169,7 @@
                                                 @endif
                                             </div>
                                             <p class="text-xs sm:text-sm text-gray-900 group-hover:text-green-600 break-words">
-                                                <span class="font-medium">Nhận định, soi kèo</span> 
+                                                <span class="font-medium">Nhận định, nhận định</span> 
                                                 <span class="text-gray-700 group-hover:text-green-600">{{ $teams }}, {{ $timeDisplay }}: {{ Str::limit($prediction->title, 50) }}</span>
                                             </p>
                                         </div>
@@ -192,7 +192,7 @@
 
             {{-- Right Sidebar --}}
             <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2">
-                <x-soi-keo-mini activeItem="Soi kèo Anh" />
+                <x-soi-keo-mini />
                 <x-match-schedule activeDate="H.nay" />
                 <x-fifa-ranking />
                 <x-football-predictions-today />

@@ -22,7 +22,7 @@
             <main class="flex-1 min-w-0">
                 {{-- Page Title --}}
                 <h1 class="text-2xl font-bold text-gray-900 mb-4">
-                    Nhận định bóng đá {{ $leagueName ?? '' }} - Dự đoán Soi kèo {{ $leagueName ?? '' }} 2025
+                    Nhận định bóng đá {{ $leagueName ?? '' }} - Dự đoán nhận định {{ $leagueName ?? '' }} 2025
                 </h1>
 
                 {{-- League Navigation Tabs --}}
@@ -201,7 +201,7 @@
                         </div>
                     </div>
                 @endif
-                <x-soi-keo-mini activeItem="Soi kèo Anh" />
+                <x-soi-keo-mini activeItem="Nhận định bóng đá Anh" />
                 <x-match-schedule activeDate="H.nay" />
                 <x-fifa-ranking />
                 <x-football-predictions-today />

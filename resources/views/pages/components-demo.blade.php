@@ -16,7 +16,7 @@
             
             {{-- Component 2: Betting Analysis Menu --}}
             <div>
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Component 2: SOI KÈO BÓNG ĐÁ</h2>
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Component 2: NHẬN ĐỊNH BÓNG ĐÁ</h2>
                 <x-betting-analysis-menu />
             </div>
         </div>
