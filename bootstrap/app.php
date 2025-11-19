@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
         
         // Register LogAccess middleware globally
         $middleware->append(\App\Http\Middleware\LogAccess::class);
+        
+        // Register RateLimitIP middleware globally (before LogAccess)
+        $middleware->prepend(\App\Http\Middleware\RateLimitIP::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

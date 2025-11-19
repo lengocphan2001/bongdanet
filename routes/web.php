@@ -53,5 +53,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/access-logs', [\App\Http\Controllers\Admin\AccessLogController::class, 'index'])->name('access-logs.index');
         Route::get('/access-logs/{id}', [\App\Http\Controllers\Admin\AccessLogController::class, 'show'])->name('access-logs.show');
         Route::post('/access-logs/clean', [\App\Http\Controllers\Admin\AccessLogController::class, 'clean'])->name('access-logs.clean');
+        Route::post('/access-logs/block-ip', [\App\Http\Controllers\Admin\AccessLogController::class, 'blockIP'])->name('access-logs.block-ip');
+        Route::delete('/access-logs/unblock-ip/{ipAddress}', [\App\Http\Controllers\Admin\AccessLogController::class, 'unblockIP'])->name('access-logs.unblock-ip');
     });
 });
