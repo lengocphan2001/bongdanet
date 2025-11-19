@@ -428,8 +428,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    // Update every 1 minute
-    setInterval(updateLivescore, 60000); // 60000ms = 60 seconds (1 minute)
+    // Update every 2 minutes (reduced from 1 minute to save API calls)
+    // Only refresh if page is visible (not in background tab)
+    function checkAndUpdateLivescore() {
+        // Only refresh if page is visible (not in background tab)
+        if (document.hidden) {
+            return;
+        }
+        
+        updateLivescore();
+    }
+    
+    // Initial load
+    updateLivescore();
+    
+    // Update every 2 minutes (120 seconds)
+    setInterval(checkAndUpdateLivescore, 120000); // 120000ms = 120 seconds (2 minutes)
 });
 </script>
 @endsection

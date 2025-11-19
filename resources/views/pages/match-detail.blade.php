@@ -907,9 +907,17 @@
             });
     }
     
-    // Auto-refresh every 10 seconds if match is live, every 30 seconds if upcoming
-    const refreshInterval = isLive ? 10000 : 30000;
-    setInterval(refreshMatchDetail, refreshInterval);
+    // Auto-refresh every 30 seconds if match is live, every 60 seconds if upcoming
+    // Only refresh if page is visible (not in background tab)
+    function checkAndRefreshMatchDetail() {
+        if (document.hidden) {
+            return;
+        }
+        refreshMatchDetail();
+    }
+    
+    const refreshInterval = isLive ? 30000 : 60000; // 30s for live, 60s for upcoming
+    setInterval(checkAndRefreshMatchDetail, refreshInterval);
 })();
 </script>
 @endpush

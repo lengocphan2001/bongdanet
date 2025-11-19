@@ -246,8 +246,17 @@
             });
     }
     
-    // Start auto-refresh: refresh every 10 seconds
-    refreshInterval = setInterval(refreshScheduleTable, 10000); // 10000ms = 10 seconds
+    // Start auto-refresh: refresh every 3 minutes (reduced from 10 seconds to save API calls)
+    // Schedule matches don't change frequently, so we can refresh less often
+    // Only refresh if page is visible (not in background tab)
+    function checkAndRefreshScheduleTable() {
+        if (document.hidden) {
+            return;
+        }
+        refreshScheduleTable();
+    }
+    
+    refreshInterval = setInterval(checkAndRefreshScheduleTable, 180000); // 180000ms = 180 seconds (3 minutes)
     
     // Cleanup on page unload
     window.addEventListener('beforeunload', function() {

@@ -21,10 +21,10 @@ class LivescoreController extends Controller
      */
     public function index()
     {
-        // Cache for 10 seconds (live data changes frequently)
+        // Cache for 30 seconds (live data changes frequently but we can reduce API calls)
         $cacheKey = 'livescore:grouped_matches';
         
-        $data = Cache::remember($cacheKey, 10, function () {
+        $data = Cache::remember($cacheKey, 30, function () {
             // Fetch live scores from API - only basic data needed, no events/stats/odds
             $liveResponse = $this->soccerApiService->getLivescores([
                 'include' => '' // No includes - only basic match data
@@ -102,11 +102,14 @@ class LivescoreController extends Controller
      */
     public function getLivescoreData()
     {
-        // Don't cache for API endpoint - always get fresh data
-        // Fetch live scores from API - only basic data needed, no events/stats/odds
-        $liveResponse = $this->soccerApiService->getLivescores([
-            'include' => '' // No includes - only basic match data
-        ]);
+        // Cache for 30 seconds to reduce API calls
+        $cacheKey = 'livescore:api:grouped_matches';
+        
+        $data = Cache::remember($cacheKey, 30, function () {
+            // Fetch live scores from API - only basic data needed, no events/stats/odds
+            $liveResponse = $this->soccerApiService->getLivescores([
+                'include' => '' // No includes - only basic match data
+            ]);
         
         $allMatches = [];
         
@@ -162,16 +165,19 @@ class LivescoreController extends Controller
             $groupedByLeague[$leagueKey]['matches'][] = $match;
         }
         
-        // Sort leagues by number of matches (descending)
-        uasort($groupedByLeague, function($a, $b) {
-            return count($b['matches']) <=> count($a['matches']);
+            // Sort leagues by number of matches (descending)
+            uasort($groupedByLeague, function($a, $b) {
+                return count($b['matches']) <=> count($a['matches']);
+            });
+            
+            return [
+                'groupedMatches' => $groupedByLeague,
+            ];
         });
         
         return response()->json([
             'success' => true,
-            'data' => [
-                'groupedMatches' => $groupedByLeague,
-            ],
+            'data' => $data,
         ]);
     }
 }

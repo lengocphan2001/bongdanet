@@ -17,6 +17,8 @@ Route::get('/lich-thi-dau', [\App\Http\Controllers\Web\ScheduleController::class
 Route::get('/lich-thi-dau/{leagueId}', [\App\Http\Controllers\Web\ScheduleController::class, 'showLeague'])->name('schedule.league');
 Route::get('/bang-xep-hang-bong-da', [\App\Http\Controllers\Web\StandingsController::class, 'index'])->name('standings.index');
 Route::get('/bang-xep-hang-bong-da/{leagueId}', [\App\Http\Controllers\Web\StandingsController::class, 'show'])->name('standings.show');
+Route::get('/keo-bong-da', [\App\Http\Controllers\Web\OddsController::class, 'index'])->name('odds');
+Route::get('/keo-bong-da/{leagueId}', [\App\Http\Controllers\Web\OddsController::class, 'byLeague'])->name('odds.league');
 
 // Test API route
 Route::get('/api/test-soccer', [\App\Http\Controllers\Api\SoccerApiController::class, 'test'])->name('api.test.soccer');

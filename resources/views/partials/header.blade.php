@@ -58,6 +58,13 @@
                     </svg>
                     <span class="text-sm font-medium">BXH BÓNG ĐÁ</span>
                 </a>
+
+                <a href="{{ route('odds') }}" class="flex items-center space-x-2 text-white hover:opacity-80 transition-opacity whitespace-nowrap">
+                    <svg class="w-5 h-5 text-[#22c55e]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span class="text-sm font-medium">KÈO BÓNG ĐÁ</span>
+                </a>
             </div>
 
             {{-- Mobile Navigation --}}
@@ -96,6 +103,13 @@
                             <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                         </svg>
                         <span class="text-sm font-medium">BXH BÓNG ĐÁ</span>
+                    </a>
+
+                    <a href="{{ route('odds') }}" class="flex items-center space-x-2 text-white hover:opacity-80 transition-opacity px-2 py-2">
+                        <svg class="w-5 h-5 text-[#22c55e]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <span class="text-sm font-medium">KÈO BÓNG ĐÁ</span>
                     </a>
                 </div>
             </div>

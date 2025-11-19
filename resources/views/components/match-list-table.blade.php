@@ -1792,8 +1792,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial load: refresh immediately on page load
     refreshMatchesTable();
     
-    // Start auto-refresh: refresh every 1 minute
-    refreshInterval = setInterval(refreshMatchesTable, 60000); // 60000ms = 60 seconds (1 minute)
+    // Only refresh if page is visible (not in background tab)
+    function checkAndRefreshMatchesTable() {
+        if (document.hidden) {
+            return;
+        }
+        refreshMatchesTable();
+    }
+    
+    // Start auto-refresh: refresh every 1 minute (60 seconds)
+    refreshInterval = setInterval(checkAndRefreshMatchesTable, 60000); // 60000ms = 60 seconds (1 minute)
 
     // Match Details Modal Logic
     const matchDetailsCache = new Map();
