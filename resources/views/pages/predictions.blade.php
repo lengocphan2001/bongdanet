@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nhận định bóng đá - Bongdanet')
+@section('title', 'keobongda.co - Nhận định bóng đá')
 
 @php
     use Illuminate\Support\Facades\Storage;
@@ -10,7 +10,7 @@
 <div class="min-h-screen bg-gray-50">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'BONGDANET', 'url' => '#'],
+        ['label' => 'keobongda.co', 'url' => '#'],
         ['label' => 'Nhận định bóng đá', 'url' => null],
     ]" />
 
@@ -63,7 +63,7 @@
                             <li>NHẬN ĐỊNH BÓNG ĐÁ ngày mai</li>
                         </ul>
                         <p>
-                            Ngoài ra, bạn đọc cũng có thể xem nhận định kèo nhà cái chắc thắng đêm nay ngay trên BongdaNET với nhiều dự đoán bóng đá chắc thắng như: nhận định tài xỉu, nhận định góc, kèo xiên, kèo thơm bóng đá và siêu máy tính dự đoán bóng đá.
+                            Ngoài ra, bạn đọc cũng có thể xem nhận định kèo nhà cái chắc thắng đêm nay ngay trên Keobongda.co với nhiều dự đoán bóng đá chắc thắng như: nhận định tài xỉu, nhận định góc, kèo xiên, kèo thơm bóng đá và siêu máy tính dự đoán bóng đá.
                         </p>
                         <div class="pt-2 border-t border-green-200">
                             <p class="text-green-600 text-xs">

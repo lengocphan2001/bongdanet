@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Nhận định bóng đá ' . ($leagueName ?? '') . ' - Bongdanet')
+@section('title', 'keobongda.co - Nhận định bóng đá ' . ($leagueName ?? ''))
 
 @php
     use Illuminate\Support\Facades\Storage;
@@ -10,7 +10,7 @@
 <div class="min-h-screen bg-gray-50">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'BONGDANET', 'url' => route('home')],
+        ['label' => 'keobongda.co', 'url' => route('home')],
         ['label' => 'Nhận định bóng đá', 'url' => route('predictions')],
         ['label' => $leagueName ?? 'Giải đấu', 'url' => null],
     ]" />

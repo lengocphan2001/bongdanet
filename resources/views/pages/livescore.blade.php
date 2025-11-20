@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Livescore - Bongdanet')
+@section('title', 'keobongda.co - Livescore')
 
 @section('content')
 <style>
@@ -17,7 +17,7 @@
 <div class="min-h-screen bg-gray-50">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'BONGDANET', 'url' => route('home')],
+        ['label' => 'keobongda.co', 'url' => route('home')],
         ['label' => 'Livescore', 'url' => null],
     ]" />
 

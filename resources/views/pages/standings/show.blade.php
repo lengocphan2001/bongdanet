@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Bảng xếp hạng ' . ($league['name'] ?? '') . ' - Bongdanet')
+@section('title', 'Bảng xếp hạng ' . ($league['name'] ?? '') . ' - Keobongda')
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'BONGDANET', 'url' => route('home')],
+        ['label' => 'keobongda.co', 'url' => route('home')],
         ['label' => 'Bảng xếp hạng bóng đá', 'url' => route('standings.index')],
         ['label' => $league['name'] ?? 'N/A', 'url' => null],
     ]" />

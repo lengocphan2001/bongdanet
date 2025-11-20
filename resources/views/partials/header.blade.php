@@ -4,7 +4,7 @@
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Bongdanet Logo" class="w-32 sm:w-40 md:w-48 h-16 sm:h-18 md:h-20">  
+                    <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Keobongda Logo" class="w-32 sm:w-40 md:w-48 h-16 sm:h-18 md:h-20">  
                 </a>
                 {{-- Mobile Menu Button --}}
                 <button id="mobile-menu-button" class="lg:hidden text-[#1a5f2f] p-2" aria-label="Toggle menu">
