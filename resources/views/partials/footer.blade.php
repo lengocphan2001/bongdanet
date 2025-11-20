@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-6 sm:py-8">
         {{-- Top Section: Copyright and Navigation --}}
         <div class="text-center mb-3">
-            <p class="text-green-500 mb-2 text-sm sm:text-base">Copyright 2023 © keobongda.co</p>
+            <p class="text-green-500 mb-2 text-sm sm:text-base">Copyright 2025 © keobongda.co</p>
             <nav class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-green-500 text-xs sm:text-sm mb-4">
                 <a href="#" class="text-green-500 hover:text-green-400 transition-colors">Giới thiệu</a>
                 <span class="text-green-500 hidden sm:inline">-</span>
@@ -12,13 +12,7 @@
                 <span class="text-green-500 hidden sm:inline">-</span>
                 <a href="#" class="text-green-500 hover:text-green-400 transition-colors">Chính sách bảo mật</a>
             </nav>
-            
-            {{-- DMCA Protected Badge --}}
-            <div class="flex justify-center mb-6">
-                <div class="bg-yellow-500 text-black px-4 py-2 rounded font-bold text-sm">
-                    DMCA PROTECTED
-                </div>
-            </div>
+        
         </div>
 
         {{-- Divider --}}
@@ -26,19 +20,18 @@
 
         {{-- Main Content Section --}}
         <div class="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-            <p class="text-gray-300 break-words">Địa chỉ: 454 Phan Huy Ích, Phường 12, Quận Gò Vấp, Thành phố Hồ Chí Minh</p>
+            <p class="text-gray-300 break-words">Địa chỉ: 100 Nguyễn Xiển, Đại Kim, Hoàng Mai, Hà Nội</p>
             <p class="text-gray-300 break-words">Website: <a href="https://keobongda.co" class="text-green-500 hover:text-green-400 break-all">https://keobongda.co</a></p>
-            <p class="text-gray-300">Số điện thoại: <a href="tel:0822889972" class="text-green-500 hover:text-green-400">0822889972</a></p>
-            <p class="text-gray-300 text-xs sm:text-sm">Quảng cáo: (site full, ko nhận thêm qc, cẩn thận lừa đảo)</p>
+            <p class="text-gray-300">Số điện thoại: <a href="tel:0822889972" class="text-green-500 hover:text-green-400">0978471074</a></p>
+            <p class="text-gray-300 text-xs sm:text-sm">Quảng cáo: Muốn đặt quảng cáo vui lòng liên hệ 0978471074</p>
             <p class="text-red-500 text-xs sm:text-sm">Cẩn thận các nick giả mạo, đặt tên tương tự</p>
-            <p class="text-gray-300 break-words">Chịu trách nhiệm nội dung: Ông Hoàng Ngọc</p>
-            <p class="text-gray-300 break-words text-xs sm:text-sm">keobongda.co là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ BongdaNET</p>
+            <p class="text-gray-300 break-words text-xs sm:text-sm">keobongda.co là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ KEOBONGDA</p>
             
             {{-- Social Media Icons --}}
-            <div class="flex items-center justify-center gap-3 sm:gap-4 pt-3">
+            <div class="flex items-center justify-start gap-3 sm:gap-4 pt-3">
                 <a href="#" class="group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-[#E60023] rounded-full transition-all duration-300 hover:scale-110 hover:shadow-lg" aria-label="Pinterest">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-white group-hover:fill-white transition-colors" viewBox="0 0 24 24">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 19c-.721 0-1.418-.109-2.073-.312.286-.465.713-1.227.87-1.878.095-.359.54-2.307.54-2.307s-.138-.275-.138-.668c0-.626.363-1.094.814-1.094.384 0 .569.288.569.633 0 .386-.245.961-.372 1.496-.106.447.224.813.665.813.798 0 1.341-1.066 1.341-2.325 0-.958-.682-1.627-1.658-1.627-1.129 0-1.831.849-1.831 1.728 0 .522.176.884.403 1.165.044.053.051.099.038.153l-.143.565c-.023.089-.079.109-.183.064-.683-.318-1.093-1.345-1.093-2.165 0-1.767 1.288-3.391 3.71-3.391 1.948 0 3.461 1.18 3.461 2.756 0 1.934-1.22 3.574-2.917 3.574-.571 0-1.109-.297-1.293-.692l-.352 1.344c-.128.495-.475 1.115-.705 1.494 1.01.31 2.082.478 3.21.478 5.518 0 10-4.482 10-10S17.518 2 12 2z"/>
+                        <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.403.042-3.441.219-.937 1.407-5.965 1.407-5.965s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.544-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
                     </svg>
                 </a>
                 <a href="#" class="group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-black rounded-full transition-all duration-300 hover:scale-110 hover:shadow-lg" aria-label="TikTok">
