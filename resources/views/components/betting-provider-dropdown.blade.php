@@ -29,7 +29,7 @@
     <button 
         type="button"
         id="betting-provider-button"
-        class="flex items-center justify-center space-x-1 text-xs font-bold text-gray-700 uppercase tracking-wider hover:text-gray-900 transition-colors"
+        class="flex items-center justify-center space-x-1 text-xs font-bold text-gray-300 uppercase tracking-wider hover:text-white transition-colors"
     >
         <span id="betting-provider-selected">{{ $selected }}</span>
         <svg id="betting-provider-arrow" class="w-3 h-3 transition-transform" fill="currentColor" viewBox="0 0 20 20">
@@ -39,7 +39,7 @@
     
     <div 
         id="betting-provider-menu"
-        class="absolute mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-xl max-h-60 overflow-y-auto hidden"
+        class="absolute mt-1 w-48 bg-slate-800 border border-slate-700 rounded-md shadow-xl max-h-60 overflow-y-auto hidden"
         style="z-index: 9999; right: 0; top: 100%;"
     >
         <ul class="py-1">
@@ -48,7 +48,7 @@
                     <button
                         type="button"
                         data-value="{{ $provider }}"
-                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors betting-provider-option {{ $provider === $selected ? 'bg-blue-50 text-blue-600' : '' }}"
+                        class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-blue-400 transition-colors betting-provider-option {{ $provider === $selected ? 'bg-slate-700 text-blue-400' : '' }}"
                     >
                         {{ $provider }}
                     </button>
@@ -88,11 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update active state
             options.forEach(opt => {
-                opt.classList.remove('bg-blue-50', 'text-blue-600');
+                opt.classList.remove('bg-slate-700', 'text-blue-400');
                 let optValue = opt.getAttribute('data-value');
                 optValue = optValue.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
                 if (optValue === value) {
-                    opt.classList.add('bg-blue-50', 'text-blue-600');
+                    opt.classList.add('bg-slate-700', 'text-blue-400');
                 }
             });
             

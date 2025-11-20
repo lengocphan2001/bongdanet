@@ -19,17 +19,17 @@
     ];
 @endphp
 
-<div class="bg-white shadow-sm border border-gray-200 overflow-hidden w-full">
+<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-full">
     {{-- Header with green bar --}}
-    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+    <div class="bg-slate-700 px-4 py-3 border-b border-slate-600">
         <div class="flex items-center space-x-2">
-            <div class="w-1 h-5 bg-green-600"></div>
-            <h2 class="text-sm font-bold text-black uppercase">BẢNG XẾP HẠNG BÓNG ĐÁ</h2>
+            <div class="w-1 h-5 bg-blue-500"></div>
+            <h2 class="text-sm font-bold text-white uppercase">BẢNG XẾP HẠNG BÓNG ĐÁ</h2>
         </div>
     </div>
     
     {{-- List Items --}}
-    <div class="bg-gray-50">
+    <div class="bg-slate-800">
         <nav>
             <ul>
                 @foreach ($items as $index => $item)
@@ -38,8 +38,8 @@
                     @endphp
                     <li>
                         <a href="{{ $item['url'] }}" 
-                           class="block px-4 py-2 {{ $index < count($items) - 1 ? 'border-b border-gray-200' : '' }} hover:bg-green-50 transition-colors duration-200 cursor-pointer group">
-                            <p class="text-xs {{ $isActive ? 'text-red-600 font-bold' : 'text-gray-900 group-hover:text-green-600' }} leading-relaxed">
+                           class="block px-4 py-2 {{ $index < count($items) - 1 ? 'border-b border-slate-700' : '' }} hover:bg-slate-700 transition-colors duration-200 cursor-pointer group">
+                            <p class="text-xs {{ $isActive ? 'text-blue-400 font-bold' : 'text-gray-300 group-hover:text-blue-400' }} leading-relaxed">
                                 {{ $item['label'] }}
                             </p>
                         </a>

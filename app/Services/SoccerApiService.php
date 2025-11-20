@@ -38,8 +38,8 @@ class SoccerApiService
         $params['utc'] = 7;
 
         try {
-            $response = Http::timeout(30)
-                ->retry(3, 100)
+            $response = Http::timeout(5)
+                ->retry(2, 50)
                 ->get($url, $params);
 
             if ($response->successful()) {
@@ -1388,6 +1388,40 @@ class SoccerApiService
         sort($bookmakers);
         
         return $bookmakers;
+    }
+
+    /**
+     * Get H2H (Head to Head) data for a match
+     *
+     * @param int|string $matchId
+     * @return array|null
+     */
+    public function getH2H($matchId): ?array
+    {
+        $cacheKey = 'soccer_api:h2h:' . $matchId;
+        
+        // Cache for 1 hour (H2H data doesn't change frequently)
+        return Cache::remember($cacheKey, 3600, function () use ($matchId) {
+            $params = [
+                't' => 'match',
+                'id' => $matchId,
+            ];
+            
+            $response = $this->makeRequest('h2h', $params);
+            
+            // Response can be either { data: {...} } or direct object
+            if ($response) {
+                if (isset($response['data'])) {
+                    return $response['data'];
+                }
+                // If response is already the data object
+                if (isset($response['home']) || isset($response['away']) || isset($response['h2h'])) {
+                    return $response;
+                }
+            }
+            
+            return null;
+        });
     }
 }
 

@@ -50,12 +50,12 @@
     unset($item);
 @endphp
 
-<div class="bg-white shadow-sm border border-gray-200 overflow-hidden w-full">
+<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-full">
     {{-- Header with green bar --}}
-    <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+    <div class="bg-slate-700 px-4 py-3 border-b border-slate-600">
         <div class="flex items-center space-x-2">
-            <div class="w-1 h-5 bg-green-600"></div>
-            <h2 class="text-sm font-bold text-black uppercase">NHẬN ĐỊNH BÓNG ĐÁ</h2>
+            <div class="w-1 h-5 bg-blue-500"></div>
+            <h2 class="text-sm font-bold text-white uppercase">NHẬN ĐỊNH BÓNG ĐÁ</h2>
         </div>
     </div>
 
@@ -63,11 +63,11 @@
     <nav>
         <ul>
             @foreach ($items as $index => $item)
-                <li class="hover:bg-gray-100">
+                <li class="hover:bg-slate-700">
                     <a href="{{ $item['url'] }}"
                        class="block py-2 px-4 text-xs transition-colors duration-150
-                              {{ $index < count($items) - 1 ? 'border-b border-gray-200' : '' }}
-                              {{ $item['isActive'] ? 'text-green-600 font-medium bg-green-50' : 'text-gray-900' }}">
+                              {{ $index < count($items) - 1 ? 'border-b border-slate-700' : '' }}
+                              {{ $item['isActive'] ? 'text-blue-400 font-medium bg-slate-700' : 'text-gray-300' }}">
                         {{ $item['label'] }}
                     </a>
                 </li>

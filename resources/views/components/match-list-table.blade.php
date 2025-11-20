@@ -17,23 +17,6 @@
     }
 </style>
 
-{{-- Sub Navigation --}}
-{{-- Top Sub-navigation Bar với 3 phần --}}
-<div class="bg-white border-b border-gray-200 mb-0">
-    <div class="container mx-auto px-2 sm:px-4">
-        <div class="flex items-stretch">
-            {{-- Center Section - Title --}}
-            <div class="flex-1 bg-white py-2 sm:py-3 px-2 sm:px-4 flex items-center justify-center">
-                <h2 class="text-xs sm:text-sm md:text-base font-bold text-gray-900 text-center leading-tight break-words">
-                    <span class="sm:whitespace-nowrap">KEOBONGDA | BÓNG ĐÁ SỐ - DỮ LIỆU CHÍNH XÁC VÀ KỊP THỜI NHẤT</span>
-                    <span class="text-blue-600 sm:whitespace-nowrap"> BONGDASO</span>
-                    <span class="sm:whitespace-nowrap"> TRỰC TUYẾN MỚI NHẤT</span>
-                </h2>
-            </div>
-        </div>
-    </div>
-</div>
-
 @php
     // Fallback data if not provided
     if (empty($liveMatches) && empty($upcomingMatches)) {
@@ -88,29 +71,29 @@
     }
 @endphp
 
-<div class="bg-white shadow-sm border border-gray-200 overflow-visible rounded-lg mt-2 mb-2">
+<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-visible rounded-lg mb-2">
     {{-- Filter Bar --}}
     <div class=" mt-1">
         <div class="container mx-auto px-4 mb-2">
-            <div class="border-b border-[#1a5f2f] flex items-center justify-between">
+            <div class="border-b border-blue-500 flex items-center justify-between">
                 <div class="flex items-center gap-1">
                     {{-- Tất cả - Active với background xanh đậm, bo góc trái --}}
-                    <a href="#" class="px-4 py-2 text-sm font-medium text-white bg-[#1a5f2f] rounded-tl-lg rounded-tr-lg transition-colors">
+                    <a href="#" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-tl-lg rounded-tr-lg transition-all duration-200 shadow-sm">
                         Tất cả
                     </a>
                     {{-- Trực tuyến - Inactive --}}
-                    <a href="{{ route('livescore') }}" class="px-4 py-2 text-sm font-medium bg-gray-300 rounded-tl-lg rounded-tr-lg text-gray-700 transition-colors hover:bg-gray-400">
+                    <a href="{{ route('livescore') }}" class="px-4 py-2 text-sm font-medium bg-slate-700 rounded-tl-lg rounded-tr-lg text-gray-300 transition-colors hover:bg-slate-600">
                         Trực tuyến
                     </a>
                     {{-- XEM BÓNG - Background đỏ/hồng nhạt với icon radar --}}
-                    <a href="#" class="px-4 py-2 text-sm font-medium bg-gray-300 rounded-tl-lg rounded-tr-lg text-white transition-colors flex items-center space-x-1">
+                    <a href="#" class="px-4 py-2 text-sm font-medium bg-slate-700 rounded-tl-lg rounded-tr-lg text-white transition-colors flex items-center space-x-1">
                        <div class="bg-red-600 px-2 rounded-sm animate-pulse">
                             <span class="text-xs">((•))</span>
                             <span>XEM BÓNG</span>
                        </div>
                     </a>
                     {{-- Giải đấu - Inactive --}}
-                    <button type="button" id="tournament-filter-btn" class="px-4 py-2 text-sm font-medium bg-gray-300 rounded-tl-lg rounded-tr-lg text-gray-700 transition-colors flex items-center space-x-1 cursor-pointer">
+                    <button type="button" id="tournament-filter-btn" class="px-4 py-2 text-sm font-medium bg-slate-700 rounded-tl-lg rounded-tr-lg text-gray-300 transition-colors flex items-center space-x-1 cursor-pointer hover:bg-slate-600">
                         <span>Giải đấu</span>
                     </button>
                 </div>
@@ -133,28 +116,28 @@
         <table class="w-full divide-y divide-gray-200 relative table-auto min-w-[600px]" style="table-layout: auto; width: 100%;">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-24 max-w-24">Giải</th>
-                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-16">Giờ</th>
-                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-700 text-right uppercase tracking-wider w-32 max-w-32">Chủ</th>
-                    <th class="px-2 sm:px-2 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-16">Tỷ số</th>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider w-32 max-w-32">Khách</th>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-20">C/H-T</th>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-20">Số liệu</th>
-                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap w-32">
+                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-24 max-w-24">Giải</th>
+                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider whitespace-nowrap w-16">Giờ</th>
+                    <th class="px-2 sm:px-2 py-3 text-left text-xs font-bold text-gray-300 text-right uppercase tracking-wider w-32 max-w-32">Chủ</th>
+                    <th class="px-2 sm:px-2 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider whitespace-nowrap w-16">Tỷ số</th>
+                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-32 max-w-32">Khách</th>
+                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider whitespace-nowrap w-20">C/H-T</th>
+                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider whitespace-nowrap w-20">Số liệu</th>
+                    <th class="px-2 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider whitespace-nowrap w-32">
                         <x-betting-provider-dropdown :selected="!empty($bookmakers) ? $bookmakers[0] : 'Bet365'" :bookmakers="$bookmakers" />
                     </th>
                 </tr>
             </thead>
             {{-- Live Matches Section --}}
             @if (!empty($liveMatches))
-                <tbody id="live-matches-tbody" class="bg-white divide-y divide-gray-200">
+                <tbody id="live-matches-tbody" class="bg-slate-800 divide-y divide-slate-700">
                     @foreach ($liveMatches as $index => $match)
                     @php
                         $leagueName = $match['league'] ?? '';
                         $countryName = $match['country_name'] ?? '';
                         $leagueDisplay = $countryName ? ($countryName . ' - ' . $leagueName) : $leagueName;
                     @endphp
-                    <tr class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-gray-100 transition-colors" 
+                    <tr class="{{ $index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-700' }} hover:bg-slate-600 transition-colors" 
                         data-match-id="{{ $match['match_id'] ?? $loop->index }}" 
                         data-odds-data="{{ htmlspecialchars(json_encode($match['odds_data'] ?? []), ENT_QUOTES, 'UTF-8') }}"
                         data-league-name="{{ $leagueName }}"
@@ -162,7 +145,7 @@
                         {{-- League --}}
                         <td class="px-2 py-3 max-w-24">
                             <div class="flex items-center space-x-2">
-                                <span class="text-xs font-medium text-gray-700 break-words">
+                                <span class="text-xs font-medium text-gray-300 break-words">
                                     {{ $leagueDisplay }}
                                 </span>
                             </div>
@@ -181,7 +164,7 @@
                             }
                         @endphp
                         <td class="px-2 py-3 whitespace-nowrap w-16">
-                            <span class="text-sm font-medium {{ $shouldBlink ? 'live-minute-blink' : ($match['is_live'] ? 'text-red-600' : 'text-gray-600') }}">
+                            <span class="text-sm font-medium {{ $shouldBlink ? 'live-minute-blink' : ($match['is_live'] ? 'text-red-500' : 'text-gray-400') }}">
                                 {{ $timeDisplay }}
                             </span>
                         </td>
@@ -197,13 +180,13 @@
                                 @if (isset($match['home_position']) && $match['home_position'] > 0)
                                     <span class="text-xs text-purple-400 whitespace-nowrap">[{{ $match['home_position'] }}]</span>
                                 @endif
-                                <span class="text-xs text-gray-900 text-right break-words">{{ $match['home_team'] }}</span>
+                                <span class="text-xs text-gray-100 text-right break-words">{{ $match['home_team'] }}</span>
                             </div>
                         </td>
                         
                         {{-- Score with hover modal --}}
                         <td class="px-2 py-3 whitespace-nowrap text-center relative w-16">
-                            <span class="text-sm font-bold text-gray-900 cursor-pointer hover:text-blue-600 relative group" 
+                            <span class="text-sm font-bold text-gray-100 cursor-pointer hover:text-blue-400 relative group" 
                                   data-match-id="{{ $match['match_id'] ?? $loop->index }}" 
                                   data-home-team-id="{{ $match['home_team_id'] ?? '' }}"
                                   data-away-team-id="{{ $match['away_team_id'] ?? '' }}"
@@ -214,13 +197,13 @@
                                 {{ $match['score'] }}
                                 
                                 {{-- Match Details Modal --}}
-                                <div class="fixed left-0 top-0 w-96 bg-white border border-gray-300 rounded-lg shadow-xl z-[99999] hidden group-hover:block overflow-hidden" style="transform: translate(calc(var(--match-modal-x, 0px)), calc(var(--match-modal-y, 0px)));" data-match-modal>
+                                <div class="fixed left-0 top-0 w-96 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-[99999] hidden group-hover:block overflow-hidden" style="transform: translate(calc(var(--match-modal-x, 0px)), calc(var(--match-modal-y, 0px)));" data-match-modal>
                                     <div class="p-4 max-h-[600px] overflow-y-auto overflow-x-hidden">
                                         {{-- Title --}}
-                                        <h3 class="text-lg font-bold text-gray-900 mb-4 text-center">Dữ liệu trận đấu</h3>
+                                        <h3 class="text-lg font-bold text-white mb-4 text-center">Dữ liệu trận đấu</h3>
                                         
                                         {{-- Loading State --}}
-                                        <div class="text-center text-gray-500 py-4" data-match-modal-loading>
+                                        <div class="text-center text-gray-400 py-4" data-match-modal-loading>
                                             Đang tải...
                                         </div>
                                         
@@ -228,10 +211,10 @@
                                         <div class="hidden overflow-x-hidden" data-match-modal-content>
                                             {{-- Match Events Section --}}
                                             <div class="mb-4">
-                                                <h4 class="text-sm font-bold text-gray-700 mb-2">Match Events</h4>
-                                                <div class="border border-gray-200 rounded overflow-hidden">
+                                                <h4 class="text-sm font-bold text-gray-300 mb-2">Match Events</h4>
+                                                <div class="border border-slate-600 rounded overflow-hidden">
                                                     <table class="w-full text-xs" style="table-layout: fixed; width: 100%;">
-                                                        <thead class="bg-gray-100">
+                                                        <thead class="bg-slate-700">
                                                             <tr>
                                                                 <th class="px-2 py-2 text-left" style="width: 35%; max-width: 35%; white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
                                                                     <div class="flex items-start space-x-1" style="flex-wrap: wrap;">
@@ -262,7 +245,7 @@
                                             {{-- Match Statistics Section --}}
                                             <div>
                                                 <h4 class="text-sm font-bold text-gray-700 mb-2">Thống kê trận đấu</h4>
-                                                <div class="border border-gray-200 rounded overflow-hidden">
+                                                <div class="border border-slate-600 rounded overflow-hidden">
                                                     <table class="w-full text-xs" style="table-layout: fixed; width: 100%;">
                                                         <thead class="bg-gray-100">
                                                             <tr>
@@ -290,7 +273,7 @@
                         {{-- Away Team --}}
                         <td class="px-2 py-3 text-left max-w-32">
                             <div class="flex items-center space-x-1 text-left flex-wrap">
-                                <span class="text-xs text-gray-900 text-left break-words">{{ $match['away_team'] }}</span>
+                                <span class="text-xs text-gray-100 text-left break-words">{{ $match['away_team'] }}</span>
                                 @if (isset($match['away_position']) && $match['away_position'] > 0)
                                     <span class="text-xs text-purple-400 whitespace-nowrap">[{{ $match['away_position'] }}]</span>
                                 @endif
@@ -332,14 +315,14 @@
                                 }
                             @endphp
                             <div class="flex flex-col">
-                                <span class="text-xs text-gray-600 cursor-pointer hover:text-blue-600 relative group">
+                                <span class="text-xs text-gray-400 cursor-pointer hover:text-blue-400 relative group">
                                     {{ $homeCorners }}-{{ $awayCorners }}
                                     
                                     {{-- Corner Popup --}}
-                                    <div class="fixed left-0 top-0 w-80 bg-white border border-gray-300 rounded-lg shadow-xl z-[99999] hidden group-hover:block" style="transform: translate(calc(var(--popup-x, 0px)), calc(var(--popup-y, 0px)))); max-height: 500px; overflow-y-auto; overflow-x-hidden;" data-corner-popup>
+                                    <div class="fixed left-0 top-0 w-80 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-[99999] hidden group-hover:block" style="transform: translate(calc(var(--popup-x, 0px)), calc(var(--popup-y, 0px)))); max-height: 500px; overflow-y-auto; overflow-x-hidden;" data-corner-popup>
                                 <div class="p-4">
                                     {{-- Title --}}
-                                    <h3 class="text-lg font-bold text-gray-900 mb-3 text-center flex items-center justify-center space-x-2">
+                                    <h3 class="text-lg font-bold text-white mb-3 text-center flex items-center justify-center space-x-2">
                                         <img src="{{ asset('assets/images/stast/corner.svg') }}" alt="Corner" class="w-4 h-4">
                                         <span>PHẠT GÓC</span>
                                     </h3>
@@ -364,31 +347,31 @@
                                     <div class="space-y-1 mb-3">
                                         {{-- Total Match --}}
                                         <div class="flex items-center text-sm">
-                                            <div class="w-12 text-center font-medium text-gray-700">{{ $homeCorners }}</div>
-                                            <div class="flex-1 text-center text-gray-600">Cả trận</div>
-                                            <div class="w-12 text-center font-medium text-gray-700">{{ $awayCorners }}</div>
+                                            <div class="w-12 text-center font-medium text-gray-300">{{ $homeCorners }}</div>
+                                            <div class="flex-1 text-center text-gray-400">Cả trận</div>
+                                            <div class="w-12 text-center font-medium text-gray-300">{{ $awayCorners }}</div>
                                         </div>
                                         
                                         {{-- First Half --}}
                                         <div class="flex items-center text-sm">
-                                            <div class="w-12 text-center font-medium text-gray-700">{{ $homeHtCorners }}</div>
-                                            <div class="flex-1 text-center text-gray-600">Hiệp 1</div>
-                                            <div class="w-12 text-center font-medium text-gray-700">{{ $awayHtCorners }}</div>
+                                            <div class="w-12 text-center font-medium text-gray-300">{{ $homeHtCorners }}</div>
+                                            <div class="flex-1 text-center text-gray-400">Hiệp 1</div>
+                                            <div class="w-12 text-center font-medium text-gray-300">{{ $awayHtCorners }}</div>
                                         </div>
                                     </div>
                                     
                                     {{-- Individual Corner Events --}}
                                     @if (!empty($cornerEvents))
-                                        <div class="border-t border-gray-200 pt-2">
+                                        <div class="border-t border-slate-600 pt-2">
                                             @foreach ($cornerEvents as $event)
                                                 <div class="flex items-center text-xs py-1">
                                                     @if (($event['team_id'] ?? null) == $homeTeamId)
                                                         <img src="{{ asset('assets/images/stast/corner.svg') }}" alt="Corner" class="w-4 h-4 mr-2">
-                                                        <span class="text-gray-700 font-medium mr-2">{{ $event['minute'] }}</span>
+                                                        <span class="text-gray-300 font-medium mr-2">{{ $event['minute'] }}</span>
                                                         <span class="flex-1"></span>
                                                     @elseif (($event['team_id'] ?? null) == $awayTeamId)
                                                         <span class="flex-1"></span>
-                                                        <span class="text-gray-700 font-medium ml-2">{{ $event['minute'] }}</span>
+                                                        <span class="text-gray-300 font-medium ml-2">{{ $event['minute'] }}</span>
                                                         <img src="{{ asset('assets/images/stast/corner.svg') }}" alt="Corner" class="w-4 h-4 ml-2">
                                                     @endif
                                                 </div>
@@ -454,14 +437,14 @@
 
             {{-- Upcoming Matches Section --}}
             @if (!empty($upcomingMatches))
-                <tbody id="upcoming-matches-tbody" class="bg-white divide-y divide-gray-200">
+                <tbody id="upcoming-matches-tbody" class="bg-slate-800 divide-y divide-slate-700">
                     @foreach ($upcomingMatches as $index => $match)
                     @php
                         $leagueName = $match['league'] ?? '';
                         $countryName = $match['country_name'] ?? '';
                         $leagueDisplay = $countryName ? ($countryName . ' - ' . $leagueName) : $leagueName;
                     @endphp
-                        <tr class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-gray-100 transition-colors" 
+                        <tr class="{{ $index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-700' }} hover:bg-slate-600 transition-colors" 
                             data-match-id="{{ $match['match_id'] ?? $loop->index }}" 
                             data-odds-data="{{ htmlspecialchars(json_encode($match['odds_data'] ?? []), ENT_QUOTES, 'UTF-8') }}"
                             data-league-name="{{ $leagueName }}"
@@ -469,7 +452,7 @@
                             {{-- League --}}
                             <td class="px-2 py-3 max-w-24">
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-xs font-medium text-gray-700 break-words">
+                                    <span class="text-xs font-medium text-gray-300 break-words">
                                         {{ $leagueDisplay }}
                                     </span>
                                 </div>
@@ -477,7 +460,7 @@
                             
                             {{-- Time --}}
                             <td class="px-2 py-3 whitespace-nowrap w-16">
-                                <span class="text-sm font-medium {{ $match['is_live'] ? 'text-red-600' : 'text-gray-600' }}">
+                                <span class="text-sm font-medium {{ $match['is_live'] ? 'text-red-500' : 'text-gray-400' }}">
                                     {{ $match['time'] }}
                                 </span>
                             </td>
@@ -488,13 +471,13 @@
                                     @if (isset($match['home_position']) && $match['home_position'] > 0)
                                         <span class="text-xs text-purple-400 whitespace-nowrap">[{{ $match['home_position'] }}]</span>
                                     @endif
-                                    <span class="text-xs text-gray-900 text-right break-words">{{ $match['home_team'] }}</span>
+                                    <span class="text-xs text-gray-100 text-right break-words">{{ $match['home_team'] }}</span>
                                 </div>
                             </td>
                             
                             {{-- Score (no modal for upcoming matches) --}}
                             <td class="px-2 py-3 whitespace-nowrap text-center relative w-16">
-                                <span class="text-sm font-bold text-gray-900">
+                                <span class="text-sm font-bold text-gray-100">
                                     {{ $match['score'] ?: '-' }}
                                 </span>
                             </td>
@@ -502,7 +485,7 @@
                         {{-- Away Team --}}
                         <td class="px-2 py-3 text-left max-w-32">
                             <div class="flex items-center space-x-1 text-left flex-wrap">
-                                <span class="text-xs text-gray-900 text-left break-words">{{ $match['away_team'] }}</span>
+                                <span class="text-xs text-gray-100 text-left break-words">{{ $match['away_team'] }}</span>
                                 @if (isset($match['away_position']) && $match['away_position'] > 0)
                                     <span class="text-xs text-purple-400 whitespace-nowrap">[{{ $match['away_position'] }}]</span>
                                 @endif
@@ -524,7 +507,7 @@
                                     }
                                 @endphp
                                 <div class="flex flex-col">
-                                    <span class="text-xs text-gray-600">
+                                    <span class="text-xs text-gray-400">
                                         {{ ($match['home_total_corners'] ?? 0) }}-{{ ($match['away_total_corners'] ?? 0) }}
                                     </span>
                                     <span class="text-xs text-red-600 font-medium">
@@ -576,11 +559,11 @@
 
 {{-- Tournament Selection Modal --}}
 <div id="tournament-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[100000] hidden items-center justify-center">
-    <div class="bg-white rounded-lg shadow-xs max-w-2xl w-full mx-4 max-h-[90vh] flex flex-col">
+    <div class="bg-slate-800 rounded-lg shadow-xs max-w-2xl w-full mx-4 max-h-[90vh] flex flex-col">
         {{-- Modal Header --}}
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-bold text-gray-900">Chọn giải đấu</h3>
-            <button type="button" id="tournament-modal-close" class="text-gray-400 hover:text-gray-600 transition-colors">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700">
+            <h3 class="text-lg font-bold text-white">Chọn giải đấu</h3>
+            <button type="button" id="tournament-modal-close" class="text-gray-400 hover:text-gray-300 transition-colors">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -626,20 +609,20 @@
             @endphp
             
             @if(empty($allLeagues))
-                <div class="text-center text-gray-500 py-8">
+                <div class="text-center text-gray-400 py-8">
                     <p>Không có giải đấu nào</p>
                 </div>
             @else
                 <div class="grid grid-cols-2 gap-2" id="tournament-list">
                     @foreach ($allLeagues as $leagueKey => $league)
-                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-slate-700 p-2 rounded transition-colors">
                             <input type="checkbox" 
                                    name="tournament[]" 
                                    value="{{ $league['name'] }}" 
                                    data-league-key="{{ $leagueKey }}"
-                                   class="tournament-checkbox w-4 h-4 text-[#1a5f2f] border-gray-300 rounded focus:ring-[#1a5f2f]" 
+                                   class="tournament-checkbox w-4 h-4 text-blue-600 border-slate-600 rounded focus:ring-blue-500" 
                                    checked>
-                            <span class="text-sm text-gray-700">{{ $league['display_name'] }}</span>
+                            <span class="text-sm text-gray-300">{{ $league['display_name'] }}</span>
                         </label>
                     @endforeach
                 </div>
@@ -647,11 +630,11 @@
         </div>
 
         {{-- Modal Footer --}}
-        <div class="flex items-center justify-end space-x-3 px-6 py-4 border-t border-gray-200">
-            <button type="button" id="select-all-tournaments" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+        <div class="flex items-center justify-end space-x-3 px-6 py-4 border-t border-slate-700">
+            <button type="button" id="select-all-tournaments" class="px-4 py-2 text-sm font-medium text-gray-300 bg-slate-700 border border-slate-600 rounded hover:bg-slate-600 transition-colors">
                 Tất cả
             </button>
-            <button type="button" id="deselect-all-tournaments" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+            <button type="button" id="deselect-all-tournaments" class="px-4 py-2 text-sm font-medium text-gray-300 bg-slate-700 border border-slate-600 rounded hover:bg-slate-600 transition-colors">
                 Bỏ chọn
             </button>
             <button type="button" id="confirm-tournaments" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors">
@@ -950,7 +933,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button
                     type="button"
                     data-value="${bookmaker.replace(/"/g, '&quot;')}"
-                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors betting-provider-option ${isSelected ? 'bg-blue-50 text-blue-600' : ''}"
+                    class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-blue-400 transition-colors betting-provider-option ${isSelected ? 'bg-slate-700 text-blue-400' : ''}"
                 >
                     ${bookmaker}
                 </button>
@@ -1189,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper function to build match row HTML
     function buildMatchRow(match, index, selectedBookmaker = null) {
         const matchId = match.match_id || index;
-        const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+        const rowClass = index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-700';
         const isLive = match.is_live || false;
         
         // Get odds for selected bookmaker
@@ -1249,13 +1232,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const cornerIconPath = '{{ asset("assets/images/stast/corner.svg") }}';
         let cornerEventsHtml = '';
         if (cornerEvents.length > 0) {
-            cornerEventsHtml = '<div class="border-t border-gray-200 pt-2">';
+            cornerEventsHtml = '<div class="border-t border-slate-600 pt-2">';
             cornerEvents.forEach(event => {
                 if (event.team_id == homeTeamId) {
                     cornerEventsHtml += `
                         <div class="flex items-center text-xs py-1">
                             <img src="${cornerIconPath}" alt="Corner" class="w-4 h-4 mr-2">
-                            <span class="text-gray-700 font-medium mr-2">${event.minute}</span>
+                            <span class="text-gray-300 font-medium mr-2">${event.minute}</span>
                             <span class="flex-1"></span>
                         </div>
                     `;
@@ -1263,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cornerEventsHtml += `
                         <div class="flex items-center text-xs py-1">
                             <span class="flex-1"></span>
-                            <span class="text-gray-700 font-medium ml-2">${event.minute}</span>
+                            <span class="text-gray-300 font-medium ml-2">${event.minute}</span>
                             <img src="${cornerIconPath}" alt="Corner" class="w-4 h-4 ml-2">
                         </div>
                     `;
@@ -1283,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const cornersDisplay = isUpcomingMatch ? `
             <td class="px-2 py-3 whitespace-nowrap text-left relative w-20">
                 <div class="flex flex-col">
-                    <span class="text-xs text-gray-600">
+                    <span class="text-xs text-gray-400">
                         ${homeCorners}-${awayCorners}
                     </span>
                     <span class="text-xs text-red-600 font-medium">
@@ -1294,12 +1277,12 @@ document.addEventListener('DOMContentLoaded', function() {
         ` : `
             <td class="px-2 py-3 whitespace-nowrap text-left relative w-20">
                 <div class="flex flex-col">
-                    <span class="text-xs text-gray-600 cursor-pointer hover:text-blue-600 relative group">
+                    <span class="text-xs text-gray-400 cursor-pointer hover:text-blue-400 relative group">
                         ${homeCorners}-${awayCorners}
                         
-                        <div class="fixed left-0 top-0 w-80 bg-white border border-gray-300 rounded-lg shadow-xl z-[99999] hidden" style="max-height: 500px; overflow-y-auto; overflow-x-hidden;" data-corner-popup>
+                        <div class="fixed left-0 top-0 w-80 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-[99999] hidden" style="max-height: 500px; overflow-y-auto; overflow-x-hidden;" data-corner-popup>
                     <div class="p-4">
-                        <h3 class="text-lg font-bold text-gray-900 mb-3 text-center flex items-center justify-center space-x-2">
+                        <h3 class="text-lg font-bold text-white mb-3 text-center flex items-center justify-center space-x-2">
                             <img src="${cornerIconPath}" alt="Corner" class="w-4 h-4">
                             <span>PHẠT GÓC</span>
                         </h3>
@@ -1317,15 +1300,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <div class="space-y-1 mb-3">
                             <div class="flex items-center text-sm">
-                                <div class="w-12 text-center font-medium text-gray-700">${homeCorners}</div>
-                                <div class="flex-1 text-center text-gray-600">Cả trận</div>
-                                <div class="w-12 text-center font-medium text-gray-700">${awayCorners}</div>
+                                <div class="w-12 text-center font-medium text-gray-300">${homeCorners}</div>
+                                <div class="flex-1 text-center text-gray-400">Cả trận</div>
+                                <div class="w-12 text-center font-medium text-gray-300">${awayCorners}</div>
                             </div>
                             
                             <div class="flex items-center text-sm">
-                                <div class="w-12 text-center font-medium text-gray-700">${homeHtCorners}</div>
-                                <div class="flex-1 text-center text-gray-600">Hiệp 1</div>
-                                <div class="w-12 text-center font-medium text-gray-700">${awayHtCorners}</div>
+                                <div class="w-12 text-center font-medium text-gray-300">${homeHtCorners}</div>
+                                <div class="flex-1 text-center text-gray-400">Hiệp 1</div>
+                                <div class="w-12 text-center font-medium text-gray-300">${awayHtCorners}</div>
                             </div>
                         </div>
                         
@@ -1368,7 +1351,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 data-league-display="${leagueDisplay}">
                 <td class="px-2 py-3 max-w-24">
                     <div class="flex items-center space-x-2">
-                        <span class="text-xs font-medium text-gray-700 break-words">${leagueDisplay}</span>
+                        <span class="text-xs font-medium text-gray-300 break-words">${leagueDisplay}</span>
                     </div>
                 </td>
                 <td class="px-2 py-3 whitespace-nowrap w-16">
@@ -1376,7 +1359,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const timeDisplay = match.time || '-';
                         // Check if should blink (live match with minute, not HT)
                         const shouldBlink = isLive && /\d+'/.test(timeDisplay) && timeDisplay !== 'HT';
-                        const timeClass = shouldBlink ? 'live-minute-blink' : (isLive ? 'text-red-600' : 'text-gray-600');
+                        const timeClass = shouldBlink ? 'live-minute-blink' : (isLive ? 'text-red-500' : 'text-gray-400');
                         return `<span class="text-sm font-medium ${timeClass}">${timeDisplay}</span>`;
                     })()}
                 </td>
@@ -1384,7 +1367,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="flex items-center justify-end space-x-1 flex-wrap">
                         ${(match.home_yellow_cards || 0) > 0 ? `<div class="bg-yellow-400 text-black text-xs font-bold px-1.5 py-0.5 rounded flex items-center justify-center min-w-[20px]">${match.home_yellow_cards}</div>` : ''}
                         ${(match.home_position || 0) > 0 ? `<span class="text-xs text-purple-400 whitespace-nowrap">[${match.home_position}]</span>` : ''}
-                        <span class="text-xs text-gray-900 text-right break-words">${match.home_team || '-'}</span>
+                        <span class="text-xs text-gray-100 text-right break-words">${match.home_team || '-'}</span>
                     </div>
                 </td>
                 <td class="px-2 py-3 whitespace-nowrap text-center relative w-16">
@@ -1394,7 +1377,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         if (isUpcoming) {
                             // No modal for upcoming matches
-                            return `<span class="text-sm font-bold text-gray-900">${match.score || '-'}</span>`;
+                            return `<span class="text-sm font-bold text-gray-100">${match.score || '-'}</span>`;
                         } else {
                             // Modal for live matches
                             const matchEvents = match.match_events || [];
@@ -1405,7 +1388,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const awayStatsAttr = JSON.stringify(awayStats).replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/&/g, '&amp;');
                             const homeTeamId = match.home_team_id || '';
                             const awayTeamId = match.away_team_id || '';
-                            return `<span class="text-sm font-bold text-gray-900 cursor-pointer hover:text-blue-600 relative group" 
+                            return `<span class="text-sm font-bold text-gray-100 cursor-pointer hover:text-blue-400 relative group" 
                                   data-match-id="${matchId}" 
                                   data-home-team-id="${homeTeamId}"
                                   data-away-team-id="${awayTeamId}"
@@ -1422,8 +1405,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                         </div>
                                         <div data-match-modal-content class="overflow-x-hidden">
                                             <div class="mb-4">
-                                                <h4 class="text-sm font-bold text-gray-700 mb-2">Match Events</h4>
-                                                <div class="border border-gray-200 rounded overflow-hidden">
+                                                <h4 class="text-sm font-bold text-gray-300 mb-2">Match Events</h4>
+                                                <div class="border border-slate-600 rounded overflow-hidden">
                                                     <table class="w-full text-xs" style="table-layout: fixed; width: 100%;">
                                                         <thead class="bg-gray-100">
                                                             <tr>
@@ -1449,7 +1432,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             </div>
                                             <div>
                                                 <h4 class="text-sm font-bold text-gray-700 mb-2">Thống kê trận đấu</h4>
-                                                <div class="border border-gray-200 rounded overflow-hidden">
+                                                <div class="border border-slate-600 rounded overflow-hidden">
                                                     <table class="w-full text-xs" style="table-layout: fixed; width: 100%;">
                                                         <thead class="bg-gray-100">
                                                             <tr>
@@ -1476,7 +1459,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
                 <td class="px-2 py-3 text-left max-w-32">
                     <div class="flex items-center space-x-1 text-left flex-wrap">
-                        <span class="text-xs text-gray-900 text-left break-words">${match.away_team || '-'}</span>
+                        <span class="text-xs text-gray-100 text-left break-words">${match.away_team || '-'}</span>
                         ${(match.away_position || 0) > 0 ? `<span class="text-xs text-purple-400 whitespace-nowrap">[${match.away_position}]</span>` : ''}
                         ${(match.away_red_cards || 0) > 0 ? `<div class="bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded flex items-center justify-center min-w-[20px] relative">
                             ${match.away_red_cards}

@@ -3,7 +3,7 @@
 @section('title', 'keobongda.co - Lịch thi đấu ' . ($league['name'] ?? ''))
 
 @section('content')
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -18,7 +18,7 @@
             <main class="flex-1 min-w-0">
 
                 {{-- Page Title --}}
-                <h1 class="text-2xl font-bold text-gray-900 mb-4">
+                <h1 class="text-2xl font-bold text-white mb-4">
                     Lịch thi đấu {{ $league['name'] ?? 'N/A' }} {{ date('Y') }} - Lịch bóng đá {{ $league['country_name'] ?? '' }} mới nhất
                 </h1>
 
@@ -38,11 +38,11 @@
                         ['name' => 'Cúp C1 Châu Á', 'id' => 511],
                     ];
                 @endphp
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-4 mb-4">
                     <div class="flex flex-wrap gap-2">
                         @foreach($leagueFilters as $filter)
                             <a href="{{ route('schedule.league', $filter['id']) }}" 
-                               class="px-4 py-2 text-sm font-medium {{ ($filter['id'] == $leagueId) ? 'text-white bg-[#1a5f2f]' : 'text-gray-700 bg-white border border-gray-300' }} rounded hover:bg-[#155027] hover:text-white transition-colors">
+                               class="px-4 py-2 text-sm font-semibold {{ ($filter['id'] == $leagueId) ? 'text-white bg-blue-600 hover:bg-blue-700 shadow-sm' : 'text-gray-300 bg-slate-700 border border-slate-600 hover:bg-slate-600' }} rounded-lg transition-all duration-200">
                                 {{ $filter['name'] }}
                             </a>
                         @endforeach
@@ -51,9 +51,9 @@
 
                 {{-- Matchday Selector (Vòng đấu) - Only show for non-CUP leagues --}}
                 @if(!empty($roundIds) && !($isCup ?? false))
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+                    <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-4 mb-4">
                         <div class="mb-2">
-                            <span class="text-sm font-medium text-gray-700">Vòng đấu:</span>
+                            <span class="text-sm font-medium text-gray-300">Vòng đấu:</span>
                         </div>
                         <div class="flex flex-wrap gap-2">
                             @foreach($roundIds as $index => $roundId)
@@ -61,7 +61,7 @@
                                     $roundNumber = $index + 1;
                                 @endphp
                                 <a href="{{ route('schedule.league', ['leagueId' => $leagueId, 'round' => $roundId]) }}" 
-                                   class="px-3 py-2 text-sm font-medium {{ ($round == $roundId) ? 'text-white bg-[#1a5f2f]' : 'text-gray-900 bg-yellow-400 border border-yellow-500' }} rounded hover:bg-yellow-500 hover:text-gray-900 transition-colors">
+                                   class="px-3 py-2 text-sm font-semibold {{ ($round == $roundId) ? 'text-white bg-blue-600 hover:bg-blue-700 shadow-sm' : 'text-slate-900 bg-amber-400 border border-amber-500' }} rounded-lg hover:bg-amber-500 hover:text-slate-900 transition-all duration-200">
                                     {{ $roundNumber }}
                                 </a>
                             @endforeach
@@ -70,17 +70,17 @@
                 @endif
 
                 {{-- Schedule Table --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full">
-                            <thead class="bg-[#1a5f2f]">
+                            <thead class="bg-slate-900">
                                 <tr>
                                     <th class="px-2 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Thời gian</th>
                                     <th class="px-2 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">{{ ($isCup ?? false) ? 'Bảng' : 'Vòng' }}</th>
                                     <th class="px-2 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">FT</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="bg-slate-800 divide-y divide-slate-700">
                                 @if(empty($matchesByDate))
                                     <tr>
                                         <td colspan="3" class="px-4 py-8 text-center text-gray-500">
@@ -140,7 +140,7 @@
                                                     $roundName = $roundNumber;
                                                 }
                                             @endphp
-                                            <tr class="hover:bg-gray-50 {{ ($loop->index % 2 === 0) ? 'bg-white' : 'bg-gray-50' }} {{ $matchId ? 'cursor-pointer' : '' }}" 
+                                            <tr class="hover:bg-slate-700 {{ ($loop->index % 2 === 0) ? 'bg-slate-800' : 'bg-slate-700' }} {{ $matchId ? 'cursor-pointer' : '' }}" 
                                                 @if($matchId) onclick="window.location.href='{{ route('match.detail', $matchId) }}'" @endif>
                                                 <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-900 text-left">
                                                     {{ $timeDisplay }}
@@ -234,7 +234,7 @@
                                             <tr class="hover:bg-gray-50 transition-colors {{ !$loop->last ? 'border-b border-gray-200' : '' }}">
                                                 <td class="text-xs text-gray-900 text-right">
                                                     @if($matchId)
-                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-[#1a5f2f]">
+                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-blue-600 transition-colors duration-200">
                                                             {{ $match['home_team'] ?? '-' }}
                                                         </a>
                                                     @else
@@ -246,7 +246,7 @@
                                                 </td>
                                                 <td class="text-xs text-gray-900 text-left">
                                                     @if($matchId)
-                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-[#1a5f2f]">
+                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-blue-600 transition-colors duration-200">
                                                             {{ $match['away_team'] ?? '-' }}
                                                         </a>
                                                     @else

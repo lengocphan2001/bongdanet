@@ -3,7 +3,7 @@
 @section('title', 'keobongda.co - Kèo bóng đá - Tỷ lệ kèo nhà cái')
 
 @section('content')
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -16,16 +16,16 @@
             {{-- Left Column - Main Content --}}
             <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                     Kèo bóng đá - Tỷ lệ kèo nhà cái 5 hôm nay, Keonhacai trực tuyến
                 </h1>
 
                 {{-- Date Selection Tabs --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div class="bg-slate-800 rounded-lg shadow-md border border-slate-700 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-wrap gap-2 overflow-x-auto">
                         @foreach ($dateOptions ?? [] as $option)
                             <a href="{{ route('odds', ['date' => $option['value']]) }}" 
-                               class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded transition-colors whitespace-nowrap {{ ($date ?? '') == $option['value'] ? 'text-white bg-red-600' : 'text-gray-700 bg-gray-200 hover:bg-gray-300' }}">
+                               class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 whitespace-nowrap {{ ($date ?? '') == $option['value'] ? 'text-white bg-blue-600 hover:bg-blue-700 shadow-sm' : 'text-gray-300 bg-slate-700 hover:bg-slate-600' }}">
                                 {{ $option['label'] }}
                             </a>
                         @endforeach
@@ -49,7 +49,7 @@
                         ['name' => 'C2 Châu Á', 'id' => 512],
                     ];
                 @endphp
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div class="bg-slate-800 rounded-lg shadow-md border border-slate-700 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-wrap gap-2 overflow-x-auto">
                         @foreach($leagueFilters as $filter)
                             <a href="{{ route('odds.league', $filter['id']) }}" 
@@ -62,18 +62,18 @@
 
                 {{-- Odds Table --}}
                 @if(empty($groupedByLeague ?? []))
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                        <p class="text-gray-500">Không có trận đấu nào</p>
+                    <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-8 text-center">
+                        <p class="text-gray-400">Không có trận đấu nào</p>
                     </div>
                 @else
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-xs" style="font-size: 11px;">
-                                <tbody class="bg-white">
+                                <tbody class="bg-slate-800">
                                     @foreach($groupedByLeague as $leagueGroup)
                                         {{-- League Header --}}
                                         <tr>
-                                            <td colspan="5" class="px-4 py-2 bg-[#1a5f2f] text-white">
+                                            <td colspan="5" class="px-4 py-2 bg-slate-900 text-white">
                                                 <div class="flex items-center justify-between">
                                                     <div class="flex items-center space-x-2">
                                                         <span class="text-sm font-bold">Kèo bóng đá {{ $leagueGroup['league_name'] }}</span>
@@ -172,39 +172,39 @@
                                                 </td>
                                                 
                                                 {{-- Teams Column --}}
-                                                <td class="px-1.5 py-1.5 text-gray-900 border-r border-gray-200">
+                                                <td class="px-1.5 py-1.5 text-gray-100 border-r border-slate-600">
                                                     <div class="font-medium">{{ $homeTeam }}</div>
                                                     <div class="font-medium">{{ $awayTeam }}</div>
                                                 </td>
                                                 
                                                 {{-- Asian Handicap Column --}}
-                                                <td class="px-1.5 py-1.5 border-r border-gray-200">
+                                                <td class="px-1.5 py-1.5 border-r border-slate-600">
                                                     <div class="flex">
                                                         <div class="flex-1 text-center text-green-600 font-medium">
                                                             {{ $asianHandicapValue ?? '-' }}
                                                         </div>
                                                         <div class="flex-1 flex flex-col text-center">
-                                                            <div class="text-gray-900">{{ $asianHomeOdds }}</div>
-                                                            <div class="text-gray-900">{{ $asianAwayOdds }}</div>
+                                                            <div class="text-gray-100">{{ $asianHomeOdds }}</div>
+                                                            <div class="text-gray-100">{{ $asianAwayOdds }}</div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 
                                                 {{-- Over/Under Column --}}
-                                                <td class="px-1.5 py-1.5 border-r border-gray-200">
+                                                <td class="px-1.5 py-1.5 border-r border-slate-600">
                                                     <div class="flex">
                                                         <div class="flex-1 text-center text-green-600 font-medium">
                                                             {{ $overUnderHandicap ?? '-' }}
                                                         </div>
                                                         <div class="flex-1 flex flex-col text-center">
-                                                            <div class="text-gray-900">{{ $overOdds }}</div>
-                                                            <div class="text-gray-900">{{ $underOdds }}</div>
+                                                            <div class="text-gray-100">{{ $overOdds }}</div>
+                                                            <div class="text-gray-100">{{ $underOdds }}</div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 
                                                 {{-- 1X2 Column --}}
-                                                <td class="px-1.5 py-1.5 text-center text-gray-900">
+                                                <td class="px-1.5 py-1.5 text-center text-gray-100">
                                                     <div>{{ $homeOdds }}</div>
                                                     <div>{{ $drawOdds }}</div>
                                                     <div>{{ $awayOdds }}</div>

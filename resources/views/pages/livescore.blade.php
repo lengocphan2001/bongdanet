@@ -11,10 +11,10 @@
     .live-minute-blink {
         animation: blink 1.5s ease-in-out infinite;
         font-weight: 600;
-        color: #059669; /* green-600 */
+        color: #10b981; /* emerald-500 */
     }
 </style>
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -33,8 +33,8 @@
             <main class="flex-1 min-w-0 order-1 lg:order-2">
                 <div class="space-y-4" id="livescore-content">
                     @if(empty($groupedMatches))
-                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                            <p class="text-gray-500">Không có trận đấu nào đang diễn ra</p>
+                        <div class="bg-slate-800 rounded-lg shadow-md border border-slate-700 p-8 text-center">
+                            <p class="text-gray-400">Không có trận đấu nào đang diễn ra</p>
                         </div>
                     @else
                         @foreach($groupedMatches as $leagueKey => $leagueData)
@@ -46,9 +46,9 @@
                             @endphp
                             
                             {{-- League Section --}}
-                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="bg-slate-800 rounded-lg shadow-md border border-slate-700 overflow-hidden">
                                 {{-- League Header --}}
-                                <div class="bg-[#1a5f2f] px-4 py-3 flex items-center justify-between">
+                                <div class="bg-slate-900 px-4 py-3 flex items-center justify-between">
                                     <div class="flex items-center space-x-2">
                                         <h3 class="text-sm font-bold text-white">{{ $leagueName }}</h3>
                                         @if($countryName)
@@ -69,7 +69,7 @@
                                 </div>
                                 
                                 {{-- Matches List --}}
-                                <div class="bg-gray-50">
+                                <div class="bg-slate-700">
                                     @foreach($matches as $match)
                                         @php
                                             $matchId = $match['match_id'] ?? null;
@@ -137,7 +137,7 @@
                                             $isLive = $match['is_live'] ?? false;
                                         @endphp
                                         
-                                        <div class="px-2 sm:px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors {{ $matchId ? 'cursor-pointer' : '' }}"
+                                        <div class="px-2 sm:px-4 py-3 border-b border-slate-600 hover:bg-slate-600 transition-colors {{ $matchId ? 'cursor-pointer' : '' }}"
                                              @if($matchId) onclick="window.location.href='{{ route('match.detail', $matchId) }}'" @endif>
                                             {{-- Mobile Layout --}}
                                             <div class="flex flex-col sm:hidden space-y-2">
@@ -148,7 +148,7 @@
                                                                 <path d="M8 5v14l11-7z"/>
                                                             </svg>
                                                         @endif
-                                                        <span class="text-xs {{ $shouldBlink ? 'live-minute-blink' : 'text-gray-700' }}">{{ $timeDisplay }}</span>
+                                                        <span class="text-xs {{ $shouldBlink ? 'live-minute-blink' : 'text-gray-300' }}">{{ $timeDisplay }}</span>
                                                     </div>
                                                     @if($matchId)
                                                         <a href="{{ route('match.detail', $matchId) }}" 
@@ -179,11 +179,11 @@
                                                             <path d="M8 5v14l11-7z"/>
                                                         </svg>
                                                     @endif
-                                                    <span class="text-sm {{ $shouldBlink ? 'live-minute-blink' : 'text-gray-700' }}">{{ $timeDisplay }}</span>
+                                                    <span class="text-sm {{ $shouldBlink ? 'live-minute-blink' : 'text-gray-300' }}">{{ $timeDisplay }}</span>
                                                 </div>
                                                 
                                                 {{-- Home Team --}}
-                                                <div class="flex-1 text-sm text-gray-900 text-right pr-4 truncate">
+                                                <div class="flex-1 text-sm text-gray-100 text-right pr-4 truncate">
                                                     {{ $homeTeam }}
                                                 </div>
                                                 
@@ -200,7 +200,7 @@
                                                 @endif
                                                 
                                                 {{-- Away Team --}}
-                                                <div class="flex-1 text-sm text-gray-900 text-left pl-4 truncate">
+                                                <div class="flex-1 text-sm text-gray-100 text-left pl-4 truncate">
                                                     {{ $awayTeam }}
                                                 </div>
                                                 
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderMatches(groupedMatches) {
         if (!groupedMatches || Object.keys(groupedMatches).length === 0) {
             livescoreContent.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-8 text-center">
                     <p class="text-gray-500">Không có trận đấu nào đang diễn ra</p>
                 </div>
             `;
@@ -306,8 +306,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const matches = leagueData.matches ?? [];
             
             html += `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                    <div class="bg-[#1a5f2f] px-4 py-3 flex items-center justify-between">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden">
+                    <div class="bg-slate-900 px-4 py-3 flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <h3 class="text-sm font-bold text-white">${leagueName}</h3>
                             ${countryName ? `<span class="text-xs text-gray-300">(${countryName})</span>` : ''}
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             `}
                         </div>
                     </div>
-                    <div class="bg-gray-50">
+                    <div class="bg-slate-700">
             `;
             
             matches.forEach(match => {
@@ -336,13 +336,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const { timeDisplay, shouldBlink } = formatTimeDisplay(match);
                 const isLive = match.is_live ?? false;
                 
-                const timeClass = shouldBlink ? 'live-minute-blink' : 'text-gray-700';
+                const timeClass = shouldBlink ? 'live-minute-blink' : 'text-gray-300';
                 const matchDetailUrl = matchId ? `${matchDetailBaseUrl}/${matchId}` : '';
                 const onClick = matchId ? `onclick="window.location.href='${matchDetailUrl}'"` : '';
                 const cursorClass = matchId ? 'cursor-pointer' : '';
                 
                 html += `
-                    <div class="px-2 sm:px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition-colors ${cursorClass}" ${onClick}>
+                    <div class="px-2 sm:px-4 py-3 border-b border-slate-600 hover:bg-slate-600 transition-colors ${cursorClass}" ${onClick}>
                         <div class="flex flex-col sm:hidden space-y-2">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-1.5">
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ` : ''}
                                 <span class="text-sm ${timeClass}">${timeDisplay}</span>
                             </div>
-                            <div class="flex-1 text-sm text-gray-900 text-right pr-4 truncate">
+                            <div class="flex-1 text-sm text-gray-100 text-right pr-4 truncate">
                                 ${homeTeam}
                             </div>
                             ${matchId ? `
@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${currentScore}
                                 </div>
                             `}
-                            <div class="flex-1 text-sm text-gray-900 text-left pl-4 truncate">
+                            <div class="flex-1 text-sm text-gray-100 text-left pl-4 truncate">
                                 ${awayTeam}
                             </div>
                             <div class="bg-gray-600 text-white text-xs font-medium px-2 py-1 rounded ml-4 min-w-[45px] text-center flex-shrink-0">

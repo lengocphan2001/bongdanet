@@ -27,9 +27,9 @@
     ];
 @endphp
 
-<div class="bg-white shadow-sm border border-gray-200 overflow-hidden w-fit">
+<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-fit">
     {{-- Header --}}
-    <div class="bg-[#f59e0b] py-3 px-4">
+    <div class="bg-amber-600 py-3 px-4">
         <h2 class="text-base font-bold text-white uppercase text-center">NHẬN ĐỊNH BÓNG ĐÁ</h2>
     </div>
     
@@ -37,10 +37,10 @@
     <nav>
         <ul>
             @foreach ($items as $index => $item)
-                <li class="hover:bg-gray-100">
+                <li class="hover:bg-slate-700">
                     <a href="{{ $item['url'] }}" 
-                       class="block py-2 px-4 text-xs text-gray-900 font-medium transition-colors duration-150
-                              {{ $index < count($items) - 1 ? 'border-b border-gray-200' : '' }}">
+                       class="block py-2 px-4 text-xs text-gray-300 font-medium transition-colors duration-150
+                              {{ $index < count($items) - 1 ? 'border-b border-slate-700' : '' }}">
                         {{ $item['label'] }}
                     </a>
                 </li>

@@ -3,7 +3,7 @@
 @section('title', 'Bảng xếp hạng bóng đá - Keobongda')
 
 @section('content')
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -16,18 +16,18 @@
             {{-- Left Column - Main Content --}}
             <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                     Bảng xếp hạng bóng đá - Danh sách các giải đấu
                 </h1>
 
                 {{-- Search Box --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="relative">
                         <input 
                             type="text" 
                             id="league-search-input"
                             placeholder="Tìm kiếm giải đấu, quốc gia, châu lục..." 
-                            class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a5f2f] focus:border-[#1a5f2f] outline-none"
+                            class="w-full px-4 py-2 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
                             autocomplete="off"
                         />
                         <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
                 </div>
 
                 {{-- Leagues Grid --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-4 sm:p-6">
                     @if(empty($leagues))
                         <div class="text-center py-8 text-gray-500">
                             Không có dữ liệu giải đấu
@@ -56,12 +56,12 @@
                         <div id="leagues-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                             @foreach($leagues as $league)
                                 <a href="{{ route('standings.show', $league['id']) }}" 
-                                   class="league-item block p-4 border border-gray-200 rounded-lg hover:border-[#1a5f2f] hover:bg-green-50 transition-all"
+                                   class="league-item block p-4 border border-slate-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
                                    data-league-name="{{ strtolower($league['name'] ?? '') }}"
                                    data-country-name="{{ strtolower($league['country_name'] ?? '') }}"
                                    data-continent-name="{{ strtolower($league['continent_name'] ?? '') }}"
                                    data-search-text="{{ strtolower(($league['name'] ?? '') . ' ' . ($league['country_name'] ?? '') . ' ' . ($league['continent_name'] ?? '')) }}">
-                                    <div class="font-semibold text-gray-900 mb-1">{{ $league['name'] ?? 'N/A' }}</div>
+                                    <div class="font-semibold text-white mb-1">{{ $league['name'] ?? 'N/A' }}</div>
                                     <div class="text-sm text-gray-600">
                                         @if(isset($league['country_name']))
                                             {{ $league['country_name'] }}
@@ -84,8 +84,8 @@
                         
                         {{-- Pagination --}}
                         @if($totalPages > 1)
-                            <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 pt-4 space-y-3 sm:space-y-0">
-                                <div class="text-xs sm:text-sm text-gray-700 text-center sm:text-left">
+                            <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-between border-t border-slate-700 pt-4 space-y-3 sm:space-y-0">
+                                <div class="text-xs sm:text-sm text-gray-300 text-center sm:text-left">
                                     Hiển thị <span class="font-medium">{{ (($currentPage - 1) * $perPage) + 1 }}</span> đến 
                                     <span class="font-medium">{{ min($currentPage * $perPage, $total) }}</span> trong tổng số 
                                     <span class="font-medium">{{ $total }}</span> giải đấu
@@ -95,7 +95,7 @@
                                     {{-- Previous Button --}}
                                     @if($currentPage > 1)
                                         <a href="{{ route('standings.index', ['page' => $currentPage - 1]) }}" 
-                                           class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                                           class="px-3 py-2 text-sm font-medium text-gray-300 bg-slate-700 border border-slate-600 rounded-md hover:bg-slate-600">
                                             Trước
                                         </a>
                                     @else
@@ -121,7 +121,7 @@
                                             // Show pages in range
                                             for ($i = $startPage; $i <= $endPage; $i++) {
                                                 if ($i == $currentPage) {
-                                                    echo '<span class="px-3 py-2 text-sm font-medium text-white bg-[#1a5f2f] border border-[#1a5f2f] rounded-md">' . $i . '</span>';
+                                                    echo '<span class="px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-blue-600 rounded-lg shadow-sm">' . $i . '</span>';
                                                 } else {
                                                     echo '<a href="' . route('standings.index', ['page' => $i]) . '" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">' . $i . '</a>';
                                                 }
@@ -140,7 +140,7 @@
                                     {{-- Next Button --}}
                                     @if($currentPage < $totalPages)
                                         <a href="{{ route('standings.index', ['page' => $currentPage + 1]) }}" 
-                                           class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                                           class="px-3 py-2 text-sm font-medium text-gray-300 bg-slate-700 border border-slate-600 rounded-md hover:bg-slate-600">
                                             Sau
                                         </a>
                                     @else

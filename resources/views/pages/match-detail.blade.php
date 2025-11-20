@@ -3,7 +3,7 @@
 @section('title', 'keobongda.co - Kết quả trận ' . ($homeTeam['name'] ?? '') . ' vs ' . ($awayTeam['name'] ?? ''))
 
 @section('content')
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -14,12 +14,12 @@
     {{-- Main Content Area --}}
     <div class="container mx-auto px-2 sm:px-4 py-4">
         {{-- Page Title --}}
-        <h1 class="text-lg sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 break-words">
+        <h1 class="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6 break-words">
             Kết quả trận {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}, {{ $displayTime ? str_replace(':', 'h', $displayTime) : '' }} ngày {{ $displayDate ?? '' }}
         </h1>
 
         {{-- Match Summary Box (Green) --}}
-        <div class="bg-[#1a5f2f] rounded-lg shadow-lg mb-4 sm:mb-6 p-4 sm:p-6">
+        <div class="bg-slate-900 rounded-lg shadow-xl mb-4 sm:mb-6 p-4 sm:p-6">
             {{-- League/Stage Info --}}
             <div class="text-center text-white mb-4">
                 <p class="text-xs sm:text-sm font-medium break-words">
@@ -90,40 +90,40 @@
 
 
         {{-- Navigation Tabs --}}
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-            <div class="flex border-b border-gray-200">
-                <a href="#" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-[#1a5f2f] border-b-2 border-transparent hover:border-[#1a5f2f] transition-colors">
+        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 mb-6">
+            <div class="flex border-b border-slate-700">
+                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
                     NHẬN ĐỊNH
                 </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-[#1a5f2f] border-b-2 border-[#1a5f2f]">
+                <a href="#" class="px-6 py-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600">
                     CHI TIẾT
                 </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-[#1a5f2f] border-b-2 border-transparent hover:border-[#1a5f2f] transition-colors">
+                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
                     PHÂN TÍCH
                 </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-[#1a5f2f] border-b-2 border-transparent hover:border-[#1a5f2f] transition-colors">
+                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
                     SO SÁNH TL
                 </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-gray-700 hover:text-[#1a5f2f] border-b-2 border-transparent hover:border-[#1a5f2f] transition-colors">
+                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
                     TK CẦU THỦ
                 </a>
             </div>
         </div>
 
         {{-- Content Section --}}
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-4">{{ strtoupper($league['name'] ?? '') }}</h2>
-            <p class="text-sm text-gray-700 mb-4">
+        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-6 mb-6">
+            <h2 class="text-lg font-bold text-white mb-4">{{ strtoupper($league['name'] ?? '') }}</h2>
+            <p class="text-sm text-gray-300 mb-4">
                 Bóng đá net - Bóng đá số cập nhật tỷ số Kết quả bóng đá {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }} hôm nay ngày {{ $displayDate ?? '' }}/{{ date('Y') }} lúc {{ $displayTime ?? '' }} chuẩn xác mới nhất. Xem diễn biến trực tiếp lịch thi đấu - Bảng xếp hạng - Tỷ lệ bóng đá - Kqbd {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }} tại {{ $league['name'] ?? '' }} {{ date('Y') }}.
             </p>
-            <p class="text-sm text-gray-700">
+            <p class="text-sm text-gray-300">
                 Cập nhật nhanh chóng kqbd trực tiếp của hơn 1000+++ giải đấu HOT trên thế giới. Xem ngay diễn biến kết quả {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }} hôm nay chính xác nhất tại đây.
             </p>
         </div>
 
         {{-- Match Events Section --}}
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 mb-4" data-section="match-events">
-            <h2 class="text-sm font-bold text-gray-900 mb-2">Diễn biến - Kết quả {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}</h2>
+        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4" data-section="match-events">
+            <h2 class="text-sm font-bold text-white mb-2">Diễn biến - Kết quả {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}</h2>
             
             @php
                 // Use matchEvents from API match_events endpoint
@@ -157,13 +157,13 @@
             @endphp
             
             @if(empty($filteredEvents))
-                <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                    <p class="text-red-600 font-medium">Trận đấu chưa có dữ liệu !</p>
+                <div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center">
+                    <p class="text-red-400 font-medium">Trận đấu chưa có dữ liệu !</p>
                 </div>
             @else
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <div class="border border-slate-700 rounded-lg overflow-hidden">
                     <table class="w-full text-xs">
-                        <thead class="bg-gray-100">
+                        <thead class="bg-slate-700">
                             <tr>
                                 <th class="px-2 py-2 text-left">
                                     <div class="flex items-center space-x-2">
@@ -214,7 +214,7 @@
                                         $eventColor = 'text-yellow-600';
                                     } elseif ($eventType === 'redcard') {
                                         $eventIcon = '🟥';
-                                        $eventColor = 'text-red-600';
+                                        $eventColor = 'text-red-400';
                                     } elseif ($eventType === 'yellowredcard') {
                                         $eventIcon = '🟨🟥';
                                         $eventColor = 'text-orange-600';
@@ -275,12 +275,12 @@
         </div>
 
         {{-- Statistics Section --}}
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 mb-4" data-section="match-stats">
-            <h2 class="text-sm font-bold text-gray-900 mb-2">Thống kê kỹ thuật {{ $homeTeam['name'] ?? '' }} VS {{ $awayTeam['name'] ?? '' }}</h2>
+        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4" data-section="match-stats">
+            <h2 class="text-sm font-bold text-white mb-2">Thống kê kỹ thuật {{ $homeTeam['name'] ?? '' }} VS {{ $awayTeam['name'] ?? '' }}</h2>
             
             @if(empty($homeMatchStats) && empty($awayMatchStats))
-                <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                    <p class="text-red-600 font-medium">Chưa có bảng thống kê số liệu trận đấu !</p>
+                <div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center">
+                    <p class="text-red-400 font-medium">Chưa có bảng thống kê số liệu trận đấu !</p>
                 </div>
             @else
                 {{-- Header with team names and logos --}}
@@ -410,7 +410,7 @@
                         @endphp
                         <div class="flex items-center py-1 border-b border-gray-100">
                             {{-- Home value --}}
-                            <div class="w-16 text-right text-xs font-medium text-gray-900 pr-1">
+                            <div class="w-16 text-right text-xs font-medium text-gray-100 pr-1">
                                 {{ $homeDisplay }}
                             </div>
                             
@@ -420,7 +420,7 @@
                             </div>
                             
                             {{-- Stat label --}}
-                            <div class="w-40 text-center text-xs font-medium text-gray-700 px-1">
+                            <div class="w-40 text-center text-xs font-medium text-gray-300 px-1">
                                 {{ $stat['label'] }}
                             </div>
                             
@@ -430,7 +430,7 @@
                             </div>
                             
                             {{-- Away value --}}
-                            <div class="w-16 text-left text-xs font-medium text-gray-900 pl-1">
+                            <div class="w-16 text-left text-xs font-medium text-gray-100 pl-1">
                                 {{ $awayDisplay }}
                             </div>
                         </div>
@@ -440,12 +440,12 @@
         </div>
 
         {{-- Lineup Section --}}
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 mb-4" data-section="match-lineups">
-            <h2 class="text-sm font-bold text-gray-900 mb-2">Đội hình xuất phát</h2>
+        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4" data-section="match-lineups">
+            <h2 class="text-sm font-bold text-white mb-2">Đội hình xuất phát</h2>
             
             @if(empty($matchLineups))
-                <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                    <p class="text-red-600 font-medium">Chưa có thông tin đội hình ra sân !</p>
+                <div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center">
+                    <p class="text-red-400 font-medium">Chưa có thông tin đội hình ra sân !</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -457,16 +457,16 @@
                             $homeCoach = $homeLineup['coach'] ?? null;
                             $homeSquad = $homeLineup['squad'] ?? [];
                         @endphp
-                        <div class="border border-gray-200 rounded-lg p-2">
+                        <div class="border border-slate-700 rounded-lg p-2">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center space-x-1">
                                     @if (!empty($homeTeam['img']))
                                         <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-6 h-6">
                                     @endif
-                                    <h3 class="text-sm font-bold text-gray-900">{{ $homeTeam['name'] ?? '' }}</h3>
+                                    <h3 class="text-sm font-bold text-white">{{ $homeTeam['name'] ?? '' }}</h3>
                                 </div>
                                 @if($homeFormation)
-                                    <span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-medium">{{ $homeFormation }}</span>
+                                    <span class="bg-slate-700 px-2 py-0.5 rounded text-xs font-medium text-gray-300">{{ $homeFormation }}</span>
                                 @endif
                             </div>
                             @if($homeCoach)
@@ -482,8 +482,8 @@
                                         $positionName = $player['position_name'] ?? '';
                                         $isCaptain = $player['captain'] ?? false;
                                     @endphp
-                                    <div class="flex items-center space-x-2 p-1 hover:bg-gray-50 rounded">
-                                        <span class="w-6 text-center font-bold text-gray-700 text-xs">{{ $playerNumber }}</span>
+                                    <div class="flex items-center space-x-2 p-1 hover:bg-slate-700 rounded">
+                                        <span class="w-6 text-center font-bold text-gray-300 text-xs">{{ $playerNumber }}</span>
                                         @if (!empty($playerInfo['img']))
                                             <img src="{{ $playerInfo['img'] }}" alt="{{ $playerName }}" class="w-6 h-6 rounded-full">
                                         @else
@@ -491,7 +491,7 @@
                                         @endif
                                         <div class="flex-1">
                                             <div class="flex items-center space-x-1">
-                                                <span class="text-xs font-medium text-gray-900">{{ $playerName ?: 'N/A' }}</span>
+                                                <span class="text-xs font-medium text-gray-100">{{ $playerName ?: 'N/A' }}</span>
                                                 @if($isCaptain)
                                                     <span class="text-xs bg-yellow-100 text-yellow-800 px-1 py-0.5 rounded">C</span>
                                                 @endif
@@ -512,16 +512,16 @@
                             $awayCoach = $awayLineup['coach'] ?? null;
                             $awaySquad = $awayLineup['squad'] ?? [];
                         @endphp
-                        <div class="border border-gray-200 rounded-lg p-2">
+                        <div class="border border-slate-700 rounded-lg p-2">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center space-x-1">
                                     @if (!empty($awayTeam['img']))
                                         <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-6 h-6">
                                     @endif
-                                    <h3 class="text-sm font-bold text-gray-900">{{ $awayTeam['name'] ?? '' }}</h3>
+                                    <h3 class="text-sm font-bold text-white">{{ $awayTeam['name'] ?? '' }}</h3>
                                 </div>
                                 @if($awayFormation)
-                                    <span class="bg-gray-100 px-2 py-0.5 rounded text-xs font-medium">{{ $awayFormation }}</span>
+                                    <span class="bg-slate-700 px-2 py-0.5 rounded text-xs font-medium text-gray-300">{{ $awayFormation }}</span>
                                 @endif
                             </div>
                             @if($awayCoach)
@@ -537,8 +537,8 @@
                                         $positionName = $player['position_name'] ?? '';
                                         $isCaptain = $player['captain'] ?? false;
                                     @endphp
-                                    <div class="flex items-center space-x-2 p-1 hover:bg-gray-50 rounded">
-                                        <span class="w-6 text-center font-bold text-gray-700 text-xs">{{ $playerNumber }}</span>
+                                    <div class="flex items-center space-x-2 p-1 hover:bg-slate-700 rounded">
+                                        <span class="w-6 text-center font-bold text-gray-300 text-xs">{{ $playerNumber }}</span>
                                         @if (!empty($playerInfo['img']))
                                             <img src="{{ $playerInfo['img'] }}" alt="{{ $playerName }}" class="w-6 h-6 rounded-full">
                                         @else
@@ -546,7 +546,7 @@
                                         @endif
                                         <div class="flex-1">
                                             <div class="flex items-center space-x-1">
-                                                <span class="text-xs font-medium text-gray-900">{{ $playerName ?: 'N/A' }}</span>
+                                                <span class="text-xs font-medium text-gray-100">{{ $playerName ?: 'N/A' }}</span>
                                                 @if($isCaptain)
                                                     <span class="text-xs bg-yellow-100 text-yellow-800 px-1 py-0.5 rounded">C</span>
                                                 @endif
@@ -584,9 +584,9 @@
     // Container IDs for updating
     const containers = {
         matchSummary: document.querySelector('.bg-\\[\\#1a5f2f\\]'),
-        matchEvents: document.querySelector('[data-section="match-events"]') || document.querySelector('.bg-white.rounded-lg.shadow-sm.border.border-gray-200.p-6.mb-6:nth-of-type(2)'),
-        matchStats: document.querySelector('[data-section="match-stats"]') || document.querySelector('.bg-white.rounded-lg.shadow-sm.border.border-gray-200.p-6.mb-6:nth-of-type(3)'),
-        matchLineups: document.querySelector('[data-section="match-lineups"]') || document.querySelector('.bg-white.rounded-lg.shadow-sm.border.border-gray-200.p-6.mb-6:last-of-type'),
+        matchEvents: document.querySelector('[data-section="match-events"]') || document.querySelector('.bg-slate-800.rounded-lg.shadow-sm.border.border-slate-700.p-6.mb-6:nth-of-type(2)'),
+        matchStats: document.querySelector('[data-section="match-stats"]') || document.querySelector('.bg-slate-800.rounded-lg.shadow-sm.border.border-slate-700.p-6.mb-6:nth-of-type(3)'),
+        matchLineups: document.querySelector('[data-section="match-lineups"]') || document.querySelector('.bg-slate-800.rounded-lg.shadow-sm.border.border-slate-700.p-6.mb-6:last-of-type'),
     };
     
     // Add data attributes to sections for easier targeting
@@ -742,7 +742,7 @@
                 eventColor = 'text-yellow-600';
             } else if (eventType === 'redcard') {
                 eventIcon = '🟥';
-                eventColor = 'text-red-600';
+                eventColor = 'text-red-400';
             } else if (eventType === 'yellowredcard') {
                 eventIcon = '🟨🟥';
                 eventColor = 'text-orange-600';
@@ -796,7 +796,7 @@
         if (!homeMatchStats && !awayMatchStats) {
             const content = containers.matchStats.querySelector('.space-y-3');
             if (content) {
-                content.innerHTML = '<div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center"><p class="text-red-600 font-medium">Chưa có bảng thống kê số liệu trận đấu !</p></div>';
+                content.innerHTML = '<div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center"><p class="text-red-400 font-medium">Chưa có bảng thống kê số liệu trận đấu !</p></div>';
             }
             return;
         }
@@ -872,15 +872,15 @@
                 
                 return `
                     <div class="flex items-center py-2 border-b border-gray-100">
-                        <div class="w-20 text-right text-sm font-medium text-gray-900 pr-2">${homeDisplay}</div>
+                        <div class="w-20 text-right text-sm font-medium text-gray-100 pr-2">${homeDisplay}</div>
                         <div class="flex-1 relative h-6 mx-2">
                             <div class="absolute left-0 top-0 h-full bg-green-500 rounded-l" style="width: ${homePercent}%"></div>
                         </div>
-                        <div class="w-48 text-center text-sm font-medium text-gray-700 px-2">${stat.label}</div>
+                        <div class="w-48 text-center text-sm font-medium text-gray-300 px-2">${stat.label}</div>
                         <div class="flex-1 relative h-6 mx-2">
                             <div class="absolute right-0 top-0 h-full bg-orange-500 rounded-r" style="width: ${awayPercent}%"></div>
                         </div>
-                        <div class="w-20 text-left text-sm font-medium text-gray-900 pl-2">${awayDisplay}</div>
+                        <div class="w-20 text-left text-sm font-medium text-gray-100 pl-2">${awayDisplay}</div>
                     </div>
                 `;
             }).join('');

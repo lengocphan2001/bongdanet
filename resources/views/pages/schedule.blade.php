@@ -3,7 +3,7 @@
     @section('title', 'Keobongda.co - Lịch thi đấu')
 
 @section('content')
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -16,16 +16,16 @@
             {{-- Left Column - Main Content --}}
             <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                     Lịch thi đấu bóng đá hôm nay - Lịch bóng đá trực tuyến
                 </h1>
 
                 {{-- Date Selection Dropdown --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div class="bg-slate-800 rounded-lg shadow-md border border-slate-700 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-                        <label for="date-select" class="text-sm font-medium text-gray-700 whitespace-nowrap">Chọn ngày:</label>
+                        <label for="date-select" class="text-sm font-semibold text-gray-300 whitespace-nowrap">Chọn ngày:</label>
                         <select id="date-select" onchange="window.location.href='{{ route('schedule') }}?date=' + this.value" 
-                                class="w-full sm:w-auto px-4 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f2f] focus:border-[#1a5f2f]">
+                                class="w-full sm:w-auto px-4 py-2 text-sm text-gray-100 bg-slate-700 border border-slate-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                             @foreach ($dateOptions ?? [] as $option)
                                 <option value="{{ $option['value'] }}" {{ $option['value'] == ($date ?? $today ?? date('Y-m-d')) ? 'selected' : '' }}>
                                     {{ $option['label'] }}
@@ -51,7 +51,7 @@
                         ['name' => 'Cúp C1 Châu Á', 'id' => 511],
                     ];
                 @endphp
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-wrap gap-2">
                         @foreach($leagueFilters as $filter)
                             <a href="{{ route('schedule.league', $filter['id']) }}" 

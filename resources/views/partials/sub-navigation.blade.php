@@ -1,12 +1,12 @@
 {{-- Top Sub-navigation Bar với 3 phần --}}
-<div class="bg-white border-b border-gray-200">
+<div class="bg-gradient-to-r from-slate-800 to-slate-700 border-b border-slate-600 shadow-sm">
     <div class="container mx-auto px-4">
         <div class="flex items-stretch">
             {{-- Center Section - Title --}}
-            <div class="flex-1 bg-white py-3 px-4 flex items-center justify-center">
-                <h2 class="text-base font-bold text-gray-900 text-center leading-tight">
+            <div class="flex-1 bg-transparent py-4 px-4 flex items-center justify-center">
+                <h2 class="text-base sm:text-lg font-bold text-white text-center leading-tight">
                     <span class="whitespace-nowrap">KEOBONGDA | BÓNG ĐÁ SỐ - DỮ LIỆU CHÍNH XÁC VÀ KỊP THỜI NHẤT </span>
-                    <span class="text-blue-600 whitespace-nowrap">BONGDASO</span>
+                    <span class="text-blue-400 whitespace-nowrap font-extrabold">BONGDASO</span>
                     <span class="whitespace-nowrap"> TRỰC TUYẾN MỚI NHẤT</span>
                 </h2>
             </div>
@@ -15,19 +15,19 @@
 </div>
 
 {{-- Secondary Sub-navigation Bar --}}
-<div class="bg-white border-b border-gray-200">
+<div class="bg-slate-800 border-b border-slate-700 shadow-sm">
     <div class="container mx-auto px-4">
-        <nav class="flex items-center space-x-6 h-12">
-            <a href="#" class="text-red-600 font-medium text-sm hover:underline">
+        <nav class="flex items-center space-x-1 sm:space-x-6 h-12 overflow-x-auto">
+            <a href="#" class="text-blue-400 font-semibold text-sm hover:text-blue-300 px-3 py-2 rounded-lg hover:bg-slate-700 transition-all duration-200 whitespace-nowrap border-b-2 border-blue-400">
                 Tỷ lệ kèo
             </a>
-            <a href="#" class="text-gray-700 font-medium text-sm hover:text-red-600 transition-colors">
+            <a href="#" class="text-gray-300 font-medium text-sm hover:text-blue-400 hover:bg-slate-700 px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap">
                 Kqbd
             </a>
-            <a href="#" class="text-gray-700 font-medium text-sm hover:text-red-600 transition-colors">
+            <a href="#" class="text-gray-300 font-medium text-sm hover:text-blue-400 hover:bg-slate-700 px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap">
                 Nhà cái uy tín
             </a>
-            <a href="#" class="text-gray-700 font-medium text-sm hover:text-red-600 transition-colors">
+            <a href="#" class="text-gray-300 font-medium text-sm hover:text-blue-400 hover:bg-slate-700 px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap">
                 Nhận định bóng đá
             </a>
         </nav>

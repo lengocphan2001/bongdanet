@@ -3,7 +3,7 @@
 @section('title', 'keobongda.co - Kết quả bóng đá')
 
 @section('content')
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
         ['label' => 'keobongda.co', 'url' => route('home')],
@@ -16,15 +16,15 @@
             {{-- Left Column - Main Content --}}
             <main class="flex-1 min-w-0 order-1 lg:order-1">
                 {{-- Page Title --}}
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+                <h1 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                     Kqbd hôm nay nhanh nhất - Kết quả bóng đá trực tuyến đêm qua
                 </h1>
 
                 {{-- Date Navigation Tabs --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4">
+                <div class="bg-slate-800 rounded-lg shadow-md border border-slate-700 p-3 sm:p-4 mb-4">
                     <div class="flex flex-wrap gap-2">
                         <a href="{{ route('results', ['type' => 'live']) }}" 
-                           class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white {{ ($isLive ?? false) ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-600 hover:bg-gray-700' }} rounded transition-colors">
+                           class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-white {{ ($isLive ?? false) ? 'bg-emerald-600 hover:bg-emerald-700 shadow-sm' : 'bg-slate-600 hover:bg-slate-700' }} rounded-lg transition-all duration-200">
                             Kết quả trực truyền
                         </a>
                         @foreach ($dateOptions ?? [] as $option)
@@ -42,7 +42,7 @@
                 </div>
 
                 {{-- League Navigation Tabs --}}
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 sm:p-4 mb-4 sm:mb-6">
                     <div class="flex flex-wrap gap-2">
                         @php
                             $leagueFilters = [

@@ -21,37 +21,37 @@
     }
 @endphp
 
-<div class="bg-white shadow-sm border border-gray-200 overflow-hidden w-full">
+<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-full">
     {{-- Header with green background --}}
-    <div class="bg-[#1a5f2f] px-4 py-3">
+    <div class="bg-slate-900 px-4 py-3">
         <h2 class="text-base font-bold text-white uppercase text-center">BXH FIFA (bóng đá nam Việt Nam)</h2>
     </div>
 
     {{-- Table --}}
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-100">
+        <table class="min-w-full divide-y divide-slate-700">
+            <thead class="bg-slate-700">
                 <tr>
-                    <th class="px-3 py-2 text-center text-xs font-bold text-gray-700 uppercase">XH</th>
-                    <th class="px-3 py-2 text-left text-xs font-bold text-gray-700 uppercase">Tuyển QG</th>
-                    <th class="px-3 py-2 text-center text-xs font-bold text-gray-700 uppercase">+/-</th>
-                    <th class="px-3 py-2 text-right text-xs font-bold text-gray-700 uppercase">Điểm</th>
+                    <th class="px-3 py-2 text-center text-xs font-bold text-gray-300 uppercase">XH</th>
+                    <th class="px-3 py-2 text-left text-xs font-bold text-gray-300 uppercase">Tuyển QG</th>
+                    <th class="px-3 py-2 text-center text-xs font-bold text-gray-300 uppercase">+/-</th>
+                    <th class="px-3 py-2 text-right text-xs font-bold text-gray-300 uppercase">Điểm</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-slate-800 divide-y divide-slate-700">
                 @foreach ($rankings as $index => $ranking)
-                    <tr class="{{ ($ranking['highlight'] ?? false) ? 'bg-yellow-200' : ($index % 2 === 0 ? 'bg-white' : 'bg-gray-50') }}">
-                        <td class="px-3 py-2 text-center text-xs text-gray-900">{{ $ranking['rank'] }}</td>
-                        <td class="px-3 py-2 text-left text-xs text-gray-900">
+                    <tr class="{{ ($ranking['highlight'] ?? false) ? 'bg-amber-900' : ($index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-700') }}">
+                        <td class="px-3 py-2 text-center text-xs text-gray-100">{{ $ranking['rank'] }}</td>
+                        <td class="px-3 py-2 text-left text-xs text-gray-100">
                             <div class="flex items-center space-x-2">
                                 <span class="text-lg">{{ $ranking['flag'] ?? '' }}</span>
                                 <span>{{ $ranking['country'] }}</span>
                             </div>
                         </td>
-                        <td class="px-3 py-2 text-center text-xs {{ ($ranking['change'] ?? 0) >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                        <td class="px-3 py-2 text-center text-xs {{ ($ranking['change'] ?? 0) >= 0 ? 'text-green-400' : 'text-red-400' }}">
                             {{ ($ranking['change'] ?? 0) > 0 ? '+' : '' }}{{ $ranking['change'] ?? 0 }}
                         </td>
-                        <td class="px-3 py-2 text-right text-xs text-gray-900">{{ number_format($ranking['points'] ?? 0) }}</td>
+                        <td class="px-3 py-2 text-right text-xs text-gray-100">{{ number_format($ranking['points'] ?? 0) }}</td>
                     </tr>
                 @endforeach
             </tbody>

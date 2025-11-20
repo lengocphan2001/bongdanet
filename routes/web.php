@@ -32,6 +32,10 @@ Route::get('/api/all-matches-table', [\App\Http\Controllers\Api\SoccerApiControl
 Route::get('/api/match-details', [\App\Http\Controllers\Api\SoccerApiController::class, 'getMatchDetails'])->name('api.match.details');
 // Get full match detail data for JavaScript rendering
 Route::get('/api/match-detail-data', [\App\Http\Controllers\Api\SoccerApiController::class, 'getMatchDetailData'])->name('api.match.detail.data');
+Route::get('/api/match-detail/{id}', [\App\Http\Controllers\Api\SoccerApiController::class, 'getMatchDetail'])->name('api.match.detail');
+Route::get('/api/match-events/{id}', [\App\Http\Controllers\Api\SoccerApiController::class, 'getMatchEvents'])->name('api.match.events');
+Route::get('/api/match-h2h/{id}', [\App\Http\Controllers\Api\SoccerApiController::class, 'getH2H'])->name('api.match.h2h');
+Route::get('/api/match-all/{id}', [\App\Http\Controllers\Api\SoccerApiController::class, 'getMatchAllData'])->name('api.match.all');
 // Get schedule matches for table (auto-refresh)
 Route::get('/api/schedule-matches-table', [\App\Http\Controllers\Api\SoccerApiController::class, 'getScheduleMatchesTable'])->name('api.schedule.matches.table');
 

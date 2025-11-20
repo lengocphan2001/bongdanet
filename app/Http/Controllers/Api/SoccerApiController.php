@@ -434,5 +434,237 @@ class SoccerApiController extends ApiController
             'matchEvents' => $matchEvents,
         ], 'Match detail data fetched successfully');
     }
+
+    /**
+     * Get match detail for modal
+     */
+    public function getMatchDetail($id)
+    {
+        $matchData = \Illuminate\Support\Facades\Cache::remember("match_detail:{$id}", 300, function () use ($id) {
+            return $this->soccerApiService->getFixtureInfo($id);
+        });
+
+        if (!$matchData) {
+            return $this->error('Match not found', 404);
+        }
+
+        return $this->success($matchData, 'Match detail fetched successfully');
+    }
+
+    /**
+     * Get match events and odds_prematch for modal (combined)
+     */
+    public function getMatchEvents($id)
+    {
+        $matchData = \Illuminate\Support\Facades\Cache::remember("match_detail:{$id}", 300, function () use ($id) {
+            return $this->soccerApiService->getFixtureInfo($id);
+        });
+
+        if (!$matchData) {
+            return $this->error('Match not found', 404);
+        }
+
+        $homeTeam = $matchData['teams']['home'] ?? [];
+        $awayTeam = $matchData['teams']['away'] ?? [];
+        $homeTeamId = $homeTeam['id'] ?? null;
+        $awayTeamId = $awayTeam['id'] ?? null;
+
+        // Get events, odds_prematch, and stats in one call
+        $cacheKey = "match_events_odds_stats:{$id}";
+        $data = \Illuminate\Support\Facades\Cache::remember($cacheKey, 300, function () use ($id) {
+            // Get match with events, odds_prematch, and stats
+            $params = [
+                't' => 'match',
+                'id' => $id,
+                'include' => 'events,odds_prematch,stats',
+            ];
+            
+            $response = $this->soccerApiService->makeRequest('fixtures', $params);
+            
+            if ($response && isset($response['data'])) {
+                $match = $response['data'];
+                
+                // Get stats separately if not in response
+                $stats = null;
+                if (!isset($match['stats']) || empty($match['stats'])) {
+                    $stats = $this->soccerApiService->getMatchStats($id);
+                } else {
+                    $stats = $match['stats'];
+                }
+                
+                return [
+                    'events' => $match['events'] ?? [],
+                    'odds_prematch' => $match['odds_prematch'] ?? null,
+                    'stats' => $stats,
+                ];
+            }
+            
+            // Fallback: get separately if combined call fails
+            $events = $this->soccerApiService->getMatchEvents($id);
+            $stats = $this->soccerApiService->getMatchStats($id);
+            
+            // Get odds_prematch separately
+            $oddsPrematch = null;
+            $matchOddsParams = [
+                't' => 'match',
+                'id' => $id,
+                'include' => 'odds_prematch',
+            ];
+            $oddsResponse = $this->soccerApiService->makeRequest('fixtures', $matchOddsParams);
+            if ($oddsResponse && isset($oddsResponse['data'])) {
+                $oddsPrematch = $oddsResponse['data']['odds_prematch'] ?? null;
+            }
+            
+            return [
+                'events' => $events ?? [],
+                'odds_prematch' => $oddsPrematch,
+                'stats' => $stats,
+            ];
+        });
+
+        // Process stats to separate home and away
+        $homeStats = null;
+        $awayStats = null;
+        if ($data['stats'] && is_array($data['stats'])) {
+            foreach ($data['stats'] as $stat) {
+                $teamId = $stat['team_id'] ?? null;
+                if ($teamId == $homeTeamId) {
+                    $homeStats = $stat;
+                } elseif ($teamId == $awayTeamId) {
+                    $awayStats = $stat;
+                }
+            }
+        }
+
+        return $this->success([
+            'data' => $data['events'] ?? [],
+            'odds_prematch' => $data['odds_prematch'] ?? null,
+            'stats' => [
+                'home' => $homeStats,
+                'away' => $awayStats,
+            ],
+            'home_team_id' => $homeTeamId,
+            'away_team_id' => $awayTeamId,
+        ], 'Match events, odds and stats fetched successfully');
+    }
+
+    /**
+     * Get H2H data for modal
+     */
+    public function getH2H($id)
+    {
+        $h2hData = $this->soccerApiService->getH2H($id);
+
+        if (!$h2hData) {
+            return $this->error('H2H data not found', 404);
+        }
+
+        return $this->success($h2hData, 'H2H data fetched successfully');
+    }
+
+    /**
+     * Get all match data for modal in one call (optimized)
+     * Returns: match detail, events, odds, stats, and h2h
+     */
+    public function getMatchAllData($id)
+    {
+        $cacheKey = "match_all_data:{$id}";
+        
+        $data = \Illuminate\Support\Facades\Cache::remember($cacheKey, 300, function () use ($id) {
+            // Get all data in parallel using promises/async if possible
+            // For now, we'll optimize by getting what we can in one call
+            
+            // Get match detail
+            $matchData = $this->soccerApiService->getFixtureInfo($id);
+            
+            if (!$matchData) {
+                return null;
+            }
+            
+            $homeTeam = $matchData['teams']['home'] ?? [];
+            $awayTeam = $matchData['teams']['away'] ?? [];
+            $homeTeamId = $homeTeam['id'] ?? null;
+            $awayTeamId = $awayTeam['id'] ?? null;
+            
+            // Get events, odds_prematch, and stats in one call
+            $params = [
+                't' => 'match',
+
+                'id' => $id,
+                'include' => 'events,odds_prematch,stats',
+            ];
+            
+            $response = $this->soccerApiService->makeRequest('fixtures', $params);
+            
+            $events = [];
+            $oddsPrematch = null;
+            $stats = null;
+            
+            if ($response && isset($response['data'])) {
+                $match = $response['data'];
+                $events = $match['events'] ?? [];
+                $oddsPrematch = $match['odds_prematch'] ?? null;
+                
+                // Get stats if not in response
+                if (!isset($match['stats']) || empty($match['stats'])) {
+                    $stats = $this->soccerApiService->getMatchStats($id);
+                } else {
+                    $stats = $match['stats'];
+                }
+            } else {
+                // Fallback: get separately
+                $events = $this->soccerApiService->getMatchEvents($id) ?? [];
+                $stats = $this->soccerApiService->getMatchStats($id);
+                
+                // Get odds_prematch separately
+                $matchOddsParams = [
+                    't' => 'match',
+                    'id' => $id,
+                    'include' => 'odds_prematch',
+                ];
+                $oddsResponse = $this->soccerApiService->makeRequest('fixtures', $matchOddsParams);
+                if ($oddsResponse && isset($oddsResponse['data'])) {
+                    $oddsPrematch = $oddsResponse['data']['odds_prematch'] ?? null;
+                }
+            }
+            
+            // Process stats to separate home and away
+            $homeStats = null;
+            $awayStats = null;
+            if ($stats && is_array($stats)) {
+                foreach ($stats as $stat) {
+                    $teamId = $stat['team_id'] ?? null;
+                    if ($teamId == $homeTeamId) {
+                        $homeStats = $stat;
+                    } elseif ($teamId == $awayTeamId) {
+                        $awayStats = $stat;
+                    }
+                }
+            }
+            
+            // Get H2H data
+            $h2hData = $this->soccerApiService->getH2H($id);
+            
+            return [
+                'match_detail' => $matchData,
+                'events' => $events,
+                'odds_prematch' => $oddsPrematch,
+                'stats' => [
+                    'home' => $homeStats,
+                    'away' => $awayStats,
+                ],
+                'h2h' => $h2hData,
+                'home_team_id' => $homeTeamId,
+                'away_team_id' => $awayTeamId,
+            ];
+        });
+        
+        if (!$data) {
+            return $this->error('Match data not found', 404);
+        }
+        
+        return $this->success($data, 'All match data fetched successfully');
+    }
 }
+
 
