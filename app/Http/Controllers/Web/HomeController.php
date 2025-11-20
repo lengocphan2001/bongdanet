@@ -21,12 +21,14 @@ class HomeController extends Controller
     public function index()
     {
         // No cache - fetch fresh data directly from API
-        // Fetch live scores from API
-        $liveResponse = $this->soccerApiService->getLivescores();
+        // Fetch live scores from API - bypass cache for fresh data
+        $liveResponse = $this->soccerApiService->getLivescores(['_bypass_cache' => true]);
         // Get fixture notstart matches of today using fixtures API with odds_prematch, sorted by time, filtered past matches
+        // Bypass cache for fresh data
         $today = date('Y-m-d');
         $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, [
             'include' => 'odds_prematch',
+            '_bypass_cache' => true,
             '_sort_by_time' => true,
             '_filter_past_matches' => true
         ]);

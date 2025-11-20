@@ -18,12 +18,12 @@
                         <circle cx="11" cy="11" r="4" fill="currentColor" opacity="0.3"/>
                         <path d="M9 9l1 1m4-2l-1 1" stroke="white" stroke-width="1" stroke-linecap="round"/>
                     </svg>
-                    <span class="text-sm font-semibold" style="color: white !important;">NHẬN ĐỊNH BÓNG ĐÁ</span>
+                    <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
                 </a>
 
                 <a href="{{ route('livescore') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group relative {{ request()->routeIs('livescore*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                     <div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
-                    <span class="text-sm font-semibold" style="color: white !important;">LIVESCORE</span>
+                    <span class="text-sm font-semibold" style="color: white !important;">TRỰC TIẾP</span>
                     <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
                 </a>
 
@@ -47,7 +47,7 @@
                     <svg class="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                     </svg>
-                    <span class="text-sm font-semibold" style="color: white !important;">BXH BÓNG ĐÁ</span>
+                    <span class="text-sm font-semibold" style="color: white !important;">BẢNG XẾP HẠNG</span>
                 </a>
 
                 <a href="{{ route('odds') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('odds*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
@@ -80,12 +80,12 @@
                             <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                             <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        <span class="text-sm font-semibold" style="color: white !important;">NHẬN ĐỊNH BÓNG ĐÁ</span>
+                        <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
                     </a>
 
                     <a href="{{ route('livescore') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 relative {{ request()->routeIs('livescore*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                         <div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
-                        <span class="text-sm font-semibold" style="color: white !important;">LIVESCORE</span>
+                        <span class="text-sm font-semibold" style="color: white !important;">TRỰC TIẾP</span>
                         <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
                     </a>
 
@@ -108,7 +108,7 @@
                         <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                         </svg>
-                        <span class="text-sm font-semibold" style="color: white !important;">BXH BÓNG ĐÁ</span>
+                        <span class="text-sm font-semibold" style="color: white !important;">BẢNG XẾP HẠNG</span>
                     </a>
 
                     <a href="{{ route('odds') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('odds*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">

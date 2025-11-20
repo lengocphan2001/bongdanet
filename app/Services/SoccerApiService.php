@@ -38,8 +38,8 @@ class SoccerApiService
         $params['utc'] = 7;
 
         try {
-            $response = Http::timeout(5)
-                ->retry(2, 50)
+            $response = Http::timeout(3)
+                ->retry(1, 30)
                 ->get($url, $params);
 
             if ($response->successful()) {
@@ -346,6 +346,8 @@ class SoccerApiService
         
         // If bypass cache, fetch fresh data directly without cache
         if ($bypassCache) {
+            // Also clear cache to ensure fresh data next time
+            Cache::forget($cacheKey);
             return $this->makeRequest('livescores', $params);
         }
         
@@ -382,6 +384,8 @@ class SoccerApiService
         
         // If bypass cache, fetch fresh data directly without cache
         if ($bypassCache) {
+            // Clear cache to ensure fresh data
+            Cache::forget($cacheKey);
             return $this->makeRequest('livescores', $params);
         }
         
@@ -451,6 +455,8 @@ class SoccerApiService
         
         // If bypass cache, fetch fresh data directly without cache
         if ($bypassCache) {
+            // Clear cache to ensure fresh data
+            Cache::forget($cacheKey);
             $response = $this->makeRequest('fixtures', $params);
             // Filter past matches if requested
             if ($filterPastMatches && $response && isset($response['data']) && is_array($response['data'])) {
@@ -652,16 +658,21 @@ class SoccerApiService
      * @param int|string $matchId
      * @return array|null
      */
-    public function getFixtureInfo($matchId): ?array
+    public function getFixtureInfo($matchId, $includeOdds = false): ?array
     {
-        $cacheKey = 'soccer_api:fixture_info:' . $matchId;
+        $cacheKey = 'soccer_api:fixture_info:' . $matchId . ($includeOdds ? '_with_odds' : '');
         
         // Cache for 5 minutes (match info doesn't change frequently)
-        return Cache::remember($cacheKey, 300, function () use ($matchId) {
+        return Cache::remember($cacheKey, 300, function () use ($matchId, $includeOdds) {
             $params = [
                 't' => 'info',
                 'id' => $matchId,
             ];
+            
+            // Include odds_prematch if requested
+            if ($includeOdds) {
+                $params['include'] = 'odds_prematch';
+            }
             
             $response = $this->makeRequest('fixtures', $params);
             
@@ -952,6 +963,12 @@ class SoccerApiService
             return '';
         }
         
+        // Priority 1: Use ft_score (full time score) if available
+        if (isset($scores['ft_score']) && $scores['ft_score'] !== '' && $scores['ft_score'] !== null) {
+            return $scores['ft_score'];
+        }
+        
+        // Priority 2: Use home_score and away_score
         $homeScore = $scores['home_score'] ?? '';
         $awayScore = $scores['away_score'] ?? '';
         

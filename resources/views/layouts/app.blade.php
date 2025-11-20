@@ -44,6 +44,46 @@
 
         @include('partials.footer')
     </div>
+    
+    <script>
+    // Remove refresh parameter from URL if present (clean URL)
+    (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('refresh')) {
+            urlParams.delete('refresh');
+            const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+            window.history.replaceState({}, '', newUrl);
+        }
+    })();
+    
+    // Unregister ALL service workers to prevent any caching
+    // Home page data must always be fresh, no caching allowed
+    if ('serviceWorker' in navigator) {
+        // Unregister all service workers
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister().then(function(success) {
+                    if (success) {
+                        console.log('Service Worker unregistered');
+                    }
+                });
+            }
+        });
+        
+        // Also clear all caches
+        if ('caches' in window) {
+            caches.keys().then(function(cacheNames) {
+                return Promise.all(
+                    cacheNames.map(function(cacheName) {
+                        return caches.delete(cacheName);
+                    })
+                );
+            }).then(function() {
+                console.log('All caches cleared');
+            });
+        }
+    }
+    </script>
 </body>
 </html>
 

@@ -5,7 +5,28 @@
     $homeLogo = $match['home_team_info']['img'] ?? null;
     $awayLogo = $match['away_team_info']['img'] ?? null;
     
-    $timeDisplay = $match['time'] ?? '';
+    // Get time display - prioritize time field, fallback to status_name or status
+    $timeDisplay = $match['time'] ?? 
+                  $match['status_name'] ?? 
+                  ($match['status']['name'] ?? null) ?? 
+                  ($match['status'] ?? '');
+    
+    // Check if match is live
+    $isLive = $match['is_live'] ?? 
+              ($match['status_name'] === 'LIVE' || $match['status_name'] === 'Inplay') ||
+              ($match['status']['name'] ?? null) === 'LIVE' ||
+              ($match['status'] ?? null) === 1 ||
+              false;
+    
+    // Check if should blink (live match with minute, not HT, not FT)
+    $shouldBlink = false;
+    if ($isLive) {
+        // Check if time contains a minute (e.g., "45'", "90+1'") and not "HT" or "FT"
+        if (preg_match('/\d+\'/', $timeDisplay) && $timeDisplay !== 'HT' && $timeDisplay !== 'FT') {
+            $shouldBlink = true;
+        }
+    }
+    
     $dateDisplay = $match['date'] ?? '';
     
     $score = $match['score'] ?? '-';
@@ -71,10 +92,13 @@
 @endphp
 
 <!-- Mobile Card Layout -->
-<div class="md:hidden border-b border-slate-700 hover:bg-slate-800 transition-colors p-3 cursor-pointer" onclick="openMatchModal({{ $matchId }})">
+<div class="md:hidden border-b border-slate-700 hover:bg-slate-800 transition-colors p-3 cursor-pointer" 
+     onclick="openMatchModal({{ $matchId }})"
+     onmouseenter="prefetchMatchData({{ $matchId }})"
+     data-match-id="{{ $matchId }}">
     <div class="flex items-center justify-between mb-2">
-        <div class="text-xs text-gray-400">{{ $timeDisplay }}</div>
-        <div class="text-gray-400 text-sm">{{ $score }}</div>
+        <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-500' : 'text-gray-400') }} font-medium" data-time>{{ $timeDisplay }}</div>
+        <div class="text-gray-400 text-sm" data-score>{{ $score }}</div>
     </div>
     
     <!-- Teams -->
@@ -102,8 +126,8 @@
     <!-- Odds - Mobile -->
     <div class="grid grid-cols-3 gap-3 text-xs">
         <div>
-            <div class="text-gray-400 mb-1">Hiệp 1</div>
-            <div class="text-gray-500">{{ $htScore }}</div>
+                                    <div class="text-gray-400 mb-1">Hiệp 1</div>
+                                    <div class="text-gray-500" data-ht-score>{{ $htScore }}</div>
         </div>
         <div>
             <div class="text-gray-400 mb-1">Cược chấp</div>
@@ -153,10 +177,13 @@
 </div>
 
 <!-- Desktop Table Row -->
-<div class="hidden md:grid md:grid-cols-11 gap-2 px-4 py-3 border-b border-slate-700 hover:bg-slate-800 transition-colors cursor-pointer" onclick="openMatchModal({{ $matchId }})">
+<div class="hidden md:grid md:grid-cols-11 gap-2 px-4 py-3 border-b border-slate-700 hover:bg-slate-800 transition-colors cursor-pointer" 
+     onclick="openMatchModal({{ $matchId }})"
+     onmouseenter="prefetchMatchData({{ $matchId }})"
+     data-match-id="{{ $matchId }}">
     <!-- Match Info -->
     <div class="col-span-3 flex items-center gap-2 min-w-0">
-        <div class="text-xs text-gray-400 mb-2 hidden lg:block">{{ $timeDisplay }}</div>
+                                <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-500' : 'text-gray-400') }} font-medium mb-2 hidden lg:block" data-time>{{ $timeDisplay }}</div>
         <div class="flex-1 min-w-0">
             <!-- Home Team -->
             <div class="flex items-center gap-2 mb-1 min-w-0">
@@ -181,15 +208,15 @@
         </div>
     </div>
     
-    <!-- Score -->
-    <div class="col-span-1 text-center text-gray-400 text-sm flex items-center justify-center">
+    <!-- Score (FT) -->
+    <div class="col-span-1 text-center text-gray-400 text-sm flex items-center justify-center" data-score>
         {{ $score }}
     </div>
     
-    <!-- Half 1 -->
-    <div class="col-span-1 text-center text-gray-400 text-sm flex items-center justify-center">
-        {{ $htScore }}
-    </div>
+                                <!-- Half 1 -->
+                                <div class="col-span-1 text-center text-gray-400 text-sm flex items-center justify-center" data-ht-score>
+                                    {{ $htScore }}
+                                </div>
     
     <!-- Handicap Odds -->
     <div class="col-span-2 text-xs min-w-0">

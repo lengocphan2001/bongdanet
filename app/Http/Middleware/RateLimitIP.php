@@ -19,6 +19,10 @@ class RateLimitIP
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // TEMPORARILY DISABLED: Bypass all IP rate limiting
+        return $next($request);
+        
+        /* DISABLED CODE - Uncomment to re-enable IP rate limiting
         $ipAddress = $request->ip();
         
         // Skip for admin routes
@@ -35,43 +39,88 @@ class RateLimitIP
             ], 403);
         }
         
-        // Rate limiting: Check if IP has made too many requests
-        // Pattern detection: If requests come every 3 seconds, that's 20 requests per minute
-        // Allow max 30 requests per minute for normal users
-        $cacheKey = 'rate_limit:' . $ipAddress;
-        $requests = Cache::get($cacheKey, 0);
+        // Detect abnormal request patterns (e.g., every 3 seconds, 5 seconds)
+        // Only block if there's a suspicious pattern, not normal requests
+        $patternCacheKey = 'request_pattern:' . $ipAddress;
+        $requestTimestamps = Cache::get($patternCacheKey, []);
         
-        if ($requests >= 30) {
-            // Auto-block IP if exceeds rate limit
-            $this->autoBlockIP($ipAddress, 'Exceeded rate limit: 30 requests per minute');
-            
-            return response()->json([
-                'error' => 'Rate limit exceeded',
-                'message' => 'Too many requests. Please try again later.',
-            ], 429);
-        }
+        $currentTime = now()->timestamp;
         
-        // Increment request count
-        Cache::put($cacheKey, $requests + 1, 60); // Cache for 1 minute
+        // Add current request timestamp
+        $requestTimestamps[] = $currentTime;
         
-        // Check for suspicious pattern: more than 10 requests in 30 seconds (pattern: every 3 seconds)
-        $recentCacheKey = 'rate_limit_recent:' . $ipAddress;
-        $recentRequests = Cache::get($recentCacheKey, 0);
+        // Keep only timestamps from last 2 minutes
+        $requestTimestamps = array_filter($requestTimestamps, function($timestamp) use ($currentTime) {
+            return ($currentTime - $timestamp) <= 120; // Last 2 minutes
+        });
         
-        if ($recentRequests >= 10) {
-            // Auto-block IP for suspicious activity (pattern: every 3 seconds)
-            $this->autoBlockIP($ipAddress, 'Suspicious activity: more than 10 requests in 30 seconds (pattern: every 3 seconds)');
+        // Sort timestamps
+        sort($requestTimestamps);
+        
+        // Check for abnormal patterns (requests every 3s, 5s, etc.)
+        $isAbnormalPattern = $this->detectAbnormalPattern($requestTimestamps);
+        
+        if ($isAbnormalPattern) {
+            // Auto-block IP for abnormal pattern
+            $pattern = $isAbnormalPattern['pattern'];
+            $interval = $isAbnormalPattern['interval'];
+            $this->autoBlockIP($ipAddress, "Abnormal request pattern detected: requests every {$interval} seconds ({$pattern} requests in pattern)");
             
             return response()->json([
                 'error' => 'Suspicious activity detected',
-                'message' => 'Your IP has been temporarily blocked due to suspicious activity.',
+                'message' => 'Your IP has been temporarily blocked due to abnormal request pattern.',
             ], 403);
         }
         
-        // Increment recent requests counter (reset every 30 seconds)
-        Cache::put($recentCacheKey, $recentRequests + 1, 30);
+        // Save updated timestamps (keep max 50 to avoid memory issues)
+        if (count($requestTimestamps) > 50) {
+            $requestTimestamps = array_slice($requestTimestamps, -50);
+        }
+        Cache::put($patternCacheKey, array_values($requestTimestamps), 120); // Cache for 2 minutes
         
         return $next($request);
+        */
+    }
+    
+    /**
+     * Detect abnormal request patterns (e.g., requests every 3s, 5s)
+     * Returns false if pattern is normal, or array with pattern info if abnormal
+     */
+    private function detectAbnormalPattern(array $timestamps): array|false
+    {
+        if (count($timestamps) < 5) {
+            return false; // Not enough data to detect pattern
+        }
+        
+        // Check for patterns: requests every 3s, 5s, 10s, etc.
+        $suspiciousIntervals = [3, 5, 10, 15, 30]; // Common bot intervals
+        
+        foreach ($suspiciousIntervals as $interval) {
+            $matches = 0;
+            $totalIntervals = 0;
+            
+            // Check if there's a consistent pattern with this interval
+            for ($i = 1; $i < count($timestamps); $i++) {
+                $actualInterval = $timestamps[$i] - $timestamps[$i - 1];
+                $totalIntervals++;
+                
+                // Allow small variance (±1 second) for network latency
+                if (abs($actualInterval - $interval) <= 1) {
+                    $matches++;
+                }
+            }
+            
+            // If more than 60% of intervals match the suspicious pattern, it's abnormal
+            if ($totalIntervals > 0 && ($matches / $totalIntervals) >= 0.6 && $matches >= 3) {
+                return [
+                    'pattern' => $matches,
+                    'interval' => $interval,
+                    'total' => count($timestamps)
+                ];
+            }
+        }
+        
+        return false; // Normal pattern, no blocking
     }
     
     /**

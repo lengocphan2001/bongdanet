@@ -1,88 +1,85 @@
 {{-- Match Detail Modal --}}
-<div id="match-detail-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-slate-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col my-8">
+<div id="match-detail-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="bg-slate-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col my-2 sm:my-8">
         {{-- Modal Header --}}
-        <div class="bg-slate-900 px-4 py-3 flex items-center justify-between border-b border-slate-700">
-            <div class="flex items-center gap-3 flex-1 min-w-0">
+        <div class="bg-slate-900 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-slate-700">
+            <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                 {{-- Status Indicator --}}
-                <div id="modal-status-indicator" class="flex items-center gap-2 flex-shrink-0">
+                <div id="modal-status-indicator" class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                     <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                    <span class="text-xs text-gray-300" id="modal-status-text">Chưa bắt đầu</span>
+                    <span class="text-xs text-gray-300 truncate" id="modal-status-text">Chưa bắt đầu</span>
                 </div>
                 
                 {{-- League Info --}}
-                <div class="flex items-center gap-2 flex-1 min-w-0">
-                    <div id="modal-league-icon" class="w-5 h-5 bg-slate-700 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
+                <div class="flex items-center gap-1 sm:gap-2 flex-1 min-w-0">
+                    <div id="modal-league-icon" class="w-4 h-4 sm:w-5 sm:h-5 bg-slate-700 rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
                         <span class="text-white text-xs" id="modal-league-icon-text">L</span>
                     </div>
-                    <span class="text-sm text-white truncate" id="modal-league-name">League Name</span>
+                    <span class="text-xs sm:text-sm text-white truncate" id="modal-league-name">League Name</span>
                 </div>
             </div>
             
             {{-- Close Button --}}
-            <button onclick="closeMatchModal()" class="text-gray-400 hover:text-white transition-colors flex-shrink-0 ml-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="closeMatchModal()" class="text-gray-400 hover:text-white transition-colors flex-shrink-0 ml-2 sm:ml-4">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
         
         {{-- Match Info Section --}}
-        <div class="px-4 py-6 bg-slate-800">
-            <div class="text-center mb-4">
-                <div class="text-sm text-gray-400 mb-4" id="modal-match-datetime">20/11/2025 lúc 15:30</div>
+        <div class="px-2 sm:px-4 py-3 sm:py-6 bg-slate-800">
+            <div class="text-center mb-3 sm:mb-4">
+                <div class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 truncate px-2" id="modal-match-datetime">20/11/2025 lúc 15:30</div>
                 
                 {{-- Teams and Score --}}
-                <div class="flex items-center justify-center gap-6 mb-4">
+                <div class="flex items-center justify-center gap-2 sm:gap-6 mb-3 sm:mb-4">
                     {{-- Home Team --}}
-                    <div class="flex flex-col items-center flex-1">
-                        <div id="modal-home-logo" class="w-16 h-16 bg-slate-700 rounded-full mb-2 flex items-center justify-center">
+                    <div class="flex flex-col items-center flex-1 min-w-0">
+                        <div id="modal-home-logo" class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-700 rounded-full mb-1 sm:mb-2 flex items-center justify-center flex-shrink-0">
                             <span class="text-white text-xs">Logo</span>
                         </div>
-                        <div class="text-white font-medium text-center" id="modal-home-team">Team 1</div>
+                        <div class="text-white font-medium text-center text-xs sm:text-base truncate w-full px-1" id="modal-home-team">Team 1</div>
                     </div>
                     
                     {{-- Score --}}
-                    <div class="flex flex-col items-center">
-                        <div class="text-3xl font-bold text-white mb-2" id="modal-score">--- ---</div>
-                        <div class="text-sm text-gray-400">Kết quả hiệp 1</div>
-                        <div class="text-lg text-gray-300" id="modal-ht-score">---</div>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="text-xl sm:text-3xl font-bold text-white mb-1 sm:mb-2" id="modal-score">--- ---</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Kết quả hiệp 1</div>
+                        <div class="text-sm sm:text-lg text-gray-300" id="modal-ht-score">---</div>
                     </div>
                     
                     {{-- Away Team --}}
-                    <div class="flex flex-col items-center flex-1">
-                        <div id="modal-away-logo" class="w-16 h-16 bg-slate-700 rounded-full mb-2 flex items-center justify-center">
+                    <div class="flex flex-col items-center flex-1 min-w-0">
+                        <div id="modal-away-logo" class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-700 rounded-full mb-1 sm:mb-2 flex items-center justify-center flex-shrink-0">
                             <span class="text-white text-xs">Logo</span>
                         </div>
-                        <div class="text-white font-medium text-center" id="modal-away-team">Team 2</div>
+                        <div class="text-white font-medium text-center text-xs sm:text-base truncate w-full px-1" id="modal-away-team">Team 2</div>
                     </div>
                 </div>
             </div>
         </div>
         
         {{-- Navigation Tabs --}}
-        <div class="bg-slate-900 border-b border-slate-700 px-4">
-            <div class="flex items-center gap-1 overflow-x-auto">
-                <button onclick="switchModalTab('overview')" class="modal-tab px-4 py-2 text-sm font-medium text-white border-b-2 border-green-500 transition-colors whitespace-nowrap" data-tab="overview">
+        <div class="bg-slate-900 border-b border-slate-700 px-2 sm:px-4">
+            <div class="flex items-center gap-1 overflow-x-auto scrollbar-hide">
+                <button onclick="switchModalTab('overview')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white border-b-2 border-green-500 transition-colors whitespace-nowrap flex-shrink-0" data-tab="overview">
                     TỔNG QUAN
                 </button>
-                <button onclick="switchModalTab('stats')" class="modal-tab px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap" data-tab="stats">
+                <button onclick="switchModalTab('stats')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0" data-tab="stats">
                     THỐNG KÊ
                 </button>
-                <button onclick="switchModalTab('odds')" class="modal-tab px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap" data-tab="odds">
+                <button onclick="switchModalTab('odds')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0" data-tab="odds">
                     ODDS
                 </button>
-                <button onclick="switchModalTab('h2h')" class="modal-tab px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap" data-tab="h2h">
+                <button onclick="switchModalTab('h2h')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0" data-tab="h2h">
                     H2H
-                </button>
-                <button onclick="switchModalTab('standings')" class="modal-tab px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap" data-tab="standings">
-                    BXH
                 </button>
             </div>
         </div>
         
         {{-- Tab Content --}}
-        <div class="flex-1 overflow-y-auto p-4">
+        <div class="flex-1 overflow-y-auto p-2 sm:p-4">
             {{-- Overview Tab --}}
             <div id="modal-tab-overview" class="modal-tab-content">
                 <div class="mb-4">
@@ -108,10 +105,6 @@
                 <div id="h2h-content" class="space-y-6">
                     <div class="text-center text-gray-400 py-8">Đang tải dữ liệu H2H...</div>
                 </div>
-            </div>
-            
-            <div id="modal-tab-standings" class="modal-tab-content hidden">
-                <div class="text-center text-gray-400 py-8">Nội dung BXH</div>
             </div>
         </div>
     </div>
@@ -154,8 +147,123 @@ async function openMatchModal(matchId) {
     }
 }
 
+// Prefetch cache to store match data before modal opens
+const prefetchCache = new Map();
+const prefetchPromises = new Map(); // Track ongoing prefetch requests
+
+// Prefetch match data on hover (concurrent, cached)
+async function prefetchMatchData(matchId) {
+    // Skip if already cached or currently fetching
+    if (prefetchCache.has(matchId) || prefetchPromises.has(matchId)) {
+        return;
+    }
+    
+    // Create prefetch promise and store it
+    const prefetchPromise = fetch(`/api/match-all/${matchId}`, {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+        },
+        cache: 'no-store'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.data) {
+            prefetchCache.set(matchId, data.data);
+        }
+        prefetchPromises.delete(matchId);
+        return data;
+    })
+    .catch(error => {
+        console.error('Prefetch error:', error);
+        prefetchPromises.delete(matchId);
+        return null;
+    });
+    
+    prefetchPromises.set(matchId, prefetchPromise);
+    return prefetchPromise;
+}
+
+// Batch prefetch multiple matches concurrently
+async function prefetchMatchesBatch(matchIds) {
+    if (!Array.isArray(matchIds) || matchIds.length === 0) {
+        return;
+    }
+    
+    // Filter out already cached or currently fetching
+    const toFetch = matchIds.filter(id => !prefetchCache.has(id) && !prefetchPromises.has(id));
+    
+    if (toFetch.length === 0) {
+        return;
+    }
+    
+    // Use Promise.all for concurrent prefetching
+    await Promise.all(toFetch.map(matchId => prefetchMatchData(matchId)));
+}
+
 async function loadAllMatchData(matchId) {
     try {
+        // Check prefetch cache first
+        if (prefetchCache.has(matchId)) {
+            const cachedData = prefetchCache.get(matchId);
+            prefetchCache.delete(matchId); // Remove from cache after use
+            
+            // Process cached data
+            if (cachedData.match_detail) {
+                processMatchDetail(cachedData.match_detail);
+            }
+            if (cachedData.events !== undefined) {
+                matchEventsData = Array.isArray(cachedData.events) ? cachedData.events : null;
+            }
+            matchOddsPrematch = cachedData.odds_prematch || null;
+            matchStatsData = cachedData.stats || null;
+            matchTeamIds = {
+                home_team_id: cachedData.home_team_id || null,
+                away_team_id: cachedData.away_team_id || null,
+            };
+            if (cachedData.h2h) {
+                matchH2HData = {
+                    h2hData: cachedData.h2h,
+                    currentHomeTeamId: cachedData.home_team_id || null,
+                    currentAwayTeamId: cachedData.away_team_id || null,
+                };
+            }
+            renderMatchEvents();
+            return; // Use cached data, no API call needed
+        }
+        
+        // If prefetch is in progress, wait for it
+        if (prefetchPromises.has(matchId)) {
+            const prefetchData = await prefetchPromises.get(matchId);
+            if (prefetchData && prefetchData.success && prefetchData.data) {
+                const allData = prefetchData.data;
+                // Process data same as below
+                if (allData.match_detail) {
+                    processMatchDetail(allData.match_detail);
+                }
+                if (allData.events !== undefined) {
+                    matchEventsData = Array.isArray(allData.events) ? allData.events : null;
+                }
+                matchOddsPrematch = allData.odds_prematch || null;
+                matchStatsData = allData.stats || null;
+                matchTeamIds = {
+                    home_team_id: allData.home_team_id || null,
+                    away_team_id: allData.away_team_id || null,
+                };
+                if (allData.h2h) {
+                    matchH2HData = {
+                        h2hData: allData.h2h,
+                        currentHomeTeamId: allData.home_team_id || null,
+                        currentAwayTeamId: allData.away_team_id || null,
+                    };
+                }
+                renderMatchEvents();
+                return;
+            }
+        }
+        
         // Use optimized endpoint that returns all data in one call
         // Add cache busting and no-cache headers for fresh data
         const cacheBuster = Date.now();
@@ -185,7 +293,19 @@ async function loadAllMatchData(matchId) {
         if (allData.events !== undefined) {
             matchEventsData = Array.isArray(allData.events) ? allData.events : null;
         }
+        
+        // Debug: Log odds_prematch structure
+        console.log('odds_prematch from API:', allData.odds_prematch);
         matchOddsPrematch = allData.odds_prematch || null;
+        
+        // If odds_prematch is null, try to get from match_detail
+        if (!matchOddsPrematch && allData.match_detail) {
+            matchOddsPrematch = allData.match_detail.odds_prematch || 
+                               allData.match_detail.odds_data || 
+                               null;
+            console.log('Trying odds from match_detail:', matchOddsPrematch);
+        }
+        
         matchStatsData = allData.stats || null;
         matchTeamIds = {
             home_team_id: allData.home_team_id || null,
@@ -199,19 +319,26 @@ async function loadAllMatchData(matchId) {
                 currentHomeTeamId: allData.home_team_id || null,
                 currentAwayTeamId: allData.away_team_id || null,
             };
+            console.log('H2H data loaded:', matchH2HData);
+        } else {
+            console.warn('H2H data not found in API response:', allData);
         }
         
         // Render overview tab (events)
         renderMatchEvents();
         
+        // Pre-render H2H data if available (so it's ready when user clicks H2H tab)
+        if (matchH2HData && matchH2HData.h2hData) {
+            renderH2HData();
+        }
+        
     } catch (error) {
         console.error('Error loading all match data:', error);
-        // Fallback to separate API calls if optimized endpoint fails
-        await Promise.all([
-            loadMatchDetail(matchId),
-            loadMatchEventsAndOdds(matchId),
-            loadH2HData(matchId)
-        ]);
+        // Don't fallback - show error message instead
+        const eventsContainer = document.getElementById('modal-match-events');
+        if (eventsContainer) {
+            eventsContainer.innerHTML = '<div class="text-center text-red-400 py-4">Lỗi tải dữ liệu. Vui lòng thử lại sau.</div>';
+        }
     }
 }
 
@@ -291,46 +418,90 @@ function processMatchDetail(match) {
     let htHomeScore = null;
     let htAwayScore = null;
     
-    // Method 1: Check ft_score (full time score as string "1-0")
+    // Method 1: Check ft_score (full time score as string "1-0") - PRIORITY
     if (scores.ft_score) {
-        const ftParts = scores.ft_score.split('-');
+        const ftParts = String(scores.ft_score).split('-');
         if (ftParts.length === 2) {
-            homeScore = parseInt(ftParts[0].trim());
-            awayScore = parseInt(ftParts[1].trim());
+            const parsedHome = parseInt(ftParts[0].trim());
+            const parsedAway = parseInt(ftParts[1].trim());
+            if (!isNaN(parsedHome) && !isNaN(parsedAway)) {
+                homeScore = parsedHome;
+                awayScore = parsedAway;
+            }
         }
     }
     
-    // Method 2: Check home_score and away_score directly
-    if (homeScore === null || awayScore === null) {
-        homeScore = scores.home_score ?? scores.home ?? null;
-        awayScore = scores.away_score ?? scores.away ?? null;
+    // Method 2: Check home_score and away_score directly (convert string to number)
+    if (homeScore === null || awayScore === null || isNaN(homeScore) || isNaN(awayScore)) {
+        const homeScoreVal = scores.home_score ?? scores.home ?? null;
+        const awayScoreVal = scores.away_score ?? scores.away ?? null;
+        
+        if (homeScoreVal !== null && awayScoreVal !== null) {
+            const parsedHome = typeof homeScoreVal === 'string' ? parseInt(homeScoreVal) : homeScoreVal;
+            const parsedAway = typeof awayScoreVal === 'string' ? parseInt(awayScoreVal) : awayScoreVal;
+            if (!isNaN(parsedHome) && !isNaN(parsedAway)) {
+                homeScore = parsedHome;
+                awayScore = parsedAway;
+            }
+        }
     }
     
     // Method 3: Check score.fulltime structure
-    if (homeScore === null || awayScore === null) {
+    if (homeScore === null || awayScore === null || isNaN(homeScore) || isNaN(awayScore)) {
         const fulltimeScore = scores.fulltime || {};
-        homeScore = fulltimeScore.home ?? homeScore;
-        awayScore = fulltimeScore.away ?? awayScore;
+        const ftHome = fulltimeScore.home ?? null;
+        const ftAway = fulltimeScore.away ?? null;
+        if (ftHome !== null && ftAway !== null) {
+            const parsedHome = typeof ftHome === 'string' ? parseInt(ftHome) : ftHome;
+            const parsedAway = typeof ftAway === 'string' ? parseInt(ftAway) : ftAway;
+            if (!isNaN(parsedHome) && !isNaN(parsedAway)) {
+                homeScore = parsedHome;
+                awayScore = parsedAway;
+            }
+        }
     }
     
     // Method 4: Check score object directly
-    if (homeScore === null || awayScore === null) {
+    if (homeScore === null || awayScore === null || isNaN(homeScore) || isNaN(awayScore)) {
         const scoreObj = match.score || {};
-        homeScore = scoreObj.home ?? homeScore;
-        awayScore = scoreObj.away ?? awayScore;
+        const scoreHome = scoreObj.home ?? null;
+        const scoreAway = scoreObj.away ?? null;
+        if (scoreHome !== null && scoreAway !== null) {
+            const parsedHome = typeof scoreHome === 'string' ? parseInt(scoreHome) : scoreHome;
+            const parsedAway = typeof scoreAway === 'string' ? parseInt(scoreAway) : scoreAway;
+            if (!isNaN(parsedHome) && !isNaN(parsedAway)) {
+                homeScore = parsedHome;
+                awayScore = parsedAway;
+            }
+        }
     }
     
     // Get half time score
     if (scores.ht_score) {
-        const htParts = scores.ht_score.split('-');
+        const htParts = String(scores.ht_score).split('-');
         if (htParts.length === 2) {
-            htHomeScore = parseInt(htParts[0].trim());
-            htAwayScore = parseInt(htParts[1].trim());
+            const parsedHtHome = parseInt(htParts[0].trim());
+            const parsedHtAway = parseInt(htParts[1].trim());
+            if (!isNaN(parsedHtHome) && !isNaN(parsedHtAway)) {
+                htHomeScore = parsedHtHome;
+                htAwayScore = parsedHtAway;
+            }
         }
-    } else {
+    }
+    
+    // Fallback for half time score
+    if (htHomeScore === null || htAwayScore === null || isNaN(htHomeScore) || isNaN(htAwayScore)) {
         const halftimeScore = scores.halftime || {};
-        htHomeScore = halftimeScore.home ?? scores.ht_home ?? null;
-        htAwayScore = halftimeScore.away ?? scores.ht_away ?? null;
+        const htHome = halftimeScore.home ?? scores.ht_home ?? null;
+        const htAway = halftimeScore.away ?? scores.ht_away ?? null;
+        if (htHome !== null && htAway !== null) {
+            const parsedHtHome = typeof htHome === 'string' ? parseInt(htHome) : htHome;
+            const parsedHtAway = typeof htAway === 'string' ? parseInt(htAway) : htAway;
+            if (!isNaN(parsedHtHome) && !isNaN(parsedHtAway)) {
+                htHomeScore = parsedHtHome;
+                htAwayScore = parsedHtAway;
+            }
+        }
     }
     
     // Display full time score
@@ -430,10 +601,6 @@ function clearModalData() {
         oddsTab.innerHTML = '<div class="text-center text-gray-400 py-8">Nội dung ODDS</div>';
     }
     
-    const standingsTab = document.getElementById('modal-tab-standings');
-    if (standingsTab) {
-        standingsTab.innerHTML = '<div class="text-center text-gray-400 py-8">Nội dung BXH</div>';
-    }
 }
 
 function closeMatchModal() {
@@ -480,157 +647,35 @@ function switchModalTab(tabName) {
         // Use cached stats data if available
         renderMatchStats();
     } else if (tabName === 'h2h') {
-        // Use cached H2H data if available, otherwise load it
-        if (matchH2HData) {
+        // Use cached H2H data - should already be loaded from loadAllMatchData
+        if (matchH2HData && matchH2HData.h2hData) {
+            console.log('Rendering H2H data:', matchH2HData);
             renderH2HData();
-        } else if (currentMatchId) {
-            loadH2HData(currentMatchId);
+        } else {
+            // If H2H data not available, show message
+            console.warn('H2H data not available:', matchH2HData);
+            const h2hContainer = document.getElementById('h2h-content');
+            if (h2hContainer) {
+                h2hContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu H2H</div>';
+            }
         }
     }
 }
 
+// DEPRECATED: loadMatchDetail - Use loadAllMatchData instead
+// This function is kept for reference but should not be called
 async function loadMatchDetail(matchId) {
-    try {
-        const response = await fetch(`/api/match-detail/${matchId}`);
-        const data = await response.json();
-        
-        if (data.success && data.data) {
-            const match = data.data;
-            
-            // Update header
-            const statusName = match.status_name || match.status?.name || 'Chưa bắt đầu';
-            document.getElementById('modal-status-text').textContent = statusName;
-            
-            // Update status indicator
-            const statusIndicator = document.getElementById('modal-status-indicator');
-            if (match.status_name === 'LIVE' || match.status?.name === 'LIVE') {
-                statusIndicator.querySelector('.w-2').classList.remove('bg-red-500');
-                statusIndicator.querySelector('.w-2').classList.add('bg-red-500', 'animate-pulse');
-            } else {
-                statusIndicator.querySelector('.w-2').classList.remove('bg-red-500', 'animate-pulse');
-                statusIndicator.querySelector('.w-2').classList.add('bg-gray-500');
-            }
-            
-            document.getElementById('modal-league-name').textContent = match.league?.name || 'Unknown League';
-            
-            // Update league logo
-            const leagueIconEl = document.getElementById('modal-league-icon');
-            const leagueIconText = document.getElementById('modal-league-icon-text');
-            const league = match.league || {};
-            if (league.img || league.logo) {
-                const leagueImg = league.img || league.logo;
-                leagueIconEl.innerHTML = `<img src="${leagueImg}" alt="${league.name || 'League'}" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<span class=\\'text-white text-xs\\'>${(league.name || 'L').charAt(0)}</span>'">`;
-            } else if (league.name) {
-                if (leagueIconText) {
-                    leagueIconText.textContent = league.name.charAt(0).toUpperCase();
-                } else {
-                    leagueIconEl.innerHTML = `<span class="text-white text-xs">${league.name.charAt(0).toUpperCase()}</span>`;
-                }
-            }
-            
-            // Update match info - parse datetime
-            let dateStr = '';
-            let timeStr = '';
-            if (match.time?.datetime) {
-                const datetime = new Date(match.time.datetime);
-                dateStr = datetime.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                timeStr = datetime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-            } else if (match.date && match.time) {
-                // Fallback: combine date and time strings
-                dateStr = match.date;
-                timeStr = match.time;
-            }
-            document.getElementById('modal-match-datetime').textContent = dateStr && timeStr ? `${dateStr} lúc ${timeStr}` : '';
-            
-            // Update teams
-            const homeTeam = match.teams?.home || {};
-            const awayTeam = match.teams?.away || {};
-            document.getElementById('modal-home-team').textContent = homeTeam.name || 'N/A';
-            document.getElementById('modal-away-team').textContent = awayTeam.name || 'N/A';
-            
-            // Cache team names for stats tab (no API call needed)
-            cachedTeamNames.home = homeTeam.name || 'Đội nhà';
-            cachedTeamNames.away = awayTeam.name || 'Đội khách';
-            
-            // Update logos
-            const homeLogoEl = document.getElementById('modal-home-logo');
-            if (homeTeam.img) {
-                homeLogoEl.innerHTML = `<img src="${homeTeam.img}" alt="${homeTeam.name}" class="w-full h-full rounded-full object-contain" onerror="this.parentElement.innerHTML='<span class=\\'text-white text-xs\\'>${(homeTeam.name || 'N/A').charAt(0)}</span>'">`;
-            } else {
-                homeLogoEl.innerHTML = `<span class="text-white text-xs">${(homeTeam.name || 'N/A').charAt(0)}</span>`;
-            }
-            
-            const awayLogoEl = document.getElementById('modal-away-logo');
-            if (awayTeam.img) {
-                awayLogoEl.innerHTML = `<img src="${awayTeam.img}" alt="${awayTeam.name}" class="w-full h-full rounded-full object-contain" onerror="this.parentElement.innerHTML='<span class=\\'text-white text-xs\\'>${(awayTeam.name || 'N/A').charAt(0)}</span>'">`;
-            } else {
-                awayLogoEl.innerHTML = `<span class="text-white text-xs">${(awayTeam.name || 'N/A').charAt(0)}</span>`;
-            }
-            
-            // Update scores
-            const scores = match.scores || {};
-            const homeScore = scores.home_score ?? scores.home ?? '';
-            const awayScore = scores.away_score ?? scores.away ?? '';
-            document.getElementById('modal-score').textContent = `${homeScore !== '' ? homeScore : '?'} - ${awayScore !== '' ? awayScore : '?'}`;
-            
-            const htScore = scores.ht_score || scores.ht || '0-0';
-            document.getElementById('modal-ht-score').textContent = htScore;
-            
-            // Load events and odds_prematch in one call
-            loadMatchEventsAndOdds(matchId);
-        }
-    } catch (error) {
-        console.error('Error loading match detail:', error);
-    }
+    console.warn('loadMatchDetail is deprecated. Use loadAllMatchData instead.');
+    // This function should not be called - all data is loaded via loadAllMatchData
 }
 
 let matchTeamIds = { home_team_id: null, away_team_id: null };
 
+// DEPRECATED: loadMatchEventsAndOdds - Use loadAllMatchData instead
+// This function is kept for reference but should not be called
 async function loadMatchEventsAndOdds(matchId) {
-    try {
-        const response = await fetch(`/api/match-events/${matchId}`);
-        const data = await response.json();
-        
-        // Store data globally
-        // Response structure: { success: true, data: { data: [...], odds_prematch: ..., stats: {...}, home_team_id: ..., away_team_id: ... } }
-        if (data.success && data.data) {
-            matchEventsData = Array.isArray(data.data.data) ? data.data.data : null;
-            matchOddsPrematch = data.data.odds_prematch || null;
-            matchStatsData = data.data.stats || null;
-            matchTeamIds = {
-                home_team_id: data.data.home_team_id || null,
-                away_team_id: data.data.away_team_id || null,
-            };
-        } else {
-            matchEventsData = null;
-            matchOddsPrematch = null;
-            matchStatsData = null;
-            matchTeamIds = { home_team_id: null, away_team_id: null };
-        }
-        
-        // Render events if on overview tab
-        renderMatchEvents();
-        
-        // Render odds if on odds tab
-        if (document.getElementById('modal-tab-odds') && !document.getElementById('modal-tab-odds').classList.contains('hidden')) {
-            renderMatchOdds();
-        }
-        
-        // Render stats if on stats tab
-        if (document.getElementById('modal-tab-stats') && !document.getElementById('modal-tab-stats').classList.contains('hidden')) {
-            renderMatchStats();
-        }
-    } catch (error) {
-        console.error('Error loading match events and odds:', error);
-        matchEventsData = null;
-        matchOddsPrematch = null;
-        matchStatsData = null;
-        matchTeamIds = { home_team_id: null, away_team_id: null };
-        const eventsContainer = document.getElementById('modal-match-events');
-        if (eventsContainer) {
-            eventsContainer.innerHTML = '<div class="text-center text-red-400 py-4">Lỗi tải dữ liệu</div>';
-        }
-    }
+    console.warn('loadMatchEventsAndOdds is deprecated. Use loadAllMatchData instead.');
+    // This function should not be called - all data is loaded via loadAllMatchData
 }
 
 function renderMatchEvents() {
@@ -815,44 +860,149 @@ function renderMatchOdds() {
         return;
     }
     
-    if (!matchOddsPrematch || typeof matchOddsPrematch !== 'object') {
+    // Debug logging
+    console.log('renderMatchOdds - matchOddsPrematch:', matchOddsPrematch);
+    
+    if (!matchOddsPrematch) {
         oddsContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu odds</div>';
         return;
     }
     
-    // Find Bet365 odds (bookmaker_id = 2)
-    let bet365Odds = null;
+    // Extract odds data from API structure
+    // Structure: [{id: 1, name: '1X2', bookmakers: [{id: 2, name: 'Bet365', odds: {...}}]}, ...]
+    let extractedOdds = {
+        '1X2': null,
+        'Asian Handicap': null,
+        'Over/Under': null
+    };
+    
+    // Process if it's an array (API structure)
     if (Array.isArray(matchOddsPrematch)) {
-        bet365Odds = matchOddsPrematch.find(odds => odds.bookmaker_id === 2 || odds.bookmaker?.id === 2);
-    } else if (matchOddsPrematch.bookmaker_id === 2 || matchOddsPrematch.bookmaker?.id === 2) {
-        bet365Odds = matchOddsPrematch;
+        matchOddsPrematch.forEach(oddsType => {
+            const typeId = oddsType.id;
+            const typeName = oddsType.name || '';
+            const bookmakers = oddsType.bookmakers || [];
+            
+            // Find Bet365 (id = 2) or use first available
+            let selectedBookmaker = bookmakers.find(b => b.id === 2 || b.name?.toLowerCase().includes('bet365'));
+            if (!selectedBookmaker && bookmakers.length > 0) {
+                selectedBookmaker = bookmakers[0];
+            }
+            
+            if (selectedBookmaker) {
+                const oddsObj = selectedBookmaker.odds || {};
+                let oddsData = oddsObj.data || oddsObj || {};
+                
+                // Type 1: 1X2
+                if (typeId === 1 || typeName.toLowerCase().includes('1x2') || typeName.toLowerCase().includes('full time')) {
+                    // For 1X2, data is usually an object
+                    if (Array.isArray(oddsData)) {
+                        oddsData = oddsData[0] || {};
+                    }
+                    extractedOdds['1X2'] = {
+                        bookmaker_id: selectedBookmaker.id,
+                        bookmaker: selectedBookmaker,
+                        opening: oddsObj.opening?.data || oddsObj.opening || oddsObj.initial || oddsData,
+                        current: oddsObj.current?.data || oddsObj.current || oddsObj.prematch || oddsData,
+                        home: oddsData.home || oddsData['1'],
+                        draw: oddsData.draw || oddsData['X'],
+                        away: oddsData.away || oddsData['2']
+                    };
+                }
+                // Type 3: Asian Handicap
+                else if (typeId === 3 || typeName.toLowerCase().includes('asian') || typeName.toLowerCase().includes('handicap')) {
+                    // For Asian Handicap, data might be array or object
+                    if (Array.isArray(oddsData)) {
+                        oddsData = oddsData[0] || {};
+                    }
+                    extractedOdds['Asian Handicap'] = {
+                        bookmaker_id: selectedBookmaker.id,
+                        bookmaker: selectedBookmaker,
+                        opening: oddsObj.opening?.data || oddsObj.opening || oddsObj.initial || oddsData,
+                        current: oddsObj.current?.data || oddsObj.current || oddsObj.prematch || oddsData,
+                        handicap: oddsData.handicap || oddsData.value || '0',
+                        home: oddsData.home || oddsData.home_odds,
+                        away: oddsData.away || oddsData.away_odds
+                    };
+                }
+                // Type 2: Over/Under
+                else if (typeId === 2 || typeName.toLowerCase().includes('over') || typeName.toLowerCase().includes('under')) {
+                    // For Over/Under, data is an ARRAY - need to get first element
+                    let overUnderData = {};
+                    if (Array.isArray(oddsData)) {
+                        // Get first element from array (usually the main over/under line)
+                        overUnderData = oddsData[0] || {};
+                    } else if (typeof oddsData === 'object') {
+                        overUnderData = oddsData;
+                    }
+                    
+                    // Also check opening and current if they exist
+                    let openingData = {};
+                    let currentData = {};
+                    
+                    if (oddsObj.opening) {
+                        if (Array.isArray(oddsObj.opening.data)) {
+                            openingData = oddsObj.opening.data[0] || {};
+                        } else {
+                            openingData = oddsObj.opening.data || oddsObj.opening || {};
+                        }
+                    }
+                    
+                    if (oddsObj.current) {
+                        if (Array.isArray(oddsObj.current.data)) {
+                            currentData = oddsObj.current.data[0] || {};
+                        } else {
+                            currentData = oddsObj.current.data || oddsObj.current || {};
+                        }
+                    }
+                    
+                    extractedOdds['Over/Under'] = {
+                        bookmaker_id: selectedBookmaker.id,
+                        bookmaker: selectedBookmaker,
+                        opening: openingData.over ? openingData : overUnderData,
+                        current: currentData.over ? currentData : overUnderData,
+                        total: overUnderData.handicap || overUnderData.total || currentData.handicap || currentData.total || openingData.handicap || openingData.total || '2.5',
+                        over: overUnderData.over || currentData.over || openingData.over || '-',
+                        under: overUnderData.under || currentData.under || openingData.under || '-'
+                    };
+                    
+                    console.log('Over/Under extracted:', extractedOdds['Over/Under']);
+                }
+            }
+        });
+    }
+    // If it's already a processed object (from reconstructOddsPrematch)
+    else if (typeof matchOddsPrematch === 'object') {
+        // Use the object directly
+        extractedOdds = {
+            '1X2': matchOddsPrematch['1x2'] || matchOddsPrematch['1X2'] || matchOddsPrematch,
+            'Asian Handicap': matchOddsPrematch.asian_handicap || matchOddsPrematch.handicap || matchOddsPrematch,
+            'Over/Under': matchOddsPrematch.over_under || matchOddsPrematch.total || matchOddsPrematch
+        };
     }
     
-    // If no Bet365, use first available
-    if (!bet365Odds && Array.isArray(matchOddsPrematch) && matchOddsPrematch.length > 0) {
-        bet365Odds = matchOddsPrematch[0];
-    } else if (!bet365Odds && !Array.isArray(matchOddsPrematch)) {
-        bet365Odds = matchOddsPrematch;
-    }
-    
-    if (!bet365Odds) {
+    // Check if we have any odds data
+    if (!extractedOdds['1X2'] && !extractedOdds['Asian Handicap'] && !extractedOdds['Over/Under']) {
         oddsContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu odds</div>';
         return;
     }
+    
+    // Get Bet365 odds for display (prefer 1X2 structure)
+    const bet365Odds = extractedOdds['1X2'] || extractedOdds['Asian Handicap'] || extractedOdds['Over/Under'];
     
     // Extract opening and pre-match odds
     const openingOdds = bet365Odds.opening || bet365Odds.initial || {};
     const prematchOdds = bet365Odds.current || bet365Odds.prematch || bet365Odds;
     
-    // Get handicap, over/under, and 1X2 odds
-    const openingHandicap = openingOdds.asian_handicap || openingOdds.handicap || {};
-    const prematchHandicap = prematchOdds.asian_handicap || prematchOdds.handicap || {};
+    // Get handicap, over/under, and 1X2 odds from extracted data
+    const openingHandicap = extractedOdds['Asian Handicap']?.opening || extractedOdds['Asian Handicap'] || {};
+    const prematchHandicap = extractedOdds['Asian Handicap']?.current || extractedOdds['Asian Handicap'] || {};
     
-    const openingOverUnder = openingOdds.over_under || openingOdds.total || {};
-    const prematchOverUnder = prematchOdds.over_under || prematchOdds.total || {};
+    const openingOverUnder = extractedOdds['Over/Under']?.opening || extractedOdds['Over/Under'] || {};
+    const prematchOverUnder = extractedOdds['Over/Under']?.current || extractedOdds['Over/Under'] || {};
     
-    const opening1X2 = openingOdds['1x2'] || openingOdds['1X2'] || openingOdds.full_time_result || {};
-    const prematch1X2 = prematchOdds['1x2'] || prematchOdds['1X2'] || prematchOdds.full_time_result || {};
+    const opening1X2 = extractedOdds['1X2']?.opening || extractedOdds['1X2'] || {};
+    const prematch1X2 = extractedOdds['1X2']?.current || extractedOdds['1X2'] || {};
     
     let html = '<div class="space-y-4">';
     
@@ -879,25 +1029,31 @@ function renderMatchOdds() {
     html += '<tr class="border-b border-slate-700">';
     html += '<td class="px-4 py-3 text-xs text-gray-300 font-medium">TỶ LỆ CƯỢC MỞ MÀN</td>';
     
-    // Handicap Opening
+    // Handicap Opening - Cột 1: số, Cột 2: 2 dòng tỉ lệ
     const openingHandicapValue = openingHandicap.handicap || openingHandicap.value || '0';
     const openingHandicapHome = openingHandicap.home || openingHandicap.home_odds || '-';
     const openingHandicapAway = openingHandicap.away || openingHandicap.away_odds || '-';
     html += `<td class="px-4 py-3 text-center text-xs text-white border-l border-slate-700">
-        <div class="flex flex-col gap-1">
-            <div>${openingHandicapValue} ${openingHandicapHome}</div>
-            <div>${openingHandicapAway}</div>
+        <div class="flex items-center justify-center gap-2">
+            <div class="text-white">${openingHandicapValue}</div>
+            <div class="flex flex-col gap-1">
+                <div>${openingHandicapHome}</div>
+                <div>${openingHandicapAway}</div>
+            </div>
         </div>
     </td>`;
     
-    // Over/Under Opening
-    const openingTotalValue = openingOverUnder.total || openingOverUnder.handicap || '2.5';
-    const openingOver = openingOverUnder.over || openingOverUnder.over_odds || '-';
-    const openingUnder = openingOverUnder.under || openingOverUnder.under_odds || '-';
+    // Over/Under Opening - Cột 1: số, Cột 2: 2 dòng tỉ lệ
+    const openingTotalValue = openingOverUnder.handicap || openingOverUnder.total || '2.5';
+    const openingOver = openingOverUnder.over || '-';
+    const openingUnder = openingOverUnder.under || '-';
     html += `<td class="px-4 py-3 text-center text-xs text-white border-l border-slate-700">
-        <div class="flex flex-col gap-1">
-            <div>${openingTotalValue} ${openingOver}</div>
-            <div>${openingUnder}</div>
+        <div class="flex items-center justify-center gap-2">
+            <div class="text-white">${openingTotalValue}</div>
+            <div class="flex flex-col gap-1">
+                <div>${openingOver}</div>
+                <div>${openingUnder}</div>
+            </div>
         </div>
     </td>`;
     
@@ -919,25 +1075,31 @@ function renderMatchOdds() {
     html += '<tr class="border-b border-slate-700">';
     html += '<td class="px-4 py-3 text-xs text-gray-300 font-medium">TỶ LỆ CƯỢC TRƯỚC TRẬN ĐẤU</td>';
     
-    // Handicap Pre-match
+    // Handicap Pre-match - Cột 1: số, Cột 2: 2 dòng tỉ lệ
     const prematchHandicapValue = prematchHandicap.handicap || prematchHandicap.value || '0';
     const prematchHandicapHome = prematchHandicap.home || prematchHandicap.home_odds || '-';
     const prematchHandicapAway = prematchHandicap.away || prematchHandicap.away_odds || '-';
     html += `<td class="px-4 py-3 text-center text-xs text-white border-l border-slate-700">
-        <div class="flex flex-col gap-1">
-            <div>${prematchHandicapValue} ${prematchHandicapHome}</div>
-            <div>${prematchHandicapAway}</div>
+        <div class="flex items-center justify-center gap-2">
+            <div class="text-white">${prematchHandicapValue}</div>
+            <div class="flex flex-col gap-1">
+                <div>${prematchHandicapHome}</div>
+                <div>${prematchHandicapAway}</div>
+            </div>
         </div>
     </td>`;
     
-    // Over/Under Pre-match
-    const prematchTotalValue = prematchOverUnder.total || prematchOverUnder.handicap || '2.5';
-    const prematchOver = prematchOverUnder.over || prematchOverUnder.over_odds || '-';
-    const prematchUnder = prematchOverUnder.under || prematchOverUnder.under_odds || '-';
+    // Over/Under Pre-match - Cột 1: số, Cột 2: 2 dòng tỉ lệ
+    const prematchTotalValue = prematchOverUnder.handicap || prematchOverUnder.total || '2.5';
+    const prematchOver = prematchOverUnder.over || '-';
+    const prematchUnder = prematchOverUnder.under || '-';
     html += `<td class="px-4 py-3 text-center text-xs text-white border-l border-slate-700">
-        <div class="flex flex-col gap-1">
-            <div>${prematchTotalValue} ${prematchOver}</div>
-            <div>${prematchUnder}</div>
+        <div class="flex items-center justify-center gap-2">
+            <div class="text-white">${prematchTotalValue}</div>
+            <div class="flex flex-col gap-1">
+                <div>${prematchOver}</div>
+                <div>${prematchUnder}</div>
+            </div>
         </div>
     </td>`;
     
@@ -1054,48 +1216,36 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// DEPRECATED: loadH2HData - Use loadAllMatchData instead
+// This function is kept for reference but should not be called
 async function loadH2HData(matchId) {
-    try {
-        const response = await fetch(`/api/match-h2h/${matchId}`);
-        const data = await response.json();
-        
-        if (data.success && data.data) {
-            // Use cached team IDs instead of calling match-detail API again
-            matchH2HData = {
-                h2hData: data.data,
-                currentHomeTeamId: matchTeamIds.home_team_id,
-                currentAwayTeamId: matchTeamIds.away_team_id,
-            };
-            
-            // Render H2H data
-            renderH2HData();
-        } else {
-            const h2hContainer = document.getElementById('h2h-content');
-            if (h2hContainer) {
-                h2hContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu H2H</div>';
-            }
-        }
-    } catch (error) {
-        console.error('Error loading H2H data:', error);
-        const h2hContainer = document.getElementById('h2h-content');
-        if (h2hContainer) {
-            h2hContainer.innerHTML = '<div class="text-center text-red-400 py-8">Lỗi tải dữ liệu H2H</div>';
-        }
-    }
+    console.warn('loadH2HData is deprecated. Use loadAllMatchData instead.');
+    // This function should not be called - all data is loaded via loadAllMatchData
 }
 
 function renderH2HData() {
     const h2hContainer = document.getElementById('h2h-content');
-    if (!h2hContainer || !matchH2HData) {
-        if (h2hContainer) {
-            h2hContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Đang tải dữ liệu H2H...</div>';
-        }
+    if (!h2hContainer) {
+        console.error('H2H container not found');
+        return;
+    }
+    
+    if (!matchH2HData || !matchH2HData.h2hData) {
+        console.warn('H2H data not available:', matchH2HData);
+        h2hContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Đang tải dữ liệu H2H...</div>';
         return;
     }
     
     const h2hData = matchH2HData.h2hData;
     const currentHomeTeamId = matchH2HData.currentHomeTeamId;
     const currentAwayTeamId = matchH2HData.currentAwayTeamId;
+    
+    console.log('Rendering H2H with data:', {
+        h2hData,
+        currentHomeTeamId,
+        currentAwayTeamId
+    });
+    
     const homeTeam = h2hData.home || {};
     const awayTeam = h2hData.away || {};
     const h2hMatches = h2hData.h2h || [];
@@ -1377,6 +1527,45 @@ function renderH2HData() {
 <style>
 .modal-tab-content {
     min-height: 200px;
+}
+
+/* Hide scrollbar for tabs on mobile */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+    #match-detail-modal {
+        padding: 0.5rem;
+    }
+    
+    #match-detail-modal > div {
+        max-height: 98vh;
+        margin: 0.5rem 0;
+    }
+    
+    .modal-tab-content {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    /* Prevent text overflow in tables */
+    .modal-tab-content table {
+        font-size: 0.75rem;
+    }
+    
+    .modal-tab-content th,
+    .modal-tab-content td {
+        padding: 0.5rem 0.25rem;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
 }
 </style>
 

@@ -11,9 +11,9 @@
         50% { opacity: 0.3; }
     }
     .live-minute-blink {
-        animation: blink 1.5s ease-in-out infinite;
+        animation: blink 1s ease-in-out infinite;
         font-weight: 600;
-        color: #dc2626; /* red-600 */
+        color: #ef4444 !important; /* red-500 - nhấp nháy màu đỏ */
     }
 </style>
 
@@ -1173,7 +1173,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function buildMatchRow(match, index, selectedBookmaker = null) {
         const matchId = match.match_id || index;
         const rowClass = index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-700';
-        const isLive = match.is_live || false;
+        // Check if match is live - check multiple fields
+        const isLive = match.is_live || 
+                      match.status_name === 'LIVE' || 
+                      match.status?.name === 'LIVE' ||
+                      match.status === 'LIVE' ||
+                      (match.status_name && match.status_name.toLowerCase().includes('live')) ||
+                      false;
         
         // Get odds for selected bookmaker
         let oddsData = match.odds_data || null;
@@ -1356,9 +1362,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 </td>
                 <td class="px-2 py-3 whitespace-nowrap w-16">
                     ${(() => {
-                        const timeDisplay = match.time || '-';
-                        // Check if should blink (live match with minute, not HT)
-                        const shouldBlink = isLive && /\d+'/.test(timeDisplay) && timeDisplay !== 'HT';
+                        // Get time display - prioritize time field, fallback to status_name or status
+                        const timeDisplay = match.time || 
+                                          match.status_name || 
+                                          match.status?.name || 
+                                          match.status || 
+                                          '-';
+                        
+                        // Check if should blink (live match with minute, not HT, not FT)
+                        // Must be: isLive = true AND time contains minute number AND not HT/FT
+                        const hasMinute = /\d+'/.test(timeDisplay) || /\d+/.test(timeDisplay);
+                        const isNotHT = timeDisplay !== 'HT' && timeDisplay !== 'HT\'';
+                        const isNotFT = timeDisplay !== 'FT' && timeDisplay !== 'FT\'';
+                        const shouldBlink = isLive && hasMinute && isNotHT && isNotFT;
+                        
                         const timeClass = shouldBlink ? 'live-minute-blink' : (isLive ? 'text-red-500' : 'text-gray-400');
                         return `<span class="text-sm font-medium ${timeClass}">${timeDisplay}</span>`;
                     })()}

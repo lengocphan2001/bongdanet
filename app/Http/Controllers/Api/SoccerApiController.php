@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\SoccerApiService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class SoccerApiController extends ApiController
 {
@@ -214,11 +215,22 @@ class SoccerApiController extends ApiController
         $allMatches = array_merge($liveMatches, $upcomingMatches);
         $bookmakers = $this->soccerApiService->extractBookmakers($allMatches);
 
-        return $this->success([
-            'live' => $liveMatches,
-            'upcoming' => $upcomingMatches,
-            'bookmakers' => $bookmakers,
-        ], 'Matches fetched successfully');
+        // Return response with no-cache headers to ensure fresh data every time
+        // Also add ETag and Last-Modified headers to prevent browser caching
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'live' => $liveMatches,
+                'upcoming' => $upcomingMatches,
+                'bookmakers' => $bookmakers,
+            ],
+            'message' => 'Matches fetched successfully',
+            'timestamp' => now()->timestamp // Add timestamp to response
+        ])->header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0, private')
+          ->header('Pragma', 'no-cache')
+          ->header('Expires', '0')
+          ->header('ETag', md5(json_encode($liveMatches) . json_encode($upcomingMatches) . now()->timestamp))
+          ->header('Last-Modified', gmdate('D, d M Y H:i:s', now()->timestamp) . ' GMT');
     }
 
     /**
@@ -571,61 +583,81 @@ class SoccerApiController extends ApiController
         $cacheKey = "match_all_data:{$id}";
         
         $data = \Illuminate\Support\Facades\Cache::remember($cacheKey, 300, function () use ($id) {
-            // Get all data in parallel using promises/async if possible
-            // For now, we'll optimize by getting what we can in one call
+            // OPTIMIZED: Use Http::pool() to make ALL requests in PARALLEL from the start
+            // This eliminates sequential waiting and maximizes concurrency
             
-            // Get match detail
-            $matchData = $this->soccerApiService->getFixtureInfo($id);
+            // Prepare all request configs
+            $fixturesConfig = $this->soccerApiService->getRequestConfig('fixtures', [
+                't' => 'match',
+                'id' => $id,
+                'include' => 'events,odds_prematch,stats',
+            ]);
+            
+            $h2hConfig = $this->soccerApiService->getRequestConfig('h2h', [
+                't' => 'match',
+                'id' => $id,
+            ]);
+            
+            // Execute ALL requests in parallel using Http::pool() - MAXIMUM CONCURRENCY!
+            $responses = Http::pool(function ($pool) use ($fixturesConfig, $h2hConfig) {
+                return [
+                    'fixtures' => $pool->as('fixtures')->timeout(3)->retry(1, 30)->get($fixturesConfig['url'], $fixturesConfig['params']),
+                    'h2h' => $pool->as('h2h')->timeout(3)->retry(1, 30)->get($h2hConfig['url'], $h2hConfig['params']),
+                ];
+            });
+            
+            // Process fixtures response (contains match detail, events, odds, stats)
+            $fixturesResponse = $responses['fixtures'] ?? null;
+            $matchData = null;
+            $events = [];
+            $oddsPrematch = null;
+            $stats = null;
+            $homeTeamId = null;
+            $awayTeamId = null;
+            
+            if ($fixturesResponse && $fixturesResponse->successful()) {
+                $fixturesData = $fixturesResponse->json();
+                if (isset($fixturesData['data'])) {
+                    $matchData = $fixturesData['data'];
+                    $events = $matchData['events'] ?? [];
+                    $oddsPrematch = $matchData['odds_prematch'] ?? null;
+                    $stats = $matchData['stats'] ?? null;
+                    
+                    // Extract team IDs from match data
+                    $homeTeam = $matchData['teams']['home'] ?? [];
+                    $awayTeam = $matchData['teams']['away'] ?? [];
+                    $homeTeamId = $homeTeam['id'] ?? null;
+                    $awayTeamId = $awayTeam['id'] ?? null;
+                }
+            }
+            
+            // Fallback: if fixtures response failed, try getFixtureInfo (cached)
+            if (!$matchData) {
+                $matchData = $this->soccerApiService->getFixtureInfo($id, true);
+                if ($matchData) {
+                    $homeTeam = $matchData['teams']['home'] ?? [];
+                    $awayTeam = $matchData['teams']['away'] ?? [];
+                    $homeTeamId = $homeTeam['id'] ?? null;
+                    $awayTeamId = $awayTeam['id'] ?? null;
+                }
+            }
             
             if (!$matchData) {
                 return null;
             }
             
-            $homeTeam = $matchData['teams']['home'] ?? [];
-            $awayTeam = $matchData['teams']['away'] ?? [];
-            $homeTeamId = $homeTeam['id'] ?? null;
-            $awayTeamId = $awayTeam['id'] ?? null;
-            
-            // Get events, odds_prematch, and stats in one call
-            $params = [
-                't' => 'match',
-
-                'id' => $id,
-                'include' => 'events,odds_prematch,stats',
-            ];
-            
-            $response = $this->soccerApiService->makeRequest('fixtures', $params);
-            
-            $events = [];
-            $oddsPrematch = null;
-            $stats = null;
-            
-            if ($response && isset($response['data'])) {
-                $match = $response['data'];
-                $events = $match['events'] ?? [];
-                $oddsPrematch = $match['odds_prematch'] ?? null;
-                
-                // Get stats if not in response
-                if (!isset($match['stats']) || empty($match['stats'])) {
-                    $stats = $this->soccerApiService->getMatchStats($id);
-                } else {
-                    $stats = $match['stats'];
+            // If odds_prematch is empty, try to get from match detail
+            if (empty($oddsPrematch)) {
+                if (isset($matchData['odds_prematch'])) {
+                    $oddsPrematch = $matchData['odds_prematch'];
+                } elseif (isset($matchData['odds_data'])) {
+                    $oddsPrematch = $this->reconstructOddsPrematch($matchData['odds_data']);
                 }
-            } else {
-                // Fallback: get separately
-                $events = $this->soccerApiService->getMatchEvents($id) ?? [];
+            }
+            
+            // Get stats if not in fixtures response (cached, fast)
+            if (!$stats) {
                 $stats = $this->soccerApiService->getMatchStats($id);
-                
-                // Get odds_prematch separately
-                $matchOddsParams = [
-                    't' => 'match',
-                    'id' => $id,
-                    'include' => 'odds_prematch',
-                ];
-                $oddsResponse = $this->soccerApiService->makeRequest('fixtures', $matchOddsParams);
-                if ($oddsResponse && isset($oddsResponse['data'])) {
-                    $oddsPrematch = $oddsResponse['data']['odds_prematch'] ?? null;
-                }
             }
             
             // Process stats to separate home and away
@@ -642,8 +674,22 @@ class SoccerApiController extends ApiController
                 }
             }
             
-            // Get H2H data
-            $h2hData = $this->soccerApiService->getH2H($id);
+            // Process H2H response
+            $h2hData = null;
+            $h2hResponse = $responses['h2h'] ?? null;
+            if ($h2hResponse && $h2hResponse->successful()) {
+                $h2hJson = $h2hResponse->json();
+                if (isset($h2hJson['data'])) {
+                    $h2hData = $h2hJson['data'];
+                } elseif (isset($h2hJson['home']) || isset($h2hJson['away']) || isset($h2hJson['h2h'])) {
+                    $h2hData = $h2hJson;
+                }
+            }
+            
+            // Fallback: get H2H from service if pool request failed (cached, fast)
+            if (!$h2hData) {
+                $h2hData = $this->soccerApiService->getH2H($id);
+            }
             
             return [
                 'match_detail' => $matchData,
@@ -662,8 +708,83 @@ class SoccerApiController extends ApiController
         if (!$data) {
             return $this->error('Match data not found', 404);
         }
-        
+
         return $this->success($data, 'All match data fetched successfully');
+    }
+
+    /**
+     * Reconstruct odds_prematch from odds_data structure
+     * Used when odds_prematch is not directly available
+     */
+    private function reconstructOddsPrematch($oddsData): ?array
+    {
+        if (empty($oddsData) || !is_array($oddsData)) {
+            return null;
+        }
+
+        // Find Bet365 odds (bookmaker_id = 2 or name = 'Bet365')
+        $bet365Odds = null;
+        
+        // Check 1X2 odds
+        if (isset($oddsData['1X2'])) {
+            foreach ($oddsData['1X2'] as $bookmakerName => $odds) {
+                if (stripos($bookmakerName, 'bet365') !== false || 
+                    (isset($odds['bookmaker_id']) && $odds['bookmaker_id'] == 2)) {
+                    $bet365Odds = $odds;
+                    break;
+                }
+            }
+            // If no Bet365, use first available
+            if (!$bet365Odds && !empty($oddsData['1X2'])) {
+                $bet365Odds = reset($oddsData['1X2']);
+            }
+        }
+
+        if (!$bet365Odds) {
+            return null;
+        }
+
+        // Reconstruct odds_prematch structure
+        $reconstructed = [
+            'bookmaker_id' => $bet365Odds['bookmaker_id'] ?? 2,
+            'bookmaker' => $bet365Odds['bookmaker'] ?? ['id' => 2, 'name' => 'Bet365'],
+        ];
+
+        // Get Asian Handicap
+        $handicap = $oddsData['Asian Handicap'][array_key_first($oddsData['Asian Handicap'] ?? [])] ?? null;
+        if ($handicap) {
+            $reconstructed['asian_handicap'] = [
+                'handicap' => $handicap['handicap'] ?? '0',
+                'home' => $handicap['home'] ?? null,
+                'away' => $handicap['away'] ?? null,
+            ];
+        }
+
+        // Get Over/Under
+        $overUnder = $oddsData['Over/Under'][array_key_first($oddsData['Over/Under'] ?? [])] ?? null;
+        if ($overUnder) {
+            $reconstructed['over_under'] = [
+                'total' => $overUnder['handicap'] ?? '2.5',
+                'over' => $overUnder['over'] ?? null,
+                'under' => $overUnder['under'] ?? null,
+            ];
+        }
+
+        // Get 1X2
+        if (isset($bet365Odds['home']) || isset($bet365Odds['draw']) || isset($bet365Odds['away'])) {
+            $reconstructed['1x2'] = [
+                'home' => $bet365Odds['home'] ?? $bet365Odds['1'] ?? null,
+                'draw' => $bet365Odds['draw'] ?? $bet365Odds['X'] ?? null,
+                'away' => $bet365Odds['away'] ?? $bet365Odds['2'] ?? null,
+            ];
+        }
+
+        // Set current and opening (use same data if opening not available)
+        $reconstructed['current'] = $reconstructed;
+        $reconstructed['opening'] = $reconstructed;
+        $reconstructed['prematch'] = $reconstructed;
+
+        return $reconstructed;
     }
 }
 
