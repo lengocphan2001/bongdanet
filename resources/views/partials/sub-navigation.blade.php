@@ -5,7 +5,7 @@
             {{-- Center Section - Title --}}
             <div class="flex-1 bg-transparent py-4 px-4 flex items-center justify-center">
                 <h2 class="text-base sm:text-lg font-bold text-white text-center leading-tight">
-                    <span class="whitespace-nowrap">KEOBONGDA | BÓNG ĐÁ SỐ - DỮ LIỆU CHÍNH XÁC VÀ KỊP THỜI NHẤT </span>
+                    <span class="whitespace-nowrap">KEOBONG88 | BÓNG ĐÁ SỐ - DỮ LIỆU CHÍNH XÁC VÀ KỊP THỜI NHẤT </span>
                     <span class="text-blue-400 whitespace-nowrap font-extrabold">BONGDASO</span>
                     <span class="whitespace-nowrap"> TRỰC TUYẾN MỚI NHẤT</span>
                 </h2>

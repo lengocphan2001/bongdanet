@@ -29,7 +29,7 @@
                 <div>
                     <p class="text-gray-400 text-xs sm:text-sm mb-2"><span class="text-gray-500">Quảng cáo:</span> <span class="text-gray-300">Muốn đặt quảng cáo vui lòng liên hệ <a href="mailto:info@keobong88.co" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobong88.co</a></span></p>
                     <p class="text-amber-400 text-xs sm:text-sm font-medium mb-2">⚠️ Cẩn thận các nick giả mạo, đặt tên tương tự</p>
-                    <p class="text-gray-400 break-words text-xs sm:text-sm"><span class="text-gray-500">keobong88.co</span> là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ KEOBONGDA</p>
+                    <p class="text-gray-400 break-words text-xs sm:text-sm"><span class="text-gray-500">keobong88.co</span> là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ KEOBONG88</p>
                 </div>
             </div>
             
