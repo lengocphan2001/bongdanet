@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Panel') - Keobongda</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo-icon.png') }}">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
