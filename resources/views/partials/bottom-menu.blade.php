@@ -1,7 +1,7 @@
 {{-- Bottom Navigation Menu (Mobile Only) --}}
 <nav class="fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-700 shadow-lg lg:hidden">
     <div class="overflow-x-auto scrollbar-hide">
-        <div class="flex items-center gap-0 min-w-max px-2 py-2">
+        <div class="flex items-center justify-center gap-0 min-w-max px-2 py-2">
             @php
                 $menuItems = [
                     [

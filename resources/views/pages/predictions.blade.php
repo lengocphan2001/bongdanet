@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'keobong88 - Nhận định bóng đá')
+@section('title', 'keobongda.co - Nhận định bóng đá')
 
 @php
     use Illuminate\Support\Facades\Storage;

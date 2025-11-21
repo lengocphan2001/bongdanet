@@ -17,6 +17,8 @@
             $activeItem = 'predictions';
         } elseif (str_contains($currentRoute, 'admin.banners')) {
             $activeItem = 'banners';
+        } elseif (str_contains($currentRoute, 'admin.bookmakers')) {
+            $activeItem = 'bookmakers';
         } elseif (str_contains($currentRoute, 'admin.access-logs')) {
             $activeItem = 'access-logs';
         } elseif (str_contains($currentRoute, 'admin.users')) {

@@ -1,6 +1,6 @@
 @props(['activeItem' => null])
 
-<div id="admin-sidebar" class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 lg:translate-x-0 -translate-x-full">
+<div id="admin-sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 lg:translate-x-0 -translate-x-full">
     <div class="h-full overflow-y-auto">
         {{-- Sidebar Header --}}
         <div class="p-4 border-b border-gray-200">
@@ -52,6 +52,18 @@
                 </svg>
                 <span>Banner Quảng Cáo</span>
                 @if($activeItem === 'banners')
+                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                @endif
+            </a>
+
+            {{-- Bookmakers --}}
+            <a href="{{ route('admin.bookmakers.index') }}" 
+               class="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {{ $activeItem === 'bookmakers' ? 'bg-[#1a5f2f] text-white' : 'text-gray-700 hover:bg-gray-100' }}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <span>Nhà Cái</span>
+                @if($activeItem === 'bookmakers')
                     <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
                 @endif
             </a>
@@ -153,8 +165,8 @@
     </div>
 </div>
 
-{{-- Sidebar Overlay (for mobile) --}}
-<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+{{-- Sidebar Overlay (for mobile when sidebar is open) --}}
+<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden" style="cursor: pointer;"></div>
 
 
 <script>
@@ -164,37 +176,102 @@
         const overlay = document.getElementById('sidebar-overlay');
         
         if (sidebar && overlay) {
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                // Close sidebar
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                // Open sidebar
+                sidebar.classList.remove('-translate-x-full');
+                // Only show overlay on mobile
+                if (window.innerWidth < 1024) {
+                    overlay.classList.remove('hidden');
+                }
+            }
         }
     };
 
-    // Close sidebar when clicking outside on mobile
+    // Initialize sidebar functionality
     document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('admin-sidebar');
         const overlay = document.getElementById('sidebar-overlay');
-        if (overlay) {
-            overlay.addEventListener('click', window.toggleSidebar);
-        }
+        
+        if (!sidebar || !overlay) return;
+        
+        // Close sidebar when clicking overlay (most reliable method)
+        overlay.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        
+        overlay.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!overlay.classList.contains('hidden')) {
+                window.toggleSidebar();
+            }
+        });
+
+        // Also handle touch events for mobile
+        overlay.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!overlay.classList.contains('hidden')) {
+                window.toggleSidebar();
+            }
+        });
+
+        // Close sidebar when clicking outside on mobile (backup method)
+        document.body.addEventListener('click', function(e) {
+            // Only handle on mobile
+            if (window.innerWidth >= 1024) return;
+            
+            // Check if sidebar is open
+            if (sidebar.classList.contains('-translate-x-full')) return;
+            
+            // Check if click is on toggle button
+            const toggleButton = e.target.closest('[onclick*="toggleSidebar"]');
+            if (toggleButton) return;
+            
+            // Check if click is inside sidebar
+            if (sidebar.contains(e.target)) return;
+            
+            // Check if click is on overlay (already handled above)
+            if (overlay.contains(e.target)) return;
+            
+            // Click is outside, close sidebar
+            window.toggleSidebar();
+        }, true); // Use capture phase for better detection
 
         // Close sidebar when clicking a link on mobile
-        document.querySelectorAll('#admin-sidebar a').forEach(link => {
-            link.addEventListener('click', () => {
+        sidebar.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
                 if (window.innerWidth < 1024) {
-                    window.toggleSidebar();
+                    setTimeout(() => {
+                        window.toggleSidebar();
+                    }, 100);
                 }
             });
         });
 
-        // Close sidebar on window resize if switching to desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024) {
-                const sidebar = document.getElementById('admin-sidebar');
-                const overlay = document.getElementById('sidebar-overlay');
-                if (sidebar && overlay) {
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (window.innerWidth >= 1024) {
+                    // Desktop: always show sidebar, hide overlay
                     sidebar.classList.remove('-translate-x-full');
                     overlay.classList.add('hidden');
+                } else {
+                    // Mobile: hide overlay if sidebar is closed
+                    if (sidebar.classList.contains('-translate-x-full')) {
+                        overlay.classList.add('hidden');
+                    }
                 }
-            }
+            }, 100);
         });
     });
 </script>

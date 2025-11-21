@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-8 sm:py-10">
         {{-- Top Section: Copyright and Navigation --}}
         <div class="text-center mb-6">
-            <p class="text-blue-400 mb-3 text-sm sm:text-base font-semibold">Copyright 2025 © keobong88</p>
+            <p class="text-blue-400 mb-3 text-sm sm:text-base font-semibold">Copyright 2025 © keobongda.co</p>
             <nav class="flex flex-wrap items-center justify-center gap-3 sm:gap-5 text-gray-400 text-xs sm:text-sm mb-6">
                 <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 font-medium">Giới thiệu</a>
                 <span class="text-gray-600 hidden sm:inline">•</span>
@@ -23,13 +23,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
                     <p class="text-gray-400 break-words mb-2"><span class="text-gray-500">Địa chỉ:</span> <span class="text-gray-300">100 Nguyễn Xiển, Đại Kim, Hoàng Mai, Hà Nội</span></p>
-                    <p class="text-gray-400 break-words mb-2"><span class="text-gray-500">Website:</span> <a href="https://keobong88" class="text-blue-400 hover:text-blue-300 break-all transition-colors duration-200">https://keobong88</a></p>
+                    <p class="text-gray-400 break-words mb-2"><span class="text-gray-500">Website:</span> <a href="https://keobongda.co" class="text-blue-400 hover:text-blue-300 break-all transition-colors duration-200">https://keobongda.co</a></p>
                     <p class="text-gray-400 mb-2"><span class="text-gray-500">Số điện thoại:</span> <a href="tel:0822889972" class="text-blue-400 hover:text-blue-300 transition-colors duration-200">0978471074</a></p>
                 </div>
                 <div>
-                    <p class="text-gray-400 text-xs sm:text-sm mb-2"><span class="text-gray-500">Quảng cáo:</span> <span class="text-gray-300">Muốn đặt quảng cáo vui lòng liên hệ <a href="mailto:info@keobong88" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobong88</a></span></p>
+                    <p class="text-gray-400 text-xs sm:text-sm mb-2"><span class="text-gray-500">Quảng cáo:</span> <span class="text-gray-300">Muốn đặt quảng cáo vui lòng liên hệ <a href="mailto:info@keobongda.co" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobongda.co</a></span></p>
                     <p class="text-amber-400 text-xs sm:text-sm font-medium mb-2">⚠️ Cẩn thận các nick giả mạo, đặt tên tương tự</p>
-                    <p class="text-gray-400 break-words text-xs sm:text-sm"><span class="text-gray-500">keobong88</span> là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ KEOBONGDA</p>
+                    <p class="text-gray-400 break-words text-xs sm:text-sm"><span class="text-gray-500">keobongda.co</span> là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ KEOBONGDA</p>
                 </div>
             </div>
             
@@ -53,7 +53,7 @@
             </div>
             
             <p class="text-gray-400 text-center pt-4">Liên hệ quảng cáo: 
-                <a href="mailto:info@keobong88" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobong88</a>
+                <a href="mailto:info@keobongda.co" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobongda.co</a>
             </p>
         </div>
     </div>

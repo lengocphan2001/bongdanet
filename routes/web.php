@@ -52,6 +52,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('predictions', \App\Http\Controllers\Admin\PredictionController::class);
         Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
         Route::post('/banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
+        Route::resource('bookmakers', \App\Http\Controllers\Admin\BookmakerController::class);
+        Route::post('/bookmakers/{bookmaker}/toggle-status', [\App\Http\Controllers\Admin\BookmakerController::class, 'toggleStatus'])->name('bookmakers.toggle-status');
         Route::post('/upload-image', [\App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('upload.image');
         
         // Access Logs

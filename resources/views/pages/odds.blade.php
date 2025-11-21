@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'keobong88 - Kèo bóng đá - Tỷ lệ kèo nhà cái')
+@section('title', 'keobongda.co - Kèo bóng đá - Tỷ lệ kèo nhà cái')
 
 @section('content')
 <div class="min-h-screen bg-slate-900">
@@ -12,12 +12,19 @@
                 {{-- Main Container --}}
                 <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
                     {{-- Page Title --}}
-                    <div class="flex items-center gap-3 mb-6">
+                    <div class="flex items-center gap-3 mb-4">
                         <div class="w-1 h-8 bg-gradient-to-b from-amber-500 to-orange-600 rounded-full"></div>
                         <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
                             <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">Kèo Bóng Đá - Tỷ Lệ Kèo Nhà Cái</span>
                         </h1>
                     </div>
+                </div>
+
+                {{-- Bookmaker Slider --}}
+                <x-bookmaker-slider />
+
+                {{-- Main Container (continued) --}}
+                <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
 
                     {{-- Date Selection Tabs --}}
                     <div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 p-2.5 mb-4 backdrop-blur-sm">
