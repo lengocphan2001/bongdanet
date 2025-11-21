@@ -6,7 +6,7 @@
             <div class="hidden lg:flex items-center h-16">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex items-center mr-8 flex-shrink-0 {{ request()->routeIs('home') ? 'opacity-100' : 'opacity-90 hover:opacity-100' }} transition-opacity">
-                    <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Keobongda Logo" class="h-12 w-auto">  
+                    <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Keobongda Logo" class="h-36 w-auto">  
                 </a>
                 
                 {{-- Navigation Links --}}
@@ -69,7 +69,7 @@
             {{-- Mobile Navigation with Logo and Menu Button --}}
             <div class="lg:hidden flex items-center justify-between h-16">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Keobongda Logo" class="h-10 w-auto">  
+                    <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Keobongda Logo" class="h-32 w-auto">  
                 </a>
                 {{-- Mobile Menu Button --}}
                 <button id="mobile-menu-button" class="text-white p-2 hover:bg-slate-800 rounded-lg transition-colors" aria-label="Toggle menu">
