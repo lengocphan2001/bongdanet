@@ -19,12 +19,31 @@
                 {{-- Main Container --}}
                 <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
                     {{-- Page Title --}}
-                    <div class="flex items-center gap-3 mb-6">
+                    <div class="flex items-center gap-3 mb-4">
                         <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
                         <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
                             <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">Kết Quả {{ $league['name'] ?? 'N/A' }} {{ date('Y') }}</span>
                         </h1>
                     </div>
+
+                    {{-- Current Round Info --}}
+                    @if(!empty($currentRoundId) && !($isCup ?? false))
+                        @php
+                            $currentRoundIndex = array_search($currentRoundId, $roundIds);
+                            $currentRoundNumber = $currentRoundIndex !== false ? $currentRoundIndex + 1 : null;
+                        @endphp
+                        @if($currentRoundNumber)
+                            <div class="mb-4 bg-gradient-to-r from-emerald-600/20 to-green-600/20 border border-emerald-500/30 rounded-lg p-3 backdrop-blur-sm">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span class="text-sm font-semibold text-emerald-400">Vòng đấu hiện tại:</span>
+                                    <span class="text-sm font-bold text-white">Vòng {{ $currentRoundNumber }}</span>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
 
                     {{-- League Selection Tabs --}}
                     @php
@@ -86,7 +105,7 @@
                                     <tr>
                                         <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase tracking-wider">Thời gian</th>
                                         <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase tracking-wider">{{ ($isCup ?? false) ? 'Bảng' : 'Vòng' }}</th>
-                                        <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">FT</th>
+                                        <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Trận đấu</th>
                                         <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">HT</th>
                                     </tr>
                                 </thead>
@@ -116,13 +135,24 @@
                                             }
                                         @endphp
                                         {{-- Date Header --}}
+                                        @php
+                                            $dateKey = 'date-' . str_replace(['-', ' '], ['', ''], $matchDate);
+                                        @endphp
                                         <tr class="bg-gradient-to-r from-slate-800/60 to-slate-900/60">
                                             <td colspan="4" class="px-4 py-3">
                                                 <div class="flex items-center gap-2">
+                                                    <button onclick="toggleDateSection('{{ $dateKey }}')" 
+                                                            class="flex-shrink-0 p-1.5 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-lg transition-all duration-200 group"
+                                                            aria-label="Toggle date section">
+                                                        <svg id="toggle-icon-{{ $dateKey }}" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                        </svg>
+                                                    </button>
                                                     <div class="w-1 h-5 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
                                                     <span class="text-sm font-bold text-emerald-400">
                                                         {{ $dayName }}, Ngày {{ $formattedDate }}
                                                     </span>
+                                                    <span class="text-xs text-emerald-400/70 font-medium ml-1">({{ count($matches) }})</span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -180,8 +210,9 @@
                                                 }
                                                 $isLive = $match['is_live'] ?? false;
                                             @endphp
-                                            <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ $matchId ? 'cursor-pointer group' : '' }}"
-                                                @if($matchId) onclick="openMatchModal({{ $matchId }})" @endif>
+                                            <tr class="date-section-row hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ $matchId ? 'cursor-pointer group' : '' }}" 
+                                                data-date-section="{{ $dateKey }}"
+                                                @if($matchId) onclick="window.location.href='{{ route('match.detail', $matchId) }}'" @endif>
                                                 <td class="px-3 sm:px-4 py-3 whitespace-nowrap">
                                                     @if($isLive)
                                                         <div class="text-xs sm:text-sm font-bold text-red-400 bg-red-500/10 px-2 py-1 rounded inline-block">
@@ -194,24 +225,57 @@
                                                     @endif
                                                 </td>
                                                 <td class="px-3 sm:px-4 py-3">
-                                                    <div class="text-xs font-semibold text-gray-300">{{ $roundName }}</div>
+                                                    @php
+                                                        $isCurrentRound = !($isCup ?? false) && isset($currentRoundId) && isset($match['round_id']) && $match['round_id'] == $currentRoundId;
+                                                    @endphp
+                                                    <div class="text-xs font-semibold {{ $isCurrentRound ? 'text-emerald-400' : 'text-gray-300' }}">
+                                                        @if($isCurrentRound)
+                                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/30">
+                                                                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                                                                {{ $roundName }}
+                                                            </span>
+                                                        @else
+                                                            {{ $roundName }}
+                                                        @endif
+                                                    </div>
                                                 </td>
                                                 <td class="px-3 sm:px-4 py-3">
                                                     <div class="flex items-center justify-between gap-3">
-                                                        <div class="flex items-center gap-2 flex-1 justify-end group-hover:text-emerald-400 transition-colors">
+                                                        <div class="flex items-center gap-2 flex-1 justify-end min-w-0 group-hover:text-emerald-400 transition-colors">
                                                             <span class="text-xs sm:text-sm text-white font-medium truncate">{{ $match['home_team'] ?? '-' }}</span>
+                                                            @if (!empty($match['home_team_info']['img'] ?? null))
+                                                                <div class="w-5 h-5 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                                    <img src="{{ $match['home_team_info']['img'] }}" 
+                                                                         alt="{{ $match['home_team'] }}" 
+                                                                         class="w-full h-full object-contain"
+                                                                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[8px] text-white font-bold\'>{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>';">
+                                                                </div>
+                                                            @else
+                                                                <div class="w-5 h-5 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[8px] text-white font-bold flex-shrink-0">{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>
+                                                            @endif
                                                         </div>
                                                         @if($matchId)
-                                                            <button onclick="event.stopPropagation(); openMatchModal({{ $matchId }})" 
-                                                                    class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] text-center transition-all duration-200 flex-shrink-0 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
+                                                            <a href="{{ route('match.detail', $matchId) }}" 
+                                                               onclick="event.stopPropagation();"
+                                                               class="inline-block bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] text-center transition-all duration-200 flex-shrink-0 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
                                                                 {{ $score }}
-                                                            </button>
+                                                            </a>
                                                         @else
                                                             <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] text-center flex-shrink-0 shadow-lg shadow-emerald-500/25">
                                                                 {{ $score }}
                                                             </div>
                                                         @endif
-                                                        <div class="flex items-center gap-2 flex-1 justify-start group-hover:text-emerald-400 transition-colors">
+                                                        <div class="flex items-center gap-2 flex-1 justify-start min-w-0 group-hover:text-emerald-400 transition-colors">
+                                                            @if (!empty($match['away_team_info']['img'] ?? null))
+                                                                <div class="w-5 h-5 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                                    <img src="{{ $match['away_team_info']['img'] }}" 
+                                                                         alt="{{ $match['away_team'] }}" 
+                                                                         class="w-full h-full object-contain"
+                                                                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[8px] text-white font-bold\'>{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>';">
+                                                                </div>
+                                                            @else
+                                                                <div class="w-5 h-5 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[8px] text-white font-bold flex-shrink-0">{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>
+                                                            @endif
                                                             <span class="text-xs sm:text-sm text-white font-medium truncate">{{ $match['away_team'] ?? '-' }}</span>
                                                         </div>
                                                     </div>
@@ -239,42 +303,42 @@
 
                 {{-- Condensed Results by Date --}}
                 @if(!empty($matchesByDate))
-                    <div class="bg-white shadow-sm border border-gray-200 overflow-hidden w-full">
+                    <div class="bg-gradient-to-br from-slate-800/95 to-slate-900/95 rounded-xl shadow-xl border border-slate-700/50 overflow-hidden backdrop-blur-sm w-full">
                         {{-- Header --}}
-                        <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-1 h-5 bg-green-600"></div>
-                                <h2 class="text-sm font-bold text-black uppercase">Kết quả {{ $league['name'] ?? '' }}</h2>
+                        <div class="bg-gradient-to-r from-emerald-800/80 to-green-900/80 px-4 py-3 border-b border-slate-700/50 backdrop-blur-sm">
+                            <div class="flex items-center gap-2">
+                                <div class="w-1 h-6 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+                                <h2 class="text-sm font-bold text-white uppercase tracking-tight">Kết quả {{ $league['name'] ?? '' }}</h2>
                             </div>
                         </div>
                         
                         {{-- Results List --}}
-                        <div class="bg-white">
-                            <table class="w-full table-fixed">
-                                <colgroup>
-                                    <col style="width: auto;">
-                                    <col style="width: 60px;">
-                                    <col style="width: auto;">
-                                </colgroup>
-                                <tbody>
-                                    @foreach(array_slice($matchesByDate, 0, 2) as $matchDate => $matches)
-                                        @php
-                                            try {
-                                                $dateObj = Carbon\Carbon::parse($matchDate);
-                                                $formattedDate = $dateObj->format('d/m/Y');
-                                            } catch (\Exception $e) {
-                                                $formattedDate = $matchDate;
-                                            }
-                                        @endphp
-                                        
-                                        {{-- Date Header Row --}}
-                                        <tr>
-                                            <td colspan="3" class="bg-gray-400 px-4 py-2">
-                                                <h4 class="text-sm font-medium text-white">Ngày {{ $formattedDate }}</h4>
-                                            </td>
-                                        </tr>
-                                        
-                                        {{-- Match Results Rows --}}
+                        <div class="bg-slate-900/50">
+                            <div class="overflow-y-auto max-h-[600px]">
+                                @foreach(array_slice($matchesByDate, 0, 2) as $matchDate => $matches)
+                                    @php
+                                        try {
+                                            $dateObj = Carbon\Carbon::parse($matchDate);
+                                            $formattedDate = $dateObj->format('d/m/Y');
+                                            $dayName = $dateObj->locale('vi')->isoFormat('dddd');
+                                        } catch (\Exception $e) {
+                                            $formattedDate = $matchDate;
+                                            $dayName = '';
+                                        }
+                                    @endphp
+                                    
+                                    {{-- Date Header --}}
+                                    <div class="bg-gradient-to-r from-slate-800/60 to-slate-900/60 px-4 py-2.5 border-b border-slate-700/50">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-1 h-4 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+                                            <span class="text-xs font-semibold text-emerald-400">
+                                                {{ $dayName ? $dayName . ', ' : '' }}Ngày {{ $formattedDate }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    {{-- Match Results --}}
+                                    <div class="divide-y divide-slate-700/50">
                                         @foreach(array_slice($matches, 0, 5) as $match)
                                             @php
                                                 $matchId = $match['match_id'] ?? null;
@@ -287,39 +351,50 @@
                                                     $score = $match['score'] ?? '0-0';
                                                 }
                                             @endphp
-                                            <tr class="hover:bg-gray-50 transition-colors {{ !$loop->last ? 'border-b border-gray-200' : '' }}">
-                                                <td class="text-xs text-gray-900 text-right">
-                                                    @if($matchId)
-                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-blue-600 transition-colors duration-200">
+                                            <a href="{{ $matchId ? route('match.detail', $matchId) : '#' }}" 
+                                               class="block px-4 py-3 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ $matchId ? 'cursor-pointer group' : '' }}">
+                                                <div class="flex items-center justify-between gap-2">
+                                                    <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
+                                                        <span class="text-xs text-gray-300 font-medium truncate group-hover:text-emerald-400 transition-colors">
                                                             {{ $match['home_team'] ?? '-' }}
-                                                        </a>
-                                                    @else
-                                                        {{ $match['home_team'] ?? '-' }}
-                                                    @endif
-                                                </td>
-                                                <td class="px-2 py-2 text-xs font-medium text-green-600 text-center whitespace-nowrap">
-                                                    @if($matchId)
-                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-green-700">
+                                                        </span>
+                                                        @if (!empty($match['home_team_info']['img'] ?? null))
+                                                            <div class="w-4 h-4 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                                <img src="{{ $match['home_team_info']['img'] }}" 
+                                                                     alt="{{ $match['home_team'] }}" 
+                                                                     class="w-full h-full object-contain"
+                                                                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[7px] text-white font-bold\'>{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>';">
+                                                            </div>
+                                                        @else
+                                                            <div class="w-4 h-4 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[7px] text-white font-bold flex-shrink-0">{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex-shrink-0 mx-1">
+                                                        <span class="inline-block bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-black px-2 py-1 rounded-lg min-w-[40px] text-center shadow-md shadow-emerald-500/25">
                                                             {{ $score }}
-                                                        </a>
-                                                    @else
-                                                        {{ $score }}
-                                                    @endif
-                                                </td>
-                                                <td class="text-xs text-gray-900 text-left">
-                                                    @if($matchId)
-                                                        <a href="{{ route('match.detail', $matchId) }}" class="hover:text-blue-600 transition-colors duration-200">
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
+                                                        @if (!empty($match['away_team_info']['img'] ?? null))
+                                                            <div class="w-4 h-4 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                                <img src="{{ $match['away_team_info']['img'] }}" 
+                                                                     alt="{{ $match['away_team'] }}" 
+                                                                     class="w-full h-full object-contain"
+                                                                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[7px] text-white font-bold\'>{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>';">
+                                                            </div>
+                                                        @else
+                                                            <div class="w-4 h-4 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[7px] text-white font-bold flex-shrink-0">{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>
+                                                        @endif
+                                                        <span class="text-xs text-gray-300 font-medium truncate group-hover:text-emerald-400 transition-colors">
                                                             {{ $match['away_team'] ?? '-' }}
-                                                        </a>
-                                                    @else
-                                                        {{ $match['away_team'] ?? '-' }}
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </a>
                                         @endforeach
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 @endif
@@ -327,5 +402,30 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleDateSection(dateKey) {
+    const rows = document.querySelectorAll(`tr[data-date-section="${dateKey}"]`);
+    const icon = document.getElementById('toggle-icon-' + dateKey);
+    
+    if (!rows.length || !icon) return;
+    
+    const isHidden = rows[0].classList.contains('hidden');
+    
+    rows.forEach(row => {
+        if (isHidden) {
+            row.classList.remove('hidden');
+        } else {
+            row.classList.add('hidden');
+        }
+    });
+    
+    if (isHidden) {
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        icon.style.transform = 'rotate(-90deg)';
+    }
+}
+</script>
 @endsection
 

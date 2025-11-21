@@ -314,6 +314,7 @@ class ResultsController extends Controller
             'isCup' => $isCup,
             'round' => $selectedRound,
             'roundIds' => $roundIds,
+            'currentRoundId' => $currentRoundId,
             'roundsToFetch' => $roundsToFetch,
             'bookmakers' => $bookmakers,
             'matchesByDate' => $matchesByDate,
