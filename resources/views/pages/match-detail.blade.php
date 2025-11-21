@@ -13,117 +13,116 @@
 
     {{-- Main Content Area --}}
     <div class="container mx-auto px-2 sm:px-4 py-4">
-        {{-- Page Title --}}
-        <h1 class="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6 break-words">
-            Kết quả trận {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}, {{ $displayTime ? str_replace(':', 'h', $displayTime) : '' }} ngày {{ $displayDate ?? '' }}
-        </h1>
-
-        {{-- Match Summary Box (Green) --}}
-        <div class="bg-slate-900 rounded-lg shadow-xl mb-4 sm:mb-6 p-4 sm:p-6">
-            {{-- League/Stage Info --}}
-            <div class="text-center text-white mb-4">
-                <p class="text-xs sm:text-sm font-medium break-words">
-                    Kqbd {{ $league['name'] ?? '' }} {{ $match['stage_name'] ?? '' }} {{ $displayTime ? str_replace(':', 'h', $displayTime) : '' }} Ngày {{ $displayDate ?? '' }}/{{ !empty($matchDate) ? date('Y', strtotime($matchDate)) : date('Y') }}
-                </p>
-            </div>
-
-            {{-- Teams and Score --}}
-            <div class="flex flex-col sm:flex-row items-center justify-between mb-4 space-y-4 sm:space-y-0">
-                {{-- Home Team --}}
-                <div class="flex-1 flex flex-col items-center w-full sm:w-auto">
-                    @if (!empty($homeTeam['img']))
-                        <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-12 h-12 sm:w-16 sm:h-16 mb-2">
-                    @endif
-                    <span class="text-white font-medium text-center text-sm sm:text-base break-words px-2">{{ $homeTeam['name'] ?? '' }}</span>
-                </div>
-
-                {{-- Score --}}
-                <div class="flex-1 flex flex-col items-center mx-0 sm:mx-4 w-full sm:w-auto">
-                    <div class="text-2xl sm:text-4xl font-bold text-white mb-2">
-                        {{ ($scores['home_score'] ?? '') !== '' ? ($scores['home_score'] ?? '?') : '?' }} - {{ ($scores['away_score'] ?? '') !== '' ? ($scores['away_score'] ?? '?') : '?' }}
-                    </div>
-                    @if ($match['status'] == 1 || $match['status_name'] == 'Inplay')
-                        <a href="#" class="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-1 sm:py-2 rounded text-xs sm:text-sm font-medium transition-colors">
-                            Xem Live
-                        </a>
-                    @endif
-                    @if (!empty($scores['ht_score']))
-                        <p class="text-white text-sm mt-2">({{ $scores['ht_score'] }})</p>
-                    @else
-                        <p class="text-white text-sm mt-2">(0-0)</p>
-                    @endif
-                </div>
-
-                {{-- Away Team --}}
-                <div class="flex-1 flex flex-col items-center w-full sm:w-auto">
-                    @if (!empty($awayTeam['img']))
-                        <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-12 h-12 sm:w-16 sm:h-16 mb-2">
-                    @endif
-                    <span class="text-white font-medium text-center text-sm sm:text-base break-words px-2">{{ $awayTeam['name'] ?? '' }}</span>
-                </div>
-            </div>
-
-            {{-- Match Details --}}
-            <div class="flex flex-wrap justify-center gap-3 sm:gap-6 text-white text-xs sm:text-sm">
-                <div>
-                    <span class="font-medium">Địa Điểm:</span>
-                    <span>
-                        @if ($venue && isset($venue['name']))
-                            {{ $venue['name'] }}
-                            @if (isset($venue['city']))
-                                , {{ $venue['city'] }}
-                            @endif
-                            @if (isset($venue['country']['name']))
-                                , {{ $venue['country']['name'] }}
-                            @endif
-                        @else
-                            -
-                        @endif
+        {{-- Main Container --}}
+        <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
+            {{-- Page Title --}}
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
+                    <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+                        Kết quả trận {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}
                     </span>
+                </h1>
+            </div>
+
+            {{-- Match Summary Box --}}
+            <div class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl shadow-xl border border-slate-700/50 mb-6 p-4 sm:p-6 backdrop-blur-sm">
+                {{-- League/Stage Info --}}
+                <div class="text-center mb-6">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-semibold">
+                        KẾT QUẢ
+                    </span>
+                    <p class="text-xs sm:text-sm font-medium text-gray-300 mt-2 break-words">
+                        {{ $league['name'] ?? '' }} {{ $match['stage_name'] ?? '' }} • {{ $displayTime ? str_replace(':', 'h', $displayTime) : '' }} Ngày {{ $displayDate ?? '' }}/{{ !empty($matchDate) ? date('Y', strtotime($matchDate)) : date('Y') }}
+                    </p>
                 </div>
-                <div>
-                    <span class="font-medium">Thời Tiết:</span>
-                    <span>{{ $match['weather_report']['condition'] ?? 'Ít Mây' }}, {{ $match['weather_report']['temp'] ?? '12' }}°C ~ {{ $match['weather_report']['temp'] ?? '13' }}°C</span>
+
+                {{-- Teams and Score --}}
+                <div class="flex flex-col sm:flex-row items-center justify-between mb-6 space-y-6 sm:space-y-0">
+                    {{-- Home Team --}}
+                    <div class="flex-1 flex flex-col items-center w-full sm:w-auto">
+                        @if (!empty($homeTeam['img']))
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-800/50 border-2 border-slate-700/50 p-2 mb-3 flex items-center justify-center hover:border-emerald-500/50 transition-all duration-200">
+                                <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-full h-full object-contain">
+                            </div>
+                        @else
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border-2 border-slate-700/50 mb-3 flex items-center justify-center text-white text-xl font-bold">
+                                {{ substr($homeTeam['name'] ?? 'H', 0, 1) }}
+                            </div>
+                        @endif
+                        <span class="text-white font-semibold text-center text-sm sm:text-base break-words px-2">{{ $homeTeam['name'] ?? '' }}</span>
+                    </div>
+
+                    {{-- Score --}}
+                    <div class="flex-1 flex flex-col items-center mx-0 sm:mx-4 w-full sm:w-auto">
+                        <div class="text-3xl sm:text-5xl md:text-6xl font-black mb-3 bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500 bg-clip-text text-transparent">
+                            {{ ($scores['home_score'] ?? '') !== '' ? ($scores['home_score'] ?? '?') : '?' }} - {{ ($scores['away_score'] ?? '') !== '' ? ($scores['away_score'] ?? '?') : '?' }}
+                        </div>
+                        @if ($match['status'] == 1 || $match['status_name'] == 'Inplay')
+                            <a href="{{ route('livescore') }}" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:scale-105 mb-2">
+                                🔴 Xem Live
+                            </a>
+                        @endif
+                        @if (!empty($scores['ht_score']))
+                            <p class="text-gray-400 text-sm font-medium">(HT: {{ $scores['ht_score'] }})</p>
+                        @else
+                            <p class="text-gray-400 text-sm font-medium">(HT: 0-0)</p>
+                        @endif
+                    </div>
+
+                    {{-- Away Team --}}
+                    <div class="flex-1 flex flex-col items-center w-full sm:w-auto">
+                        @if (!empty($awayTeam['img']))
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-800/50 border-2 border-slate-700/50 p-2 mb-3 flex items-center justify-center hover:border-emerald-500/50 transition-all duration-200">
+                                <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-full h-full object-contain">
+                            </div>
+                        @else
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border-2 border-slate-700/50 mb-3 flex items-center justify-center text-white text-xl font-bold">
+                                {{ substr($awayTeam['name'] ?? 'A', 0, 1) }}
+                            </div>
+                        @endif
+                        <span class="text-white font-semibold text-center text-sm sm:text-base break-words px-2">{{ $awayTeam['name'] ?? '' }}</span>
+                    </div>
+                </div>
+
+                {{-- Match Details --}}
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-gray-300 text-xs sm:text-sm bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span class="font-medium text-emerald-400">Địa điểm:</span>
+                        <span>
+                            @if ($venue && isset($venue['name']))
+                                {{ $venue['name'] }}
+                                @if (isset($venue['city']))
+                                    , {{ $venue['city'] }}
+                                @endif
+                                @if (isset($venue['country']['name']))
+                                    , {{ $venue['country']['name'] }}
+                                @endif
+                            @else
+                                -
+                            @endif
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                        <span class="font-medium text-emerald-400">Thời tiết:</span>
+                        <span>{{ $match['weather_report']['condition'] ?? 'Ít Mây' }}, {{ $match['weather_report']['temp'] ?? '12' }}°C</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-
-        {{-- Navigation Tabs --}}
-        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 mb-6">
-            <div class="flex border-b border-slate-700">
-                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
-                    NHẬN ĐỊNH
-                </a>
-                <a href="#" class="px-6 py-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600">
-                    CHI TIẾT
-                </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
-                    PHÂN TÍCH
-                </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
-                    SO SÁNH TL
-                </a>
-                <a href="#" class="px-6 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition-all duration-200">
-                    TK CẦU THỦ
-                </a>
-            </div>
-        </div>
-
-        {{-- Content Section --}}
-        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-6 mb-6">
-            <h2 class="text-lg font-bold text-white mb-4">{{ strtoupper($league['name'] ?? '') }}</h2>
-            <p class="text-sm text-gray-300 mb-4">
-                Bóng đá net - Bóng đá số cập nhật tỷ số Kết quả bóng đá {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }} hôm nay ngày {{ $displayDate ?? '' }}/{{ date('Y') }} lúc {{ $displayTime ?? '' }} chuẩn xác mới nhất. Xem diễn biến trực tiếp lịch thi đấu - Bảng xếp hạng - Tỷ lệ bóng đá - Kqbd {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }} tại {{ $league['name'] ?? '' }} {{ date('Y') }}.
-            </p>
-            <p class="text-sm text-gray-300">
-                Cập nhật nhanh chóng kqbd trực tiếp của hơn 1000+++ giải đấu HOT trên thế giới. Xem ngay diễn biến kết quả {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }} hôm nay chính xác nhất tại đây.
-            </p>
-        </div>
-
-        {{-- Match Events Section --}}
-        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4" data-section="match-events">
-            <h2 class="text-sm font-bold text-white mb-2">Diễn biến - Kết quả {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}</h2>
+            {{-- Match Events Section --}}
+            <div class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl shadow-xl border border-slate-700/50 p-4 sm:p-6 mb-6 backdrop-blur-sm" data-section="match-events">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-1 h-6 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+                    <h2 class="text-base sm:text-lg font-bold text-white">Diễn biến - Kết quả {{ $homeTeam['name'] ?? '' }} vs {{ $awayTeam['name'] ?? '' }}</h2>
+                </div>
             
             @php
                 // Use matchEvents from API match_events endpoint
@@ -156,36 +155,43 @@
                 }
             @endphp
             
-            @if(empty($filteredEvents))
-                <div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center">
-                    <p class="text-red-400 font-medium">Trận đấu chưa có dữ liệu !</p>
-                </div>
-            @else
-                <div class="border border-slate-700 rounded-lg overflow-hidden">
-                    <table class="w-full text-xs">
-                        <thead class="bg-slate-700">
+                @if(empty($filteredEvents))
+                    <div class="bg-gradient-to-r from-slate-700/50 to-slate-800/50 border border-red-500/50 rounded-lg p-6 text-center backdrop-blur-sm">
+                        <svg class="w-12 h-12 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-red-400 font-medium">Trận đấu chưa có dữ liệu !</p>
+                    </div>
+                @else
+                    <div class="border border-slate-700/50 rounded-xl overflow-hidden bg-slate-900/50 backdrop-blur-sm">
+                        <table class="w-full text-xs sm:text-sm">
+                            <thead class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/50 backdrop-blur-sm">
                             <tr>
-                                <th class="px-2 py-2 text-left">
+                                <th class="px-3 sm:px-4 py-3 text-left">
                                     <div class="flex items-center space-x-2">
                                         @if (!empty($homeTeam['img']))
-                                            <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-5 h-5">
+                                            <div class="w-6 h-6 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center">
+                                                <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-full h-full object-contain">
+                                            </div>
                                         @endif
-                                        <span class="font-medium">{{ $homeTeam['name'] ?? '' }}</span>
+                                        <span class="font-semibold text-gray-200">{{ $homeTeam['name'] ?? '' }}</span>
                                     </div>
                                 </th>
-                                <th class="px-2 py-2 text-center w-16 font-medium">Phút</th>
-                                <th class="px-2 py-2 text-right">
+                                <th class="px-3 sm:px-4 py-3 text-center w-16 font-semibold text-gray-200">Phút</th>
+                                <th class="px-3 sm:px-4 py-3 text-right">
                                     <div class="flex items-center justify-end space-x-2">
-                                        <span class="font-medium">{{ $awayTeam['name'] ?? '' }}</span>
+                                        <span class="font-semibold text-gray-200">{{ $awayTeam['name'] ?? '' }}</span>
                                         @if (!empty($awayTeam['img']))
-                                            <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-5 h-5">
+                                            <div class="w-6 h-6 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center">
+                                                <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-full h-full object-contain">
+                                            </div>
                                         @endif
                                     </div>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            @foreach($filteredEvents as $event)
+                            <tbody class="divide-y divide-slate-700/50">
+                                @foreach($filteredEvents as $event)
                                 @php
                                     $eventType = $event['type'] ?? '';
                                     $eventTeamId = $event['team_id'] ?? null;
@@ -226,81 +232,95 @@
                                         }
                                     }
                                 @endphp
-                                <tr>
-                                    @if($isHomeEvent)
-                                        <td class="px-2 py-2">
-                                            <div class="flex items-center space-x-1">
-                                                <span class="text-sm">{{ $eventIcon }}</span>
-                                                <span class="{{ $eventColor }}">{{ $eventText }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-2 py-2 text-center font-medium">{{ $minuteDisplay }}</td>
-                                        <td class="px-2 py-2"></td>
-                                    @elseif($isAwayEvent)
-                                        <td class="px-2 py-2"></td>
-                                        <td class="px-2 py-2 text-center font-medium">{{ $minuteDisplay }}</td>
-                                        <td class="px-2 py-2 text-right">
-                                            <div class="flex items-center justify-end space-x-2">
-                                                <span class="{{ $eventColor }}">{{ $eventText }}</span>
-                                                <span class="text-lg">{{ $eventIcon }}</span>
-                                            </div>
-                                        </td>
-                                    @endif
-                                </tr>
+                                    <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200">
+                                        @if($isHomeEvent)
+                                            <td class="px-3 sm:px-4 py-3">
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="text-base sm:text-lg">{{ $eventIcon }}</span>
+                                                    <span class="{{ $eventColor }} font-medium">{{ $eventText }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-3 sm:px-4 py-3 text-center">
+                                                <span class="inline-flex items-center px-2 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-semibold">{{ $minuteDisplay }}</span>
+                                            </td>
+                                            <td class="px-3 sm:px-4 py-3"></td>
+                                        @elseif($isAwayEvent)
+                                            <td class="px-3 sm:px-4 py-3"></td>
+                                            <td class="px-3 sm:px-4 py-3 text-center">
+                                                <span class="inline-flex items-center px-2 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-semibold">{{ $minuteDisplay }}</span>
+                                            </td>
+                                            <td class="px-3 sm:px-4 py-3 text-right">
+                                                <div class="flex items-center justify-end space-x-2">
+                                                    <span class="{{ $eventColor }} font-medium">{{ $eventText }}</span>
+                                                    <span class="text-base sm:text-lg">{{ $eventIcon }}</span>
+                                                </div>
+                                            </td>
+                                        @endif
+                                    </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             @endif
             
-            {{-- Event Legend --}}
-            <div class="mt-2 flex flex-wrap gap-3 text-xs text-gray-600">
-                <div class="flex items-center space-x-1">
-                    <span class="text-lg">⚽</span>
-                    <span>Bàn thắng</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <span class="text-lg">🟨</span>
-                    <span>Thẻ vàng</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <span class="text-lg">🟥</span>
-                    <span>Thẻ đỏ</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <span class="text-lg">🔄</span>
-                    <span>Thay người</span>
+                {{-- Event Legend --}}
+                <div class="mt-4 flex flex-wrap gap-3 text-xs text-gray-400 bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-base">⚽</span>
+                        <span>Bàn thắng</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-base">🟨</span>
+                        <span>Thẻ vàng</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-base">🟥</span>
+                        <span>Thẻ đỏ</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-base">🔄</span>
+                        <span>Thay người</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Statistics Section --}}
-        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4" data-section="match-stats">
-            <h2 class="text-sm font-bold text-white mb-2">Thống kê kỹ thuật {{ $homeTeam['name'] ?? '' }} VS {{ $awayTeam['name'] ?? '' }}</h2>
+            {{-- Statistics Section --}}
+            <div class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl shadow-xl border border-slate-700/50 p-4 sm:p-6 mb-6 backdrop-blur-sm" data-section="match-stats">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-1 h-6 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+                    <h2 class="text-base sm:text-lg font-bold text-white">Thống kê kỹ thuật {{ $homeTeam['name'] ?? '' }} VS {{ $awayTeam['name'] ?? '' }}</h2>
+                </div>
             
-            @if(empty($homeMatchStats) && empty($awayMatchStats))
-                <div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center">
-                    <p class="text-red-400 font-medium">Chưa có bảng thống kê số liệu trận đấu !</p>
-                </div>
-            @else
-                {{-- Header with team names and logos --}}
-                <div class="bg-gray-700 text-white px-3 py-2 flex items-center justify-between mb-2 rounded-t">
-                    <div class="flex items-center space-x-2 flex-1 min-w-0">
-                        @if (!empty($homeTeam['img']))
-                            <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-6 h-6 rounded-full flex-shrink-0">
-                        @endif
-                        <span class="font-medium break-words break-all">{{ $homeTeam['name'] ?? '' }}</span>
+                @if(empty($homeMatchStats) && empty($awayMatchStats))
+                    <div class="bg-gradient-to-r from-slate-700/50 to-slate-800/50 border border-red-500/50 rounded-lg p-6 text-center backdrop-blur-sm">
+                        <svg class="w-12 h-12 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-red-400 font-medium">Chưa có bảng thống kê số liệu trận đấu !</p>
                     </div>
-                    <div class="flex items-center space-x-2 flex-1 min-w-0 justify-end">
-                        @if (!empty($awayTeam['img']))
-                            <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-6 h-6 rounded-full flex-shrink-0">
-                        @endif
-                        <span class="font-medium break-words break-all text-right">{{ $awayTeam['name'] ?? '' }}</span>
+                @else
+                    {{-- Header with team names and logos --}}
+                    <div class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 text-white px-4 py-3 flex items-center justify-between mb-3 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+                        <div class="flex items-center space-x-2 flex-1 min-w-0">
+                            @if (!empty($homeTeam['img']))
+                                <div class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0">
+                                    <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-full h-full object-contain rounded-full">
+                                </div>
+                            @endif
+                            <span class="font-semibold text-gray-200 break-words break-all">{{ $homeTeam['name'] ?? '' }}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 flex-1 min-w-0 justify-end">
+                            @if (!empty($awayTeam['img']))
+                                <div class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0">
+                                    <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-full h-full object-contain rounded-full">
+                                </div>
+                            @endif
+                            <span class="font-semibold text-gray-200 break-words break-all text-right">{{ $awayTeam['name'] ?? '' }}</span>
+                        </div>
                     </div>
-                </div>
 
-                {{-- Statistics Rows --}}
-                <div class="space-y-2">
+                    {{-- Statistics Rows --}}
+                    <div class="space-y-2">
                     @php
                         // Helper function to calculate percentage for bar
                         function calculatePercentage($home, $away) {
@@ -408,160 +428,184 @@
                                 $awayDisplay = number_format($awayValue, 0);
                             }
                         @endphp
-                        <div class="flex items-center py-1 border-b border-gray-100">
-                            {{-- Home value --}}
-                            <div class="w-16 text-right text-xs font-medium text-gray-100 pr-1">
-                                {{ $homeDisplay }}
+                            <div class="flex items-center py-2 border-b border-slate-700/50 hover:bg-slate-800/30 transition-colors rounded px-2">
+                                {{-- Home value --}}
+                                <div class="w-16 sm:w-20 text-right text-xs sm:text-sm font-semibold text-gray-200 pr-2">
+                                    {{ $homeDisplay }}
+                                </div>
+                                
+                                {{-- Home bar --}}
+                                <div class="flex-1 relative h-5 mx-2 bg-slate-700/50 rounded-full overflow-hidden">
+                                    <div class="absolute left-0 top-0 h-full bg-gradient-to-r from-emerald-500 to-green-600 rounded-full shadow-lg shadow-emerald-500/25" style="width: {{ $homePercent }}%"></div>
+                                </div>
+                                
+                                {{-- Stat label --}}
+                                <div class="w-32 sm:w-40 text-center text-xs sm:text-sm font-medium text-gray-300 px-2">
+                                    {{ $stat['label'] }}
+                                </div>
+                                
+                                {{-- Away bar --}}
+                                <div class="flex-1 relative h-5 mx-2 bg-slate-700/50 rounded-full overflow-hidden">
+                                    <div class="absolute right-0 top-0 h-full bg-gradient-to-l from-amber-500 to-orange-600 rounded-full shadow-lg shadow-amber-500/25" style="width: {{ $awayPercent }}%"></div>
+                                </div>
+                                
+                                {{-- Away value --}}
+                                <div class="w-16 sm:w-20 text-left text-xs sm:text-sm font-semibold text-gray-200 pl-2">
+                                    {{ $awayDisplay }}
+                                </div>
                             </div>
-                            
-                            {{-- Home bar --}}
-                            <div class="flex-1 relative h-4 mx-1">
-                                <div class="absolute left-0 top-0 h-full bg-green-500 rounded-l" style="width: {{ $homePercent }}%"></div>
-                            </div>
-                            
-                            {{-- Stat label --}}
-                            <div class="w-40 text-center text-xs font-medium text-gray-300 px-1">
-                                {{ $stat['label'] }}
-                            </div>
-                            
-                            {{-- Away bar --}}
-                            <div class="flex-1 relative h-4 mx-1">
-                                <div class="absolute right-0 top-0 h-full bg-orange-500 rounded-r" style="width: {{ $awayPercent }}%"></div>
-                            </div>
-                            
-                            {{-- Away value --}}
-                            <div class="w-16 text-left text-xs font-medium text-gray-100 pl-1">
-                                {{ $awayDisplay }}
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-        </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
 
-        {{-- Lineup Section --}}
-        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4" data-section="match-lineups">
-            <h2 class="text-sm font-bold text-white mb-2">Đội hình xuất phát</h2>
+            {{-- Lineup Section --}}
+            <div class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl shadow-xl border border-slate-700/50 p-4 sm:p-6 mb-6 backdrop-blur-sm" data-section="match-lineups">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-1 h-6 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+                    <h2 class="text-base sm:text-lg font-bold text-white">Đội hình xuất phát</h2>
+                </div>
             
-            @if(empty($matchLineups))
-                <div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center">
-                    <p class="text-red-400 font-medium">Chưa có thông tin đội hình ra sân !</p>
-                </div>
-            @else
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {{-- Home Team Lineup --}}
-                    @if(isset($matchLineups['home']))
-                        @php
-                            $homeLineup = $matchLineups['home'];
-                            $homeFormation = $homeLineup['formation'] ?? '';
-                            $homeCoach = $homeLineup['coach'] ?? null;
-                            $homeSquad = $homeLineup['squad'] ?? [];
-                        @endphp
-                        <div class="border border-slate-700 rounded-lg p-2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div class="flex items-center space-x-1">
-                                    @if (!empty($homeTeam['img']))
-                                        <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-6 h-6">
-                                    @endif
-                                    <h3 class="text-sm font-bold text-white">{{ $homeTeam['name'] ?? '' }}</h3>
-                                </div>
-                                @if($homeFormation)
-                                    <span class="bg-slate-700 px-2 py-0.5 rounded text-xs font-medium text-gray-300">{{ $homeFormation }}</span>
-                                @endif
-                            </div>
-                            @if($homeCoach)
-                                <p class="text-xs text-gray-600 mb-2">HLV: {{ $homeCoach['name'] ?? '' }}</p>
-                            @endif
-                            <div class="space-y-1">
-                                @foreach($homeSquad as $player)
-                                    @php
-                                        $playerInfo = $player['player'] ?? [];
-                                        $playerName = $playerInfo['name'] ?? $playerInfo['common_name'] ?? '';
-                                        $playerNumber = $player['number'] ?? '';
-                                        $position = $player['position'] ?? '';
-                                        $positionName = $player['position_name'] ?? '';
-                                        $isCaptain = $player['captain'] ?? false;
-                                    @endphp
-                                    <div class="flex items-center space-x-2 p-1 hover:bg-slate-700 rounded">
-                                        <span class="w-6 text-center font-bold text-gray-300 text-xs">{{ $playerNumber }}</span>
-                                        @if (!empty($playerInfo['img']))
-                                            <img src="{{ $playerInfo['img'] }}" alt="{{ $playerName }}" class="w-6 h-6 rounded-full">
-                                        @else
-                                            <div class="w-6 h-6 rounded-full bg-gray-200"></div>
-                                        @endif
-                                        <div class="flex-1">
-                                            <div class="flex items-center space-x-1">
-                                                <span class="text-xs font-medium text-gray-100">{{ $playerName ?: 'N/A' }}</span>
-                                                @if($isCaptain)
-                                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-1 py-0.5 rounded">C</span>
-                                                @endif
+                @if(empty($matchLineups))
+                    <div class="bg-gradient-to-r from-slate-700/50 to-slate-800/50 border border-red-500/50 rounded-lg p-6 text-center backdrop-blur-sm">
+                        <svg class="w-12 h-12 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-red-400 font-medium">Chưa có thông tin đội hình ra sân !</p>
+                    </div>
+                @else
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        {{-- Home Team Lineup --}}
+                        @if(isset($matchLineups['home']))
+                            @php
+                                $homeLineup = $matchLineups['home'];
+                                $homeFormation = $homeLineup['formation'] ?? '';
+                                $homeCoach = $homeLineup['coach'] ?? null;
+                                $homeSquad = $homeLineup['squad'] ?? [];
+                            @endphp
+                            <div class="border border-slate-700/50 rounded-xl p-4 bg-slate-900/50 backdrop-blur-sm">
+                                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-700/50">
+                                    <div class="flex items-center space-x-2">
+                                        @if (!empty($homeTeam['img']))
+                                            <div class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center">
+                                                <img src="{{ $homeTeam['img'] }}" alt="{{ $homeTeam['name'] ?? '' }}" class="w-full h-full object-contain rounded-full">
                                             </div>
-                                            <span class="text-xs text-gray-500">{{ $positionName }}</span>
-                                        </div>
+                                        @endif
+                                        <h3 class="text-sm sm:text-base font-bold text-white">{{ $homeTeam['name'] ?? '' }}</h3>
                                     </div>
-                                @endforeach
+                                    @if($homeFormation)
+                                        <span class="bg-gradient-to-r from-emerald-600/20 to-green-600/20 border border-emerald-500/30 px-3 py-1 rounded-lg text-xs font-semibold text-emerald-400">{{ $homeFormation }}</span>
+                                    @endif
+                                </div>
+                                @if($homeCoach)
+                                    <p class="text-xs text-gray-400 mb-3 flex items-center gap-1.5">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                                        </svg>
+                                        <span class="font-medium">HLV:</span> {{ $homeCoach['name'] ?? '' }}
+                                    </p>
+                                @endif
+                                <div class="space-y-1.5">
+                                    @foreach($homeSquad as $player)
+                                        @php
+                                            $playerInfo = $player['player'] ?? [];
+                                            $playerName = $playerInfo['name'] ?? $playerInfo['common_name'] ?? '';
+                                            $playerNumber = $player['number'] ?? '';
+                                            $position = $player['position'] ?? '';
+                                            $positionName = $player['position_name'] ?? '';
+                                            $isCaptain = $player['captain'] ?? false;
+                                        @endphp
+                                        <div class="flex items-center space-x-2 p-2 hover:bg-slate-800/50 rounded-lg transition-colors border border-transparent hover:border-slate-700/50">
+                                            <span class="w-8 text-center font-bold text-emerald-400 text-xs sm:text-sm bg-emerald-500/10 px-1.5 py-0.5 rounded">{{ $playerNumber }}</span>
+                                            @if (!empty($playerInfo['img']))
+                                                <div class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0">
+                                                    <img src="{{ $playerInfo['img'] }}" alt="{{ $playerName }}" class="w-full h-full object-contain rounded-full">
+                                                </div>
+                                            @else
+                                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{{ substr($playerName ?: 'P', 0, 1) }}</div>
+                                            @endif
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center space-x-1.5">
+                                                    <span class="text-xs sm:text-sm font-medium text-gray-200 truncate">{{ $playerName ?: 'N/A' }}</span>
+                                                    @if($isCaptain)
+                                                        <span class="text-[10px] bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-500/30 text-yellow-400 px-1.5 py-0.5 rounded font-semibold flex-shrink-0">C</span>
+                                                    @endif
+                                                </div>
+                                                <span class="text-xs text-gray-400">{{ $positionName }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
 
-                    {{-- Away Team Lineup --}}
-                    @if(isset($matchLineups['away']))
-                        @php
-                            $awayLineup = $matchLineups['away'];
-                            $awayFormation = $awayLineup['formation'] ?? '';
-                            $awayCoach = $awayLineup['coach'] ?? null;
-                            $awaySquad = $awayLineup['squad'] ?? [];
-                        @endphp
-                        <div class="border border-slate-700 rounded-lg p-2">
-                            <div class="flex items-center justify-between mb-2">
-                                <div class="flex items-center space-x-1">
-                                    @if (!empty($awayTeam['img']))
-                                        <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-6 h-6">
-                                    @endif
-                                    <h3 class="text-sm font-bold text-white">{{ $awayTeam['name'] ?? '' }}</h3>
-                                </div>
-                                @if($awayFormation)
-                                    <span class="bg-slate-700 px-2 py-0.5 rounded text-xs font-medium text-gray-300">{{ $awayFormation }}</span>
-                                @endif
-                            </div>
-                            @if($awayCoach)
-                                <p class="text-xs text-gray-600 mb-2">HLV: {{ $awayCoach['name'] ?? '' }}</p>
-                            @endif
-                            <div class="space-y-1">
-                                @foreach($awaySquad as $player)
-                                    @php
-                                        $playerInfo = $player['player'] ?? [];
-                                        $playerName = $playerInfo['name'] ?? $playerInfo['common_name'] ?? '';
-                                        $playerNumber = $player['number'] ?? '';
-                                        $position = $player['position'] ?? '';
-                                        $positionName = $player['position_name'] ?? '';
-                                        $isCaptain = $player['captain'] ?? false;
-                                    @endphp
-                                    <div class="flex items-center space-x-2 p-1 hover:bg-slate-700 rounded">
-                                        <span class="w-6 text-center font-bold text-gray-300 text-xs">{{ $playerNumber }}</span>
-                                        @if (!empty($playerInfo['img']))
-                                            <img src="{{ $playerInfo['img'] }}" alt="{{ $playerName }}" class="w-6 h-6 rounded-full">
-                                        @else
-                                            <div class="w-6 h-6 rounded-full bg-gray-200"></div>
-                                        @endif
-                                        <div class="flex-1">
-                                            <div class="flex items-center space-x-1">
-                                                <span class="text-xs font-medium text-gray-100">{{ $playerName ?: 'N/A' }}</span>
-                                                @if($isCaptain)
-                                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-1 py-0.5 rounded">C</span>
-                                                @endif
+                        {{-- Away Team Lineup --}}
+                        @if(isset($matchLineups['away']))
+                            @php
+                                $awayLineup = $matchLineups['away'];
+                                $awayFormation = $awayLineup['formation'] ?? '';
+                                $awayCoach = $awayLineup['coach'] ?? null;
+                                $awaySquad = $awayLineup['squad'] ?? [];
+                            @endphp
+                            <div class="border border-slate-700/50 rounded-xl p-4 bg-slate-900/50 backdrop-blur-sm">
+                                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-700/50">
+                                    <div class="flex items-center space-x-2">
+                                        @if (!empty($awayTeam['img']))
+                                            <div class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center">
+                                                <img src="{{ $awayTeam['img'] }}" alt="{{ $awayTeam['name'] ?? '' }}" class="w-full h-full object-contain rounded-full">
                                             </div>
-                                            <span class="text-xs text-gray-500">{{ $positionName }}</span>
-                                        </div>
+                                        @endif
+                                        <h3 class="text-sm sm:text-base font-bold text-white">{{ $awayTeam['name'] ?? '' }}</h3>
                                     </div>
-                                @endforeach
+                                    @if($awayFormation)
+                                        <span class="bg-gradient-to-r from-amber-600/20 to-orange-600/20 border border-amber-500/30 px-3 py-1 rounded-lg text-xs font-semibold text-amber-400">{{ $awayFormation }}</span>
+                                    @endif
+                                </div>
+                                @if($awayCoach)
+                                    <p class="text-xs text-gray-400 mb-3 flex items-center gap-1.5">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                                        </svg>
+                                        <span class="font-medium">HLV:</span> {{ $awayCoach['name'] ?? '' }}
+                                    </p>
+                                @endif
+                                <div class="space-y-1.5">
+                                    @foreach($awaySquad as $player)
+                                        @php
+                                            $playerInfo = $player['player'] ?? [];
+                                            $playerName = $playerInfo['name'] ?? $playerInfo['common_name'] ?? '';
+                                            $playerNumber = $player['number'] ?? '';
+                                            $position = $player['position'] ?? '';
+                                            $positionName = $player['position_name'] ?? '';
+                                            $isCaptain = $player['captain'] ?? false;
+                                        @endphp
+                                        <div class="flex items-center space-x-2 p-2 hover:bg-slate-800/50 rounded-lg transition-colors border border-transparent hover:border-slate-700/50">
+                                            <span class="w-8 text-center font-bold text-amber-400 text-xs sm:text-sm bg-amber-500/10 px-1.5 py-0.5 rounded">{{ $playerNumber }}</span>
+                                            @if (!empty($playerInfo['img']))
+                                                <div class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0">
+                                                    <img src="{{ $playerInfo['img'] }}" alt="{{ $playerName }}" class="w-full h-full object-contain rounded-full">
+                                                </div>
+                                            @else
+                                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{{ substr($playerName ?: 'P', 0, 1) }}</div>
+                                            @endif
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center space-x-1.5">
+                                                    <span class="text-xs sm:text-sm font-medium text-gray-200 truncate">{{ $playerName ?: 'N/A' }}</span>
+                                                    @if($isCaptain)
+                                                        <span class="text-[10px] bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-500/30 text-yellow-400 px-1.5 py-0.5 rounded font-semibold flex-shrink-0">C</span>
+                                                    @endif
+                                                </div>
+                                                <span class="text-xs text-gray-400">{{ $positionName }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                </div>
-            @endif
+                        @endif
+                    </div>
+                @endif
+            </div>
         </div>
-
     </div>
 </div>
 

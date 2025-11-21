@@ -111,7 +111,7 @@
                                         $score = $match['score'] ?? '0-0';
                                     @endphp
                                     <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ $matchId ? 'cursor-pointer group' : '' }}"
-                                        @if($matchId) onclick="openMatchModal({{ $matchId }})" @endif>
+                                        @if($matchId) onclick="window.location.href='{{ route('match.detail', $matchId) }}'" @endif>
                                         {{-- Time --}}
                                         <td class="px-3 sm:px-4 py-3 whitespace-nowrap">
                                             <div class="text-xs sm:text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded inline-block">
@@ -139,10 +139,11 @@
                                         {{-- Full-time Score --}}
                                         <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-center">
                                             @if($matchId)
-                                                <button onclick="event.stopPropagation(); openMatchModal({{ $matchId }})" 
-                                                        class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] sm:min-w-[60px] transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
+                                                <a href="{{ route('match.detail', $matchId) }}" 
+                                                   onclick="event.stopPropagation();"
+                                                   class="inline-block bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] sm:min-w-[60px] transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
                                                     {{ $score }}
-                                                </button>
+                                                </a>
                                             @else
                                                 <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] sm:min-w-[60px] inline-block shadow-lg shadow-emerald-500/25">
                                                     {{ $score }}
