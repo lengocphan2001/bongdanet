@@ -1,6 +1,6 @@
 {{-- Match Detail Modal --}}
 <div id="match-detail-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
-    <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-2xl shadow-2xl border border-slate-700/50 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col my-2 sm:my-8 backdrop-blur-xl">
+    <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-2xl shadow-2xl border border-slate-700/50 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] flex flex-col my-2 sm:my-8 backdrop-blur-xl overflow-hidden">
         {{-- Modal Header --}}
         <div class="bg-gradient-to-r from-slate-900/95 to-slate-800/95 px-2 sm:px-4 py-3 sm:py-4 flex items-center justify-between border-b border-slate-700/50 backdrop-blur-sm">
             <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
@@ -79,7 +79,7 @@
         </div>
         
         {{-- Tab Content --}}
-        <div class="flex-1 overflow-y-auto p-2 sm:p-4">
+        <div class="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-4 min-h-0 modal-tab-container">
             {{-- Overview Tab --}}
             <div id="modal-tab-overview" class="modal-tab-content">
                 <div class="mb-4">
@@ -1697,6 +1697,12 @@ function renderH2HData() {
     min-height: 200px;
 }
 
+/* Tab container - ensure scroll works on mobile */
+.modal-tab-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
 /* Hide scrollbar for tabs on mobile */
 .scrollbar-hide {
     -ms-overflow-style: none;
@@ -1718,9 +1724,18 @@ function renderH2HData() {
         margin: 0.5rem 0;
     }
     
+    /* Ensure tab container can scroll on mobile */
+    .modal-tab-container {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        max-height: calc(98vh - 200px); /* Subtract header + tabs height */
+        height: auto;
+    }
+    
     .modal-tab-content {
         word-wrap: break-word;
         overflow-wrap: break-word;
+        width: 100%;
     }
     
     /* Prevent text overflow in tables */

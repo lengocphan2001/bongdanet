@@ -292,6 +292,27 @@
 </div>
 
 <script>
+// Toggle league table function - same as home-matches-table
+function toggleLeagueTable(leagueId) {
+    const table = document.getElementById(leagueId);
+    const icon = document.getElementById('toggle-icon-' + leagueId);
+    
+    if (!table || !icon) return;
+    
+    if (table.classList.contains('hidden')) {
+        table.classList.remove('hidden');
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        table.classList.add('hidden');
+        icon.style.transform = 'rotate(-90deg)';
+    }
+}
+
+// Make it globally available
+if (typeof window !== 'undefined') {
+    window.toggleLeagueTable = toggleLeagueTable;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const livescoreContent = document.getElementById('livescore-content');
     const updateUrl = '{{ route("api.livescore.data") }}';
