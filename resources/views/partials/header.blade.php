@@ -1,4 +1,4 @@
-<header class="bg-slate-900 shadow-lg">
+<header class="fixed top-0 left-0 right-0 z-50 bg-slate-900 shadow-lg">
     {{-- Main Navigation Bar with Logo --}}
     <nav class="relative z-10">
         <div class="container mx-auto px-4">
@@ -11,6 +11,13 @@
                 
                 {{-- Navigation Links --}}
                 <div class="flex items-center space-x-1 flex-1">
+                <a href="{{ route('home.matches') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('home.matches*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                    <svg class="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span class="text-sm font-semibold" style="color: white !important;">TRẬN ĐẤU</span>
+                </a>
+
                 <a href="{{ route('livescore') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group relative {{ request()->routeIs('livescore*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                     <div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
                     <span class="text-sm font-semibold" style="color: white !important;">TRỰC TIẾP</span>
@@ -59,7 +66,7 @@
                 </div>
             </div>
 
-            {{-- Mobile Navigation with Logo --}}
+            {{-- Mobile Navigation with Logo and Menu Button --}}
             <div class="lg:hidden flex items-center justify-between h-16">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('assets/images/bongdanet-logo.png') }}" alt="Keobongda Logo" class="h-10 w-auto">  
@@ -75,6 +82,13 @@
             {{-- Mobile Menu Dropdown --}}
             <div id="mobile-menu" class="lg:hidden hidden bg-slate-900">
                 <div class="py-4 space-y-1">
+                    <a href="{{ route('home.matches') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('home.matches*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                        <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <span class="text-sm font-semibold" style="color: white !important;">TRẬN ĐẤU</span>
+                    </a>
+
                     <a href="{{ route('livescore') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 relative {{ request()->routeIs('livescore*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                         <div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
                         <span class="text-sm font-semibold" style="color: white !important;">TRỰC TIẾP</span>
@@ -135,3 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+        </div>
+    </nav>
+</header>
+

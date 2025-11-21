@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'keobongda.co - Nhận định bóng đá')
+@section('title', 'keobong88 - Nhận định bóng đá')
 
 @php
     use Illuminate\Support\Facades\Storage;
@@ -8,11 +8,6 @@
 
 @section('content')
 <div class="min-h-screen bg-slate-900">
-    {{-- Breadcrumbs --}}
-    <x-breadcrumbs :items="[
-        ['label' => 'keobongda.co', 'url' => '#'],
-        ['label' => 'Nhận định bóng đá', 'url' => null],
-    ]" />
 
     {{-- Main Content Area --}}
     <div class="container mx-auto px-2 sm:px-4 py-4">

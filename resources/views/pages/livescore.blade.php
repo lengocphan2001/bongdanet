@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'keobongda.co - Livescore')
+@section('title', 'keobong88 - Livescore')
 
 @section('content')
 <style>
@@ -17,7 +17,7 @@
 <div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'keobongda.co', 'url' => route('home')],
+        ['label' => 'keobong88', 'url' => route('home')],
         ['label' => 'Livescore', 'url' => null],
     ]" />
 
@@ -54,44 +54,49 @@
                                 @endphp
                                 
                                 {{-- League Section --}}
+                                @php
+                                    $leagueKeyId = 'live-' . ($leagueId ?? str_replace(['|', ' '], ['-', ''], $leagueKey));
+                                @endphp
                                 <div class="mb-6 sm:mb-8">
-                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0 mb-4 p-4 bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-                                        <div class="flex items-center gap-3 flex-1 min-w-0">
-                                            <span class="inline-flex items-center px-2 py-1 rounded-md bg-red-500/20 text-red-400 text-xs font-semibold animate-pulse">LIVE</span>
-                                            <h2 class="text-base sm:text-lg font-bold text-white truncate">
-                                                <span class="truncate block">{{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
-                                                    @if(count($matches) > 0)
-                                                        <span class="text-red-400 text-xs sm:text-sm font-normal ml-2">({{ count($matches) }})</span>
-                                                    @endif
-                                                </span>
-                                            </h2>
-                                        </div>
-                                        <div class="flex items-center gap-2 flex-shrink-0">
-                                            @if($leagueId && $leagueId !== 'unknown' && is_numeric($leagueId))
-                                                <a href="{{ route('schedule.league', $leagueId) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105">
-                                                    <span>Lịch</span>
-                                                </a>
-                                                <a href="{{ route('results.league', $leagueId) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
-                                                    <span>KQ</span>
-                                                </a>
-                                                <a href="{{ route('standings.show', $leagueId) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105">
-                                                    <span>BXH</span>
-                                                </a>
-                                            @else
-                                                <span class="text-xs text-gray-400 px-3 py-1.5">Lịch</span>
-                                                <span class="text-xs text-gray-400 px-3 py-1.5">KQ</span>
-                                                <span class="text-xs text-gray-400 px-3 py-1.5">BXH</span>
-                                            @endif
-                                        </div>
+                                    <div class="flex items-center gap-2 sm:gap-3 mb-2 p-1 sm:p-2 bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+                                        <button onclick="toggleLeagueTable('{{ $leagueKeyId }}')" 
+                                                class="flex-shrink-0 p-1.5 sm:p-2 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-lg transition-all duration-200 group"
+                                                aria-label="Toggle table">
+                                            <svg id="toggle-icon-{{ $leagueKeyId }}" class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        </button>
+                                        <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-red-500/20 text-red-400 text-[10px] sm:text-xs font-semibold animate-pulse flex-shrink-0">LIVE</span>
+                                        <h2 class="flex text-sm sm:text-base md:text-lg font-bold text-white overflow-hidden text-ellipsis whitespace-nowrap flex-1 min-w-0">
+                                            <span class="inline-block truncate">
+                                                {{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
+                                                @if(count($matches) > 0)
+                                                    <span class="text-emerald-400 text-[10px] sm:text-xs md:text-sm font-normal ml-1 sm:ml-2">({{ count($matches) }})</span>
+                                                @endif
+                                            </span>
+                                        </h2>
+                                        @if($leagueId && $leagueId !== 'unknown' && is_numeric($leagueId))
+                                            <a href="{{ route('standings.show', $leagueId) }}" 
+                                               class="hidden sm:inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 flex-shrink-0">
+                                                <span>BXH</span>
+                                            </a>
+                                        @endif
                                     </div>
                                     
                                     {{-- Matches List --}}
-                                    <div class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
+                                    <div id="{{ $leagueKeyId }}" class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
                                     @foreach($matches as $match)
                                         @php
                                             $matchId = $match['match_id'] ?? null;
                                             $homeTeam = $match['home_team'] ?? '-';
                                             $awayTeam = $match['away_team'] ?? '-';
+                                            
+                                            // Get team logos
+                                            $homeLogo = $match['home_team_info']['img'] ?? null;
+                                            $awayLogo = $match['away_team_info']['img'] ?? null;
+                                            
+                                            // Get FT score (full_time) - prioritize this
+                                            $ftScore = $match['full_time'] ?? null;
                                             
                                             // Get current score
                                             $currentScore = $match['score'] ?? '0-0';
@@ -105,6 +110,9 @@
                                                 $awayScore = $awayScore === '' ? '0' : $awayScore;
                                                 $currentScore = $homeScore . '-' . $awayScore;
                                             }
+                                            
+                                            // Use FT score if available, otherwise use current score
+                                            $displayScore = $ftScore ? $ftScore : $currentScore;
                                             
                                             // Get HT score
                                             $htScore = $scores['ht_score'] ?? '0-0';
@@ -166,24 +174,47 @@
                                                         <span class="text-xs {{ $shouldBlink ? 'live-minute-blink font-bold' : 'text-gray-300 font-semibold' }}">{{ $timeDisplay }}</span>
                                                     </div>
                                                     <div class="flex items-center gap-2">
-                                                        @if($matchId)
-                                                            <a href="{{ route('match.detail', $matchId) }}" 
-                                                               class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25">
-                                                                {{ $currentScore }}
-                                                            </a>
-                                                        @else
-                                                            <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg shadow-emerald-500/25">
-                                                                {{ $currentScore }}
-                                                            </div>
-                                                        @endif
                                                         <div class="bg-slate-700 text-white text-xs font-medium px-2 py-1.5 rounded-lg border border-slate-600/50">
                                                             {{ $htScore }}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="flex items-center justify-between text-xs">
-                                                    <div class="flex-1 text-right pr-2 truncate font-medium text-white group-hover:text-emerald-400 transition-colors">{{ $homeTeam }}</div>
-                                                    <div class="flex-1 text-left pl-2 truncate font-medium text-white group-hover:text-emerald-400 transition-colors">{{ $awayTeam }}</div>
+                                                <div class="flex items-center justify-between gap-2">
+                                                    {{-- Home Team with Logo --}}
+                                                    <div class="flex items-center gap-2 flex-1 min-w-0 justify-end">
+                                                        <span class="text-xs font-medium text-white truncate group-hover:text-emerald-400 transition-colors">{{ $homeTeam }}</span>
+                                                        @if($homeLogo)
+                                                            <div class="w-5 h-5 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                                <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[9px] text-white font-bold\'>{{ substr($homeTeam, 0, 1) }}</div>';">
+                                                            </div>
+                                                        @else
+                                                            <div class="w-5 h-5 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[9px] text-white font-bold flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
+                                                        @endif
+                                                    </div>
+                                                    
+                                                    {{-- FT Score --}}
+                                                    @if($matchId)
+                                                        <a href="{{ route('match.detail', $matchId) }}" 
+                                                           class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-sm font-black px-3 py-1.5 rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25 flex-shrink-0 min-w-[50px] text-center">
+                                                            {{ $displayScore }}
+                                                        </a>
+                                                    @else
+                                                        <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-sm font-black px-3 py-1.5 rounded-lg shadow-lg shadow-emerald-500/25 flex-shrink-0 min-w-[50px] text-center">
+                                                            {{ $displayScore }}
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    {{-- Away Team with Logo --}}
+                                                    <div class="flex items-center gap-2 flex-1 min-w-0 justify-start">
+                                                        @if($awayLogo)
+                                                            <div class="w-5 h-5 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                                <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[9px] text-white font-bold\'>{{ substr($awayTeam, 0, 1) }}</div>';">
+                                                            </div>
+                                                        @else
+                                                            <div class="w-5 h-5 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[9px] text-white font-bold flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
+                                                        @endif
+                                                        <span class="text-xs font-medium text-white truncate group-hover:text-emerald-400 transition-colors">{{ $awayTeam }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             
@@ -197,26 +228,40 @@
                                                     <span class="text-sm {{ $shouldBlink ? 'live-minute-blink font-bold' : 'text-gray-300 font-semibold' }}">{{ $timeDisplay }}</span>
                                                 </div>
                                                 
-                                                {{-- Home Team --}}
-                                                <div class="flex-1 text-sm text-white text-right pr-4 truncate font-medium group-hover:text-emerald-400 transition-colors">
-                                                    {{ $homeTeam }}
+                                                {{-- Home Team with Logo --}}
+                                                <div class="flex-1 flex items-center justify-end gap-2 pr-4 min-w-0">
+                                                    <span class="text-sm text-white truncate font-medium group-hover:text-emerald-400 transition-colors">{{ $homeTeam }}</span>
+                                                    @if($homeLogo)
+                                                        <div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                            <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>{{ substr($homeTeam, 0, 1) }}</div>';">
+                                                        </div>
+                                                    @else
+                                                        <div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
+                                                    @endif
                                                 </div>
                                                 
-                                                {{-- Score --}}
+                                                {{-- FT Score --}}
                                                 @if($matchId)
                                                     <a href="{{ route('match.detail', $matchId) }}" 
                                                        class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-base font-black px-4 py-2 rounded-lg mx-4 min-w-[60px] text-center transition-all duration-200 flex-shrink-0 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
-                                                        {{ $currentScore }}
+                                                        {{ $displayScore }}
                                                     </a>
                                                 @else
                                                     <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-base font-black px-4 py-2 rounded-lg mx-4 min-w-[60px] text-center flex-shrink-0 shadow-lg shadow-emerald-500/25">
-                                                        {{ $currentScore }}
+                                                        {{ $displayScore }}
                                                     </div>
                                                 @endif
                                                 
-                                                {{-- Away Team --}}
-                                                <div class="flex-1 text-sm text-white text-left pl-4 truncate font-medium group-hover:text-emerald-400 transition-colors">
-                                                    {{ $awayTeam }}
+                                                {{-- Away Team with Logo --}}
+                                                <div class="flex-1 flex items-center justify-start gap-2 pl-4 min-w-0">
+                                                    @if($awayLogo)
+                                                        <div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                                                            <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>{{ substr($awayTeam, 0, 1) }}</div>';">
+                                                        </div>
+                                                    @else
+                                                        <div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
+                                                    @endif
+                                                    <span class="text-sm text-white truncate font-medium group-hover:text-emerald-400 transition-colors">{{ $awayTeam }}</span>
                                                 </div>
                                                 
                                                 {{-- HT Score --}}
@@ -233,6 +278,7 @@
                     </div>
                 </div>
             </main>
+            
 
             {{-- Right Sidebar --}}
             <aside class="w-full lg:w-80 flex-shrink-0 space-y-4 order-2 lg:order-2">
@@ -327,43 +373,44 @@ document.addEventListener('DOMContentLoaded', function() {
             const countryName = leagueData.country_name ?? '';
             const matches = leagueData.matches ?? [];
             
+            const leagueKeyId = 'live-' + (leagueId || leagueKey.replace(/[| ]/g, '-'));
+            
             html += `
                 <div class="mb-6 sm:mb-8">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0 mb-4 p-4 bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-                        <div class="flex items-center gap-3 flex-1 min-w-0">
-                            <span class="inline-flex items-center px-2 py-1 rounded-md bg-red-500/20 text-red-400 text-xs font-semibold animate-pulse">LIVE</span>
-                            <h2 class="text-base sm:text-lg font-bold text-white truncate">
-                                <span class="truncate block">${countryName ? countryName + ': ' : ''}${leagueName}
-                                    ${matches.length > 0 ? `<span class="text-red-400 text-xs sm:text-sm font-normal ml-2">(${matches.length})</span>` : ''}
-                                </span>
-                            </h2>
-                        </div>
-                        <div class="flex items-center gap-2 flex-shrink-0">
-                            ${(leagueId && leagueId !== 'unknown' && leagueId !== null && !isNaN(leagueId)) ? `
-                                <a href="${scheduleLeagueBaseUrl}/${leagueId}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105">
-                                    <span>Lịch</span>
-                                </a>
-                                <a href="${resultsLeagueBaseUrl}/${leagueId}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
-                                    <span>KQ</span>
-                                </a>
-                                <a href="${standingsShowBaseUrl}/${leagueId}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105">
-                                    <span>BXH</span>
-                                </a>
-                            ` : `
-                                <span class="text-xs text-gray-400 px-3 py-1.5">Lịch</span>
-                                <span class="text-xs text-gray-400 px-3 py-1.5">KQ</span>
-                                <span class="text-xs text-gray-400 px-3 py-1.5">BXH</span>
-                            `}
-                        </div>
+                    <div class="flex items-center gap-2 sm:gap-3 mb-2 p-1 sm:p-2 bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+                        <button onclick="toggleLeagueTable('${leagueKeyId}')" 
+                                class="flex-shrink-0 p-1.5 sm:p-2 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-lg transition-all duration-200 group"
+                                aria-label="Toggle table">
+                            <svg id="toggle-icon-${leagueKeyId}" class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-red-500/20 text-red-400 text-[10px] sm:text-xs font-semibold animate-pulse flex-shrink-0">LIVE</span>
+                        <h2 class="flex text-sm sm:text-base md:text-lg font-bold text-white overflow-hidden text-ellipsis whitespace-nowrap flex-1 min-w-0">
+                            <span class="inline-block truncate">
+                                ${countryName ? countryName + ': ' : ''}${leagueName}
+                                ${matches.length > 0 ? `<span class="text-emerald-400 text-[10px] sm:text-xs md:text-sm font-normal ml-1 sm:ml-2">(${matches.length})</span>` : ''}
+                            </span>
+                        </h2>
+                        ${(leagueId && leagueId !== 'unknown' && leagueId !== null && !isNaN(leagueId)) ? `
+                            <a href="${standingsShowBaseUrl}/${leagueId}" 
+                               class="hidden sm:inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 flex-shrink-0">
+                                <span>BXH</span>
+                            </a>
+                        ` : ''}
                     </div>
-                    <div class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
+                    <div id="${leagueKeyId}" class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
             `;
             
             matches.forEach(match => {
                 const matchId = match.match_id ?? null;
                 const homeTeam = match.home_team ?? '-';
                 const awayTeam = match.away_team ?? '-';
+                const homeLogo = match.home_team_info?.img ?? null;
+                const awayLogo = match.away_team_info?.img ?? null;
+                const ftScore = match.full_time ?? null;
                 const currentScore = formatScore(match.scores ?? {});
+                const displayScore = ftScore ? ftScore : currentScore;
                 const htScore = match.scores?.ht_score ?? '0-0';
                 const { timeDisplay, shouldBlink } = formatTimeDisplay(match);
                 const isLive = match.is_live ?? false;
@@ -372,6 +419,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const matchDetailUrl = matchId ? `${matchDetailBaseUrl}/${matchId}` : '';
                 const onClick = matchId ? `onclick="window.location.href='${matchDetailUrl}'"` : '';
                 const cursorClass = matchId ? 'cursor-pointer group' : '';
+                
+                const homeLogoHtml = homeLogo ? 
+                    `<div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                        <img src="${homeLogo}" alt="${homeTeam}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>${homeTeam.charAt(0)}</div>';">
+                    </div>` :
+                    `<div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">${homeTeam.charAt(0)}</div>`;
+                
+                const awayLogoHtml = awayLogo ? 
+                    `<div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
+                        <img src="${awayLogo}" alt="${awayTeam}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>${awayTeam.charAt(0)}</div>';">
+                    </div>` :
+                    `<div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">${awayTeam.charAt(0)}</div>`;
                 
                 html += `
                     <div class="px-3 sm:px-4 py-4 border-b border-slate-700/50 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 ${cursorClass}" ${onClick}>
@@ -382,24 +441,30 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <span class="text-xs ${timeClass}">${timeDisplay}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    ${matchId ? `
-                                        <a href="${matchDetailUrl}" 
-                                           class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25">
-                                            ${currentScore}
-                                        </a>
-                                    ` : `
-                                        <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg shadow-emerald-500/25">
-                                            ${currentScore}
-                                        </div>
-                                    `}
                                     <div class="bg-slate-700 text-white text-xs font-medium px-2 py-1.5 rounded-lg border border-slate-600/50">
                                         ${htScore}
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between text-xs">
-                                <div class="flex-1 text-right pr-2 truncate font-medium text-white group-hover:text-emerald-400 transition-colors">${homeTeam}</div>
-                                <div class="flex-1 text-left pl-2 truncate font-medium text-white group-hover:text-emerald-400 transition-colors">${awayTeam}</div>
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 flex-1 min-w-0 justify-end">
+                                    <span class="text-xs font-medium text-white truncate group-hover:text-emerald-400 transition-colors">${homeTeam}</span>
+                                    ${homeLogoHtml}
+                                </div>
+                                ${matchId ? `
+                                    <a href="${matchDetailUrl}" 
+                                       class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-sm font-black px-3 py-1.5 rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25 flex-shrink-0 min-w-[50px] text-center">
+                                        ${displayScore}
+                                    </a>
+                                ` : `
+                                    <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-sm font-black px-3 py-1.5 rounded-lg shadow-lg shadow-emerald-500/25 flex-shrink-0 min-w-[50px] text-center">
+                                        ${displayScore}
+                                    </div>
+                                `}
+                                <div class="flex items-center gap-2 flex-1 min-w-0 justify-start">
+                                    ${awayLogoHtml}
+                                    <span class="text-xs font-medium text-white truncate group-hover:text-emerald-400 transition-colors">${awayTeam}</span>
+                                </div>
                             </div>
                         </div>
                         
@@ -408,21 +473,23 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${isLive ? `<span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold animate-pulse">LIVE</span>` : ''}
                                 <span class="text-sm ${timeClass}">${timeDisplay}</span>
                             </div>
-                            <div class="flex-1 text-sm text-white text-right pr-4 truncate font-medium group-hover:text-emerald-400 transition-colors">
-                                ${homeTeam}
+                            <div class="flex-1 flex items-center justify-end gap-2 pr-4 min-w-0">
+                                <span class="text-sm text-white truncate font-medium group-hover:text-emerald-400 transition-colors">${homeTeam}</span>
+                                ${homeLogoHtml}
                             </div>
                             ${matchId ? `
                                 <a href="${matchDetailUrl}" 
                                    class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-base font-black px-4 py-2 rounded-lg mx-4 min-w-[60px] text-center transition-all duration-200 flex-shrink-0 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
-                                    ${currentScore}
+                                    ${displayScore}
                                 </a>
                             ` : `
                                 <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-base font-black px-4 py-2 rounded-lg mx-4 min-w-[60px] text-center flex-shrink-0 shadow-lg shadow-emerald-500/25">
-                                    ${currentScore}
+                                    ${displayScore}
                                 </div>
                             `}
-                            <div class="flex-1 text-sm text-white text-left pl-4 truncate font-medium group-hover:text-emerald-400 transition-colors">
-                                ${awayTeam}
+                            <div class="flex-1 flex items-center justify-start gap-2 pl-4 min-w-0">
+                                ${awayLogoHtml}
+                                <span class="text-sm text-white truncate font-medium group-hover:text-emerald-400 transition-colors">${awayTeam}</span>
                             </div>
                             <div class="bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg ml-4 min-w-[50px] text-center flex-shrink-0 border border-slate-600/50">
                                 ${htScore}

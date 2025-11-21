@@ -6,7 +6,7 @@
 <div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'keobongda.co', 'url' => route('home')],
+        ['label' => 'keobong88', 'url' => route('home')],
         ['label' => 'Lịch thi đấu', 'url' => null],
     ]" />
 

@@ -4,7 +4,8 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\PredictionsController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [\App\Http\Controllers\Web\OddsController::class, 'index'])->name('home');
+Route::get('/trang-chu', [HomeController::class, 'index'])->name('home.matches');
 Route::get('/nhan-dinh-bong-da', [PredictionsController::class, 'index'])->name('predictions');
 Route::get('/nhan-dinh-bong-da/league/{leagueSlug}', [PredictionsController::class, 'byLeague'])->name('predictions.league');
 Route::get('/nhan-dinh-bong-da/{id}', [PredictionsController::class, 'show'])->name('prediction.detail');

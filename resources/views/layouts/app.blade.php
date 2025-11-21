@@ -34,7 +34,7 @@
 
         @include('partials.header')
 
-        <main>
+        <main class="pt-16">
             @yield('content')
             <x-affiliate-partners />
         </main>
@@ -43,6 +43,8 @@
         
 
         @include('partials.footer')
+        
+        @include('partials.bottom-menu')
     </div>
     
     <script>

@@ -1,15 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'keobongda.co - Kèo bóng đá - Tỷ lệ kèo nhà cái')
+@section('title', 'keobong88 - Kèo bóng đá - Tỷ lệ kèo nhà cái')
 
 @section('content')
 <div class="min-h-screen bg-slate-900">
-    {{-- Breadcrumbs --}}
-    <x-breadcrumbs :items="[
-        ['label' => 'keobongda.co', 'url' => route('home')],
-        ['label' => 'Kèo bóng đá', 'url' => null],
-    ]" />
-
     {{-- Main Content Area --}}
     <div class="container mx-auto px-2 sm:px-4 py-4">
         <div class="flex flex-col lg:flex-row gap-4">

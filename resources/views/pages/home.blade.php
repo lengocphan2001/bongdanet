@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'keobongda.co - Trang chủ')
+@section('title', 'keobong88 - Trang chủ')
 
 @section('content')
 <div class="min-h-screen bg-slate-900">
@@ -15,6 +15,16 @@
             
             {{-- Main Content --}}
             <main class="flex-1 min-w-0 order-1 lg:order-2">
+                {{-- Header --}}
+                <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-1 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+                        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
+                            <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">Trực Tiếp & Lịch Thi Đấu</span>
+                        </h1>
+                    </div>
+                </div>
+                
                 <x-home-matches-table 
                     :liveMatches="$liveMatches ?? []" 
                     :upcomingMatches="$upcomingMatches ?? []"

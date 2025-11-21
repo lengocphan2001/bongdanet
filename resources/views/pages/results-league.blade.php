@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'keobongda.co - Kết quả bóng đá ' . ($league['name'] ?? ''))
+@section('title', 'keobong88 - Kết quả bóng đá ' . ($league['name'] ?? ''))
 
 @section('content')
 <div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'keobongda.co', 'url' => route('home')],
+        ['label' => 'keobong88', 'url' => route('home')],
         ['label' => 'Kết quả bóng đá', 'url' => route('results')],
         ['label' => $league['name'] ?? 'N/A', 'url' => null],
     ]" />
@@ -18,12 +18,12 @@
             <main class="flex-1 min-w-0">
                 {{-- Main Container --}}
                 <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
-                    {{-- Page Title --}}
+                {{-- Page Title --}}
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
                         <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
                             <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">Kết Quả {{ $league['name'] ?? 'N/A' }} {{ date('Y') }}</span>
-                        </h1>
+                </h1>
                     </div>
 
                     {{-- Current Round Info --}}
@@ -45,9 +45,9 @@
                         @endif
                     @endif
 
-                    {{-- League Selection Tabs --}}
-                    @php
-                        $leagueFilters = [
+                {{-- League Selection Tabs --}}
+                @php
+                    $leagueFilters = [
                             ['name' => 'Cúp C1', 'id' => 539, 'icon' => '🏆'],
                             ['name' => 'Ngoại Hạng Anh', 'id' => 583, 'icon' => '⚽'],
                             ['name' => 'La Liga', 'id' => 637, 'icon' => '⚽'],
@@ -59,12 +59,12 @@
                             ['name' => 'VĐQG Đức', 'id' => 594, 'icon' => '⚽'],
                             ['name' => 'VĐQG Úc', 'id' => 974, 'icon' => '⚽'],
                             ['name' => 'Cúp C1 Châu Á', 'id' => 511, 'icon' => '🏆'],
-                        ];
-                    @endphp
+                    ];
+                @endphp
                     <div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 p-2.5 mb-4 backdrop-blur-sm">
                         <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
-                            @foreach($leagueFilters as $filter)
-                                <a href="{{ route('results.league', $filter['id']) }}" 
+                        @foreach($leagueFilters as $filter)
+                            <a href="{{ route('results.league', $filter['id']) }}" 
                                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0 hover:scale-105 active:scale-95
                                           {{ ($filter['id'] == $leagueId) ? 'ring-2 ring-blue-400 ring-offset-1 ring-offset-slate-800' : '' }}
                                           {{ $loop->index % 4 === 0 ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white shadow-md shadow-blue-500/20' : 
@@ -73,42 +73,42 @@
                                              'bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 text-white shadow-md shadow-amber-500/20')) }}">
                                     <span class="text-[10px]">{{ $filter['icon'] }}</span>
                                     <span>{{ $filter['name'] }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Matchday Selector (Vòng đấu) - Only show for non-CUP leagues --}}
+                @if(!empty($roundIds) && !($isCup ?? false))
+                        <div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 p-2.5 mb-4 backdrop-blur-sm">
+                            <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
+                            @foreach($roundIds as $index => $roundId)
+                                @php
+                                    $roundNumber = $index + 1;
+                                        $isActive = ($round == $roundId);
+                                @endphp
+                                <a href="{{ route('results.league', ['leagueId' => $leagueId, 'round' => $roundId]) }}" 
+                                       class="px-2.5 py-1.5 text-xs font-bold rounded-md whitespace-nowrap flex-shrink-0 transition-all duration-200 hover:scale-105 active:scale-95
+                                              {{ $isActive ? 'text-white bg-gradient-to-r from-amber-600 to-orange-700 shadow-md shadow-amber-500/20 ring-2 ring-amber-400 ring-offset-1 ring-offset-slate-800' : 'text-slate-900 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 shadow-md shadow-amber-500/15' }}">
+                                        Vòng {{ $roundNumber }}
                                 </a>
                             @endforeach
                         </div>
                     </div>
+                @endif
 
-                    {{-- Matchday Selector (Vòng đấu) - Only show for non-CUP leagues --}}
-                    @if(!empty($roundIds) && !($isCup ?? false))
-                        <div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 p-2.5 mb-4 backdrop-blur-sm">
-                            <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
-                                @foreach($roundIds as $index => $roundId)
-                                    @php
-                                        $roundNumber = $index + 1;
-                                        $isActive = ($round == $roundId);
-                                    @endphp
-                                    <a href="{{ route('results.league', ['leagueId' => $leagueId, 'round' => $roundId]) }}" 
-                                       class="px-2.5 py-1.5 text-xs font-bold rounded-md whitespace-nowrap flex-shrink-0 transition-all duration-200 hover:scale-105 active:scale-95
-                                              {{ $isActive ? 'text-white bg-gradient-to-r from-amber-600 to-orange-700 shadow-md shadow-amber-500/20 ring-2 ring-amber-400 ring-offset-1 ring-offset-slate-800' : 'text-slate-900 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 shadow-md shadow-amber-500/15' }}">
-                                        Vòng {{ $roundNumber }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    {{-- Results Table --}}
+                {{-- Results Table --}}
                     <div class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
                                 <thead class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/50 backdrop-blur-sm">
-                                    <tr>
+                                <tr>
                                         <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase tracking-wider">Thời gian</th>
                                         <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase tracking-wider">{{ ($isCup ?? false) ? 'Bảng' : 'Vòng' }}</th>
                                         <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Trận đấu</th>
                                         <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">HT</th>
-                                    </tr>
-                                </thead>
+                                </tr>
+                            </thead>
                                 <tbody class="divide-y divide-slate-700/50">
                                 @if(empty($matchesByDate))
                                     <tr>
@@ -150,8 +150,8 @@
                                                     </button>
                                                     <div class="w-1 h-5 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
                                                     <span class="text-sm font-bold text-emerald-400">
-                                                        {{ $dayName }}, Ngày {{ $formattedDate }}
-                                                    </span>
+                                                    {{ $dayName }}, Ngày {{ $formattedDate }}
+                                                </span>
                                                     <span class="text-xs text-emerald-400/70 font-medium ml-1">({{ count($matches) }})</span>
                                                 </div>
                                             </td>
@@ -220,7 +220,7 @@
                                                         </div>
                                                     @else
                                                         <div class="text-xs sm:text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded inline-block">
-                                                            {{ $timeDisplay }}
+                                                        {{ $timeDisplay }}
                                                         </div>
                                                     @endif
                                                 </td>
@@ -254,12 +254,12 @@
                                                                 <div class="w-5 h-5 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[8px] text-white font-bold flex-shrink-0">{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>
                                                             @endif
                                                         </div>
-                                                        @if($matchId)
-                                                            <a href="{{ route('match.detail', $matchId) }}" 
+                                                            @if($matchId)
+                                                                <a href="{{ route('match.detail', $matchId) }}" 
                                                                onclick="event.stopPropagation();"
                                                                class="inline-block bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] text-center transition-all duration-200 flex-shrink-0 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
-                                                                {{ $score }}
-                                                            </a>
+                                                                    {{ $score }}
+                                                                </a>
                                                         @else
                                                             <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] text-center flex-shrink-0 shadow-lg shadow-emerald-500/25">
                                                                 {{ $score }}
@@ -292,7 +292,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                    </div>
                 </div>
             </main>
 
@@ -315,18 +315,18 @@
                         {{-- Results List --}}
                         <div class="bg-slate-900/50">
                             <div class="overflow-y-auto max-h-[600px]">
-                                @foreach(array_slice($matchesByDate, 0, 2) as $matchDate => $matches)
-                                    @php
-                                        try {
-                                            $dateObj = Carbon\Carbon::parse($matchDate);
-                                            $formattedDate = $dateObj->format('d/m/Y');
+                                    @foreach(array_slice($matchesByDate, 0, 2) as $matchDate => $matches)
+                                        @php
+                                            try {
+                                                $dateObj = Carbon\Carbon::parse($matchDate);
+                                                $formattedDate = $dateObj->format('d/m/Y');
                                             $dayName = $dateObj->locale('vi')->isoFormat('dddd');
-                                        } catch (\Exception $e) {
-                                            $formattedDate = $matchDate;
+                                            } catch (\Exception $e) {
+                                                $formattedDate = $matchDate;
                                             $dayName = '';
-                                        }
-                                    @endphp
-                                    
+                                            }
+                                        @endphp
+                                        
                                     {{-- Date Header --}}
                                     <div class="bg-gradient-to-r from-slate-800/60 to-slate-900/60 px-4 py-2.5 border-b border-slate-700/50">
                                         <div class="flex items-center gap-2">
@@ -336,7 +336,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    
+                                        
                                     {{-- Match Results --}}
                                     <div class="divide-y divide-slate-700/50">
                                         @foreach(array_slice($matches, 0, 5) as $match)
@@ -365,9 +365,9 @@
                                                                      class="w-full h-full object-contain"
                                                                      onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[7px] text-white font-bold\'>{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>';">
                                                             </div>
-                                                        @else
+                                                    @else
                                                             <div class="w-4 h-4 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[7px] text-white font-bold flex-shrink-0">{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>
-                                                        @endif
+                                                    @endif
                                                     </div>
                                                     <div class="flex-shrink-0 mx-1">
                                                         <span class="inline-block bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-black px-2 py-1 rounded-lg min-w-[40px] text-center shadow-md shadow-emerald-500/25">
@@ -382,18 +382,18 @@
                                                                      class="w-full h-full object-contain"
                                                                      onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[7px] text-white font-bold\'>{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>';">
                                                             </div>
-                                                        @else
+                                                    @else
                                                             <div class="w-4 h-4 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[7px] text-white font-bold flex-shrink-0">{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>
-                                                        @endif
+                                                    @endif
                                                         <span class="text-xs text-gray-300 font-medium truncate group-hover:text-emerald-400 transition-colors">
                                                             {{ $match['away_team'] ?? '-' }}
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </a>
+                                                        </a>
                                         @endforeach
                                     </div>
-                                @endforeach
+                                    @endforeach
                             </div>
                         </div>
                     </div>
