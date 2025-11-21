@@ -303,12 +303,12 @@ function buildMatchRowHTML(match, index) {
             </div>
             <div class="space-y-2 mb-3">
                 <div class="flex items-center gap-2">
-                    ${homeLogo ? `<img src="${homeLogo}" alt="${homeTeam}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                    ${homeLogo ? `<img src="${homeLogo}" alt="${homeTeam}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
                     <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" ${homeLogo ? 'style="display: none;"' : ''}>${homeTeam.charAt(0)}</div>
                     <span class="text-white text-sm truncate min-w-0 flex-1">${homeTeam}</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    ${awayLogo ? `<img src="${awayLogo}" alt="${awayTeam}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                    ${awayLogo ? `<img src="${awayLogo}" alt="${awayTeam}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
                     <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" ${awayLogo ? 'style="display: none;"' : ''}>${awayTeam.charAt(0)}</div>
                     <span class="text-white text-sm truncate min-w-0 flex-1">${awayTeam}</span>
                 </div>
@@ -339,12 +339,12 @@ function buildMatchRowHTML(match, index) {
                 <div class="text-xs ${timeClass} font-medium mb-2 hidden lg:block" data-time>${timeDisplay}</div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 mb-1 min-w-0">
-                        ${homeLogo ? `<img src="${homeLogo}" alt="${homeTeam}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                        ${homeLogo ? `<img src="${homeLogo}" alt="${homeTeam}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
                         <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" ${homeLogo ? 'style="display: none;"' : ''}>${homeTeam.charAt(0)}</div>
                         <span class="text-white text-sm truncate min-w-0">${homeTeam}</span>
                     </div>
                     <div class="flex items-center gap-2 min-w-0">
-                        ${awayLogo ? `<img src="${awayLogo}" alt="${awayTeam}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                        ${awayLogo ? `<img src="${awayLogo}" alt="${awayTeam}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
                         <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" ${awayLogo ? 'style="display: none;"' : ''}>${awayTeam.charAt(0)}</div>
                         <span class="text-white text-sm truncate min-w-0">${awayTeam}</span>
                     </div>
@@ -511,6 +511,76 @@ function refreshHomeMatches() {
     .then(response => response.json())
     .then(data => {
         if (data.success && data.data) {
+            // Prefetch match data from live and upcoming matches into prefetchCache for modal
+            // Each match item already has: match_events, home_stats, away_stats, odds_data, h2h
+            if (typeof window !== 'undefined') {
+                if (!window.prefetchCache) {
+                    window.prefetchCache = new Map();
+                }
+                
+                let cachedCount = 0;
+                
+                // Cache live matches
+                if (data.data.live && Array.isArray(data.data.live)) {
+                    data.data.live.forEach(match => {
+                        const matchId = match.match_id;
+                        if (matchId) {
+                            const matchIdStr = String(matchId);
+                            // Store match item directly (already has all needed data)
+                            window.prefetchCache.set(matchIdStr, match);
+                            window.prefetchCache.set(Number(matchId), match);
+                            cachedCount++;
+                        }
+                    });
+                }
+                
+                // Cache upcoming matches
+                if (data.data.upcoming && Array.isArray(data.data.upcoming)) {
+                    data.data.upcoming.forEach(match => {
+                        const matchId = match.match_id;
+                        if (matchId) {
+                            const matchIdStr = String(matchId);
+                            // Store match item directly (already has all needed data)
+                            window.prefetchCache.set(matchIdStr, match);
+                            window.prefetchCache.set(Number(matchId), match);
+                            cachedCount++;
+                        }
+                    });
+                }
+                
+                console.log(`✅ Prefetched ${cachedCount} match items for modal. Cache size: ${window.prefetchCache.size}`);
+            } else if (typeof prefetchCache !== 'undefined') {
+                let cachedCount = 0;
+                
+                if (data.data.live && Array.isArray(data.data.live)) {
+                    data.data.live.forEach(match => {
+                        const matchId = match.match_id;
+                        if (matchId) {
+                            const matchIdStr = String(matchId);
+                            prefetchCache.set(matchIdStr, match);
+                            prefetchCache.set(Number(matchId), match);
+                            cachedCount++;
+                        }
+                    });
+                }
+                
+                if (data.data.upcoming && Array.isArray(data.data.upcoming)) {
+                    data.data.upcoming.forEach(match => {
+                        const matchId = match.match_id;
+                        if (matchId) {
+                            const matchIdStr = String(matchId);
+                            prefetchCache.set(matchIdStr, match);
+                            prefetchCache.set(Number(matchId), match);
+                            cachedCount++;
+                        }
+                    });
+                }
+                
+                console.log(`Prefetched ${cachedCount} match items for modal`);
+            } else {
+                console.warn('⚠️ prefetchCache not available - cannot cache match details');
+            }
+            
             // Update live matches
             if (data.data.live && Array.isArray(data.data.live)) {
                 const liveGrouped = groupMatchesByLeague(data.data.live);
@@ -553,7 +623,10 @@ document.addEventListener('DOMContentLoaded', function() {
         row.setAttribute('data-match-id', matchId);
     });
     
-    // Initial refresh after 1 minute
+    // Initial refresh immediately to populate cache for modal
+    refreshHomeMatches();
+    
+    // Then refresh every 1 minute
     refreshInterval = setInterval(refreshHomeMatches, 60000); // 60 seconds = 1 minute
 });
 </script>

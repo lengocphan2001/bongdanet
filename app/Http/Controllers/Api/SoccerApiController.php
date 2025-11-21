@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\SoccerApiService;
+use App\Jobs\FetchMatchesDataJob;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -156,15 +157,87 @@ class SoccerApiController extends ApiController
      */
     public function getAllMatchesTable()
     {
-        // Always bypass cache - get fresh data from API every time
-        // Get live matches - no cache
+        // STALE-WHILE-REVALIDATE PATTERN:
+        // 1. Try to get fresh data from cache (pre-fetched by background job)
+        // 2. If not available, fetch from API (but this should be rare)
+        // 3. Trigger background job to refresh cache for next request
+        
+        $cacheKey = 'matches:all:prefetched';
+        $freshCacheKey = $cacheKey . ':fresh';
+        
+        // Try to get fresh data first (30 seconds TTL)
+        $cachedData = \Illuminate\Support\Facades\Cache::get($freshCacheKey);
+        
+        if ($cachedData && isset($cachedData['timestamp'])) {
+            $cacheAge = now()->timestamp - $cachedData['timestamp'];
+            
+            // If cache is less than 30 seconds old, return immediately
+            if ($cacheAge < 30) {
+                \Log::info('getAllMatchesTable: Using fresh cached data', [
+                    'cache_age' => $cacheAge,
+                    'live_count' => count($cachedData['live'] ?? []),
+                    'upcoming_count' => count($cachedData['upcoming'] ?? []),
+                ]);
+                
+                // Trigger background refresh if cache is getting stale (async, non-blocking)
+                if ($cacheAge > 20) {
+                    FetchMatchesDataJob::dispatch()->afterResponse();
+                }
+                
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'live' => $cachedData['live'] ?? [],
+                        'upcoming' => $cachedData['upcoming'] ?? [],
+                        'bookmakers' => $cachedData['bookmakers'] ?? [],
+                    ],
+                    'message' => 'Matches fetched successfully',
+                    'timestamp' => $cachedData['timestamp'] ?? now()->timestamp,
+                    'from_cache' => true,
+                ])->header('Cache-Control', 'public, max-age=30, stale-while-revalidate=300')
+                  ->header('X-Cache-Status', 'HIT');
+            }
+        }
+        
+        // Try stale cache (5 minutes TTL) - better than nothing
+        $staleData = \Illuminate\Support\Facades\Cache::get($cacheKey);
+        if ($staleData && isset($staleData['timestamp'])) {
+            $staleAge = now()->timestamp - $staleData['timestamp'];
+            
+            if ($staleAge < 300) { // Less than 5 minutes
+                \Log::info('getAllMatchesTable: Using stale cached data, refreshing in background', [
+                    'stale_age' => $staleAge,
+                ]);
+                
+                // Return stale data immediately, refresh in background
+                FetchMatchesDataJob::dispatch()->afterResponse();
+                
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'live' => $staleData['live'] ?? [],
+                        'upcoming' => $staleData['upcoming'] ?? [],
+                        'bookmakers' => $staleData['bookmakers'] ?? [],
+                    ],
+                    'message' => 'Matches fetched successfully',
+                    'timestamp' => $staleData['timestamp'] ?? now()->timestamp,
+                    'from_cache' => true,
+                    'stale' => true,
+                ])->header('Cache-Control', 'public, max-age=30, stale-while-revalidate=300')
+                  ->header('X-Cache-Status', 'STALE');
+            }
+        }
+        
+        // No cache available - fetch from API (should be rare)
+        \Log::warning('getAllMatchesTable: No cache available, fetching from API');
+        
+        // Get live matches with all needed data (events, stats, odds_prematch already included)
         $liveResponse = $this->soccerApiService->getLivescores(['_bypass_cache' => true]);
         
-        // Get fixture notstart matches of today using fixtures API with odds_prematch, sorted by time, filtered past matches
-        // Always bypass cache - get fresh data from API every time
+        // Get fixture notstart matches of today with events, stats and odds_prematch
         $today = date('Y-m-d');
         $upcomingResponse = $this->soccerApiService->getScheduleMatches($today, [
-            'include' => 'odds_prematch',
+            'include' => 'events,stats,odds_prematch', // Include events, stats and odds_prematch for modal
             '_bypass_cache' => true,
             '_sort_by_time' => true,
             '_filter_past_matches' => true
@@ -215,8 +288,93 @@ class SoccerApiController extends ApiController
         $allMatches = array_merge($liveMatches, $upcomingMatches);
         $bookmakers = $this->soccerApiService->extractBookmakers($allMatches);
 
-        // Return response with no-cache headers to ensure fresh data every time
-        // Also add ETag and Last-Modified headers to prevent browser caching
+        // Add H2H data to each match (events, stats, odds_prematch already in transformed matches)
+        $matchIds = array_filter(array_column($allMatches, 'match_id'));
+        
+        if (!empty($matchIds)) {
+            // Limit to first 50 matches to avoid too many parallel requests for H2H
+            $matchIds = array_slice($matchIds, 0, 50);
+            
+            // Fetch H2H data in parallel
+            $h2hRequests = [];
+            foreach ($matchIds as $matchId) {
+                $h2hConfig = $this->soccerApiService->getRequestConfig('h2h', [
+                    't' => 'match',
+                    'id' => $matchId,
+                ]);
+                
+                $h2hRequests["match_{$matchId}_h2h"] = $h2hConfig;
+            }
+            
+            // Execute H2H requests in parallel using Http::pool
+            $h2hResponses = Http::pool(function ($pool) use ($h2hRequests) {
+                $poolRequests = [];
+                foreach ($h2hRequests as $key => $config) {
+                    $poolRequests[$key] = $pool->as($key)->timeout(3)->retry(1, 30)->get($config['url'], $config['params']);
+                }
+                return $poolRequests;
+            });
+            
+            // Add H2H data to each match
+            $h2hMap = [];
+            foreach ($matchIds as $matchId) {
+                $matchIdKey = (string) $matchId;
+                $h2hKey = "match_{$matchId}_h2h";
+                
+                // Process H2H response
+                $h2hData = null;
+                $h2hResponse = $h2hResponses[$h2hKey] ?? null;
+                if ($h2hResponse && $h2hResponse->successful()) {
+                    $h2hJson = $h2hResponse->json();
+                    if (isset($h2hJson['data'])) {
+                        $h2hData = $h2hJson['data'];
+                    } elseif (isset($h2hJson['home']) || isset($h2hJson['away']) || isset($h2hJson['h2h'])) {
+                        $h2hData = $h2hJson;
+                    }
+                }
+                
+                // Fallback: get H2H from service if pool request failed (cached, fast)
+                if (!$h2hData) {
+                    $h2hData = $this->soccerApiService->getH2H($matchId);
+                }
+                
+                $h2hMap[$matchIdKey] = $h2hData;
+            }
+            
+            // Add H2H to each match in live and upcoming arrays
+            foreach ($liveMatches as &$match) {
+                $matchId = (string) ($match['match_id'] ?? null);
+                if ($matchId && isset($h2hMap[$matchId])) {
+                    $match['h2h'] = $h2hMap[$matchId];
+                }
+            }
+            unset($match); // Unset reference
+            
+            foreach ($upcomingMatches as &$match) {
+                $matchId = (string) ($match['match_id'] ?? null);
+                if ($matchId && isset($h2hMap[$matchId])) {
+                    $match['h2h'] = $h2hMap[$matchId];
+                }
+            }
+            unset($match); // Unset reference
+        }
+        
+        // Cache the result for next requests (async refresh in background)
+        $data = [
+            'live' => $liveMatches,
+            'upcoming' => $upcomingMatches,
+            'bookmakers' => $bookmakers,
+            'timestamp' => now()->timestamp,
+        ];
+        
+        // Store in cache for next requests
+        \Illuminate\Support\Facades\Cache::put($cacheKey, $data, 300); // 5 minutes
+        \Illuminate\Support\Facades\Cache::put($freshCacheKey, $data, 30); // 30 seconds
+        
+        // Trigger background refresh for next time
+        FetchMatchesDataJob::dispatch()->afterResponse();
+        
+        // Return response with cache headers
         return response()->json([
             'success' => true,
             'data' => [
@@ -225,12 +383,10 @@ class SoccerApiController extends ApiController
                 'bookmakers' => $bookmakers,
             ],
             'message' => 'Matches fetched successfully',
-            'timestamp' => now()->timestamp // Add timestamp to response
-        ])->header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0, private')
-          ->header('Pragma', 'no-cache')
-          ->header('Expires', '0')
-          ->header('ETag', md5(json_encode($liveMatches) . json_encode($upcomingMatches) . now()->timestamp))
-          ->header('Last-Modified', gmdate('D, d M Y H:i:s', now()->timestamp) . ' GMT');
+            'timestamp' => now()->timestamp,
+            'from_cache' => false,
+        ])->header('Cache-Control', 'public, max-age=30, stale-while-revalidate=300')
+          ->header('X-Cache-Status', 'MISS');
     }
 
     /**
@@ -787,5 +943,6 @@ class SoccerApiController extends ApiController
         return $reconstructed;
     }
 }
+
 
 

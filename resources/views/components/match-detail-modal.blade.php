@@ -148,42 +148,157 @@ async function openMatchModal(matchId) {
 }
 
 // Prefetch cache to store match data before modal opens
-const prefetchCache = new Map();
+// Use window.prefetchCache to make it globally accessible from other components
+const prefetchCache = typeof window !== 'undefined' && window.prefetchCache ? window.prefetchCache : new Map();
+if (typeof window !== 'undefined') {
+    window.prefetchCache = prefetchCache;
+}
 const prefetchPromises = new Map(); // Track ongoing prefetch requests
 
-// Prefetch match data on hover (concurrent, cached)
-async function prefetchMatchData(matchId) {
-    // Skip if already cached or currently fetching
-    if (prefetchCache.has(matchId) || prefetchPromises.has(matchId)) {
-        return;
+/**
+ * Convert odds_data format from {1X2: {Bet365: {...}}} to format expected by renderMatchOdds
+ */
+function convertOddsDataFormat(oddsData) {
+    console.log('convertOddsDataFormat - input:', oddsData);
+    
+    if (!oddsData || typeof oddsData !== 'object') {
+        console.log('convertOddsDataFormat - invalid input, returning null');
+        return null;
     }
     
-    // Create prefetch promise and store it
-    const prefetchPromise = fetch(`/api/match-all/${matchId}`, {
-        method: 'GET',
-        headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0',
-        },
-        cache: 'no-store'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success && data.data) {
-            prefetchCache.set(matchId, data.data);
-        }
-        prefetchPromises.delete(matchId);
-        return data;
-    })
-    .catch(error => {
-        console.error('Prefetch error:', error);
-        prefetchPromises.delete(matchId);
-        return null;
-    });
+    // If already in the expected format (array or processed object), return as is
+    if (Array.isArray(oddsData)) {
+        console.log('convertOddsDataFormat - is array, returning as is');
+        return oddsData;
+    }
     
-    prefetchPromises.set(matchId, prefetchPromise);
-    return prefetchPromise;
+    // Check if it's already processed format (has bookmaker_id, opening, current at root level)
+    // If oddsData['1X2'] has bookmaker_id or opening/current, it's already converted
+    if (oddsData['1X2'] && typeof oddsData['1X2'] === 'object') {
+        // Check if it's already converted (has bookmaker_id, opening, current)
+        if (oddsData['1X2'].bookmaker_id || oddsData['1X2'].opening || oddsData['1X2'].current) {
+            console.log('convertOddsDataFormat - already converted, returning as is');
+            return oddsData; // Already converted
+        }
+    }
+    
+    // Convert from {1X2: {Bet365: {...}}, Asian Handicap: {...}, Over/Under: {...}} format
+    const converted = {};
+    
+    // Process 1X2
+    if (oddsData['1X2'] && typeof oddsData['1X2'] === 'object') {
+        console.log('convertOddsDataFormat - processing 1X2:', oddsData['1X2']);
+        
+        // Check if it's object with bookmakers (like {Bet365: {...}, UniBet: {...}})
+        const firstKey = Object.keys(oddsData['1X2'])[0];
+        const firstValue = oddsData['1X2'][firstKey];
+        
+        console.log('convertOddsDataFormat - firstKey:', firstKey, 'firstValue:', firstValue);
+        
+        // If first value is an object and has home/draw/away, it's a bookmaker object
+        if (firstValue && typeof firstValue === 'object' && (firstValue.home || firstValue.draw || firstValue.away || firstValue['1'] || firstValue['X'] || firstValue['2'])) {
+            const bet365 = oddsData['1X2']['Bet365'] || Object.values(oddsData['1X2'])[0];
+            console.log('convertOddsDataFormat - bet365:', bet365);
+            
+            if (bet365) {
+                // Extract home, draw, away values
+                const home = bet365.home || bet365['1'] || null;
+                const draw = bet365.draw || bet365['X'] || null;
+                const away = bet365.away || bet365['2'] || null;
+                
+                console.log('convertOddsDataFormat - extracted values:', { home, draw, away });
+                
+                // Create opening and current objects with home, draw, away
+                const openingCurrent = {
+                    home: home,
+                    draw: draw,
+                    away: away
+                };
+                
+                converted['1X2'] = {
+                    bookmaker_id: bet365.bookmaker_id || 2,
+                    bookmaker: { id: bet365.bookmaker_id || 2, name: 'Bet365' },
+                    opening: openingCurrent,
+                    current: openingCurrent,
+                    home: home,
+                    draw: draw,
+                    away: away
+                };
+                
+                console.log('convertOddsDataFormat - converted 1X2:', converted['1X2']);
+            }
+        } else {
+            console.log('convertOddsDataFormat - 1X2 is not in expected bookmaker format');
+        }
+    }
+    
+    // Process Asian Handicap
+    if (oddsData['Asian Handicap'] && typeof oddsData['Asian Handicap'] === 'object') {
+        // Check if it's object with bookmakers
+        const firstKey = Object.keys(oddsData['Asian Handicap'])[0];
+        const firstValue = oddsData['Asian Handicap'][firstKey];
+        
+        if (firstValue && typeof firstValue === 'object' && (firstValue.home || firstValue.away || firstValue.handicap)) {
+            const bet365 = oddsData['Asian Handicap']['Bet365'] || Object.values(oddsData['Asian Handicap'])[0];
+            if (bet365) {
+                const openingCurrent = {
+                    handicap: bet365.handicap || '0',
+                    home: bet365.home,
+                    away: bet365.away
+                };
+                
+                converted['Asian Handicap'] = {
+                    bookmaker_id: bet365.bookmaker_id || 2,
+                    bookmaker: { id: bet365.bookmaker_id || 2, name: 'Bet365' },
+                    opening: openingCurrent,
+                    current: openingCurrent,
+                    handicap: bet365.handicap || '0',
+                    home: bet365.home,
+                    away: bet365.away
+                };
+            }
+        }
+    }
+    
+    // Process Over/Under
+    if (oddsData['Over/Under'] && typeof oddsData['Over/Under'] === 'object') {
+        // Check if it's object with bookmakers
+        const firstKey = Object.keys(oddsData['Over/Under'])[0];
+        const firstValue = oddsData['Over/Under'][firstKey];
+        
+        if (firstValue && typeof firstValue === 'object' && (firstValue.over || firstValue.under || firstValue.handicap || firstValue.total)) {
+            const bet365 = oddsData['Over/Under']['Bet365'] || Object.values(oddsData['Over/Under'])[0];
+            if (bet365) {
+                const openingCurrent = {
+                    total: bet365.handicap || bet365.total || '2.5',
+                    over: bet365.over,
+                    under: bet365.under
+                };
+                
+                converted['Over/Under'] = {
+                    bookmaker_id: bet365.bookmaker_id || 2,
+                    bookmaker: { id: bet365.bookmaker_id || 2, name: 'Bet365' },
+                    opening: openingCurrent,
+                    current: openingCurrent,
+                    total: bet365.handicap || bet365.total || '2.5',
+                    over: bet365.over,
+                    under: bet365.under
+                };
+            }
+        }
+    }
+    
+    const result = Object.keys(converted).length > 0 ? converted : null;
+    console.log('convertOddsDataFormat - final result:', result);
+    return result;
+}
+
+// DISABLED: Prefetch match data on hover - Data is now loaded from getAllMatchesTable API
+// This function is kept for backward compatibility but does nothing
+async function prefetchMatchData(matchId) {
+    // Data is already prefetched from getAllMatchesTable API call
+    // No need to make additional API calls on hover
+    return;
 }
 
 // Batch prefetch multiple matches concurrently
@@ -205,132 +320,130 @@ async function prefetchMatchesBatch(matchIds) {
 
 async function loadAllMatchData(matchId) {
     try {
-        // Check prefetch cache first
-        if (prefetchCache.has(matchId)) {
-            const cachedData = prefetchCache.get(matchId);
-            prefetchCache.delete(matchId); // Remove from cache after use
+        // Convert matchId to string for consistent lookup
+        const matchIdStr = String(matchId);
+        
+        // Check prefetch cache first (try both string and number keys)
+        // Also check window.prefetchCache if available
+        const cacheToCheck = (typeof window !== 'undefined' && window.prefetchCache) ? window.prefetchCache : prefetchCache;
+        
+        console.log('Checking prefetch cache for match:', matchId, 'String:', matchIdStr);
+        console.log('Cache has string key:', cacheToCheck.has(matchIdStr), 'Cache has number key:', cacheToCheck.has(matchId));
+        console.log('Cache size:', cacheToCheck.size);
+        console.log('Cache keys:', Array.from(cacheToCheck.keys()));
+        
+        if (cacheToCheck.has(matchIdStr) || cacheToCheck.has(matchId)) {
+            const matchItem = cacheToCheck.get(matchIdStr) || cacheToCheck.get(matchId);
+            console.log('✅ Using prefetched data from getAllMatchesTable for match:', matchId);
             
-            // Process cached data
-            if (cachedData.match_detail) {
-                processMatchDetail(cachedData.match_detail);
-            }
-            if (cachedData.events !== undefined) {
-                matchEventsData = Array.isArray(cachedData.events) ? cachedData.events : null;
-            }
-            matchOddsPrematch = cachedData.odds_prematch || null;
-            matchStatsData = cachedData.stats || null;
-            matchTeamIds = {
-                home_team_id: cachedData.home_team_id || null,
-                away_team_id: cachedData.away_team_id || null,
+            // Process match item data (already has all needed fields)
+            // Build match_detail object from match item
+            const matchDetail = {
+                id: matchItem.match_id,
+                league: { name: matchItem.league, id: matchItem.league_id },
+                teams: {
+                    home: { id: matchItem.home_team_id, name: matchItem.home_team, img: matchItem.home_team_info?.img },
+                    away: { id: matchItem.away_team_id, name: matchItem.away_team, img: matchItem.away_team_info?.img }
+                },
+                scores: matchItem.scores || {},
+                time: {
+                    datetime: matchItem.starting_datetime,
+                    date: matchItem.date,
+                    time: matchItem.time
+                },
+                status_name: matchItem.status_name,
+                status: matchItem.status
             };
-            if (cachedData.h2h) {
+            processMatchDetail(matchDetail);
+            
+            // Get events, stats, odds, h2h from match item
+            matchEventsData = matchItem.match_events || null;
+            // Convert odds_data format to what renderMatchOdds expects
+            matchOddsPrematch = convertOddsDataFormat(matchItem.odds_data);
+            matchStatsData = {
+                home: matchItem.home_stats || null,
+                away: matchItem.away_stats || null
+            };
+            matchTeamIds = {
+                home_team_id: matchItem.home_team_id || null,
+                away_team_id: matchItem.away_team_id || null,
+            };
+            if (matchItem.h2h) {
                 matchH2HData = {
-                    h2hData: cachedData.h2h,
-                    currentHomeTeamId: cachedData.home_team_id || null,
-                    currentAwayTeamId: cachedData.away_team_id || null,
+                    h2hData: matchItem.h2h,
+                    currentHomeTeamId: matchItem.home_team_id || null,
+                    currentAwayTeamId: matchItem.away_team_id || null,
                 };
             }
             renderMatchEvents();
             return; // Use cached data, no API call needed
         }
         
-        // If prefetch is in progress, wait for it
-        if (prefetchPromises.has(matchId)) {
-            const prefetchData = await prefetchPromises.get(matchId);
-            if (prefetchData && prefetchData.success && prefetchData.data) {
-                const allData = prefetchData.data;
-                // Process data same as below
-                if (allData.match_detail) {
-                    processMatchDetail(allData.match_detail);
-                }
-                if (allData.events !== undefined) {
-                    matchEventsData = Array.isArray(allData.events) ? allData.events : null;
-                }
-                matchOddsPrematch = allData.odds_prematch || null;
-                matchStatsData = allData.stats || null;
-                matchTeamIds = {
-                    home_team_id: allData.home_team_id || null,
-                    away_team_id: allData.away_team_id || null,
+        console.log('❌ No prefetched data found for match:', matchId);
+        console.log('Waiting for data from getAllMatchesTable...');
+        
+        // Wait a bit for getAllMatchesTable to load data (max 2 seconds)
+        let retries = 0;
+        const maxRetries = 20; // 20 * 100ms = 2 seconds
+        while (retries < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms
+            
+            // Check cache again
+            if (cacheToCheck.has(matchIdStr) || cacheToCheck.has(matchId)) {
+                const matchItem = cacheToCheck.get(matchIdStr) || cacheToCheck.get(matchId);
+                console.log('✅ Found prefetched data after waiting:', matchId);
+                
+                // Process match item data (already has all needed fields)
+                const matchDetail = {
+                    id: matchItem.match_id,
+                    league: { name: matchItem.league, id: matchItem.league_id },
+                    teams: {
+                        home: { id: matchItem.home_team_id, name: matchItem.home_team, img: matchItem.home_team_info?.img },
+                        away: { id: matchItem.away_team_id, name: matchItem.away_team, img: matchItem.away_team_info?.img }
+                    },
+                    scores: matchItem.scores || {},
+                    time: {
+                        datetime: matchItem.starting_datetime,
+                        date: matchItem.date,
+                        time: matchItem.time
+                    },
+                    status_name: matchItem.status_name,
+                    status: matchItem.status
                 };
-                if (allData.h2h) {
+                processMatchDetail(matchDetail);
+                
+                matchEventsData = matchItem.match_events || null;
+                // Convert odds_data format to what renderMatchOdds expects
+                matchOddsPrematch = convertOddsDataFormat(matchItem.odds_data);
+                matchStatsData = {
+                    home: matchItem.home_stats || null,
+                    away: matchItem.away_stats || null
+                };
+                matchTeamIds = {
+                    home_team_id: matchItem.home_team_id || null,
+                    away_team_id: matchItem.away_team_id || null,
+                };
+                if (matchItem.h2h) {
                     matchH2HData = {
-                        h2hData: allData.h2h,
-                        currentHomeTeamId: allData.home_team_id || null,
-                        currentAwayTeamId: allData.away_team_id || null,
+                        h2hData: matchItem.h2h,
+                        currentHomeTeamId: matchItem.home_team_id || null,
+                        currentAwayTeamId: matchItem.away_team_id || null,
                     };
                 }
                 renderMatchEvents();
                 return;
             }
+            
+            retries++;
         }
         
-        // Use optimized endpoint that returns all data in one call
-        // Add cache busting and no-cache headers for fresh data
-        const cacheBuster = Date.now();
-        const response = await fetch(`/api/match-all/${matchId}?t=${cacheBuster}`, {
-            method: 'GET',
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0',
-            },
-            cache: 'no-store'
-        });
-        const data = await response.json();
-        
-        if (!data.success || !data.data) {
-            throw new Error('Failed to load match data');
+        // If still no data after waiting, show error message instead of calling API
+        console.error('❌ No prefetched data available after waiting. Data should be loaded from getAllMatchesTable API.');
+        const eventsContainer = document.getElementById('modal-match-events');
+        if (eventsContainer) {
+            eventsContainer.innerHTML = '<div class="text-center text-yellow-400 py-4">Đang tải dữ liệu từ server... Vui lòng đợi vài giây rồi thử lại.</div>';
         }
-        
-        const allData = data.data;
-        
-        // Process match detail
-        if (allData.match_detail) {
-            processMatchDetail(allData.match_detail);
-        }
-        
-        // Process events, odds, and stats
-        if (allData.events !== undefined) {
-            matchEventsData = Array.isArray(allData.events) ? allData.events : null;
-        }
-        
-        // Debug: Log odds_prematch structure
-        console.log('odds_prematch from API:', allData.odds_prematch);
-        matchOddsPrematch = allData.odds_prematch || null;
-        
-        // If odds_prematch is null, try to get from match_detail
-        if (!matchOddsPrematch && allData.match_detail) {
-            matchOddsPrematch = allData.match_detail.odds_prematch || 
-                               allData.match_detail.odds_data || 
-                               null;
-            console.log('Trying odds from match_detail:', matchOddsPrematch);
-        }
-        
-        matchStatsData = allData.stats || null;
-        matchTeamIds = {
-            home_team_id: allData.home_team_id || null,
-            away_team_id: allData.away_team_id || null,
-        };
-        
-        // Process H2H data
-        if (allData.h2h) {
-            matchH2HData = {
-                h2hData: allData.h2h,
-                currentHomeTeamId: allData.home_team_id || null,
-                currentAwayTeamId: allData.away_team_id || null,
-            };
-            console.log('H2H data loaded:', matchH2HData);
-        } else {
-            console.warn('H2H data not found in API response:', allData);
-        }
-        
-        // Render overview tab (events)
-        renderMatchEvents();
-        
-        // Pre-render H2H data if available (so it's ready when user clicks H2H tab)
-        if (matchH2HData && matchH2HData.h2hData) {
-            renderH2HData();
-        }
+        return; // Don't call API - data should come from getAllMatchesTable
         
     } catch (error) {
         console.error('Error loading all match data:', error);
@@ -686,6 +799,12 @@ function renderMatchEvents() {
         const homeTeamId = matchTeamIds.home_team_id;
         const awayTeamId = matchTeamIds.away_team_id;
         
+        // Get team names and logos from cached data
+        const homeTeamName = cachedTeamNames.home || 'Đội nhà';
+        const awayTeamName = cachedTeamNames.away || 'Đội khách';
+        const homeTeamLogo = document.getElementById('modal-home-logo')?.querySelector('img')?.src || null;
+        const awayTeamLogo = document.getElementById('modal-away-logo')?.querySelector('img')?.src || null;
+        
         // Filter only relevant events
         const relevantEvents = matchEventsData.filter(event => {
             const type = (event.type || '').toLowerCase();
@@ -693,166 +812,155 @@ function renderMatchEvents() {
         });
         
         if (relevantEvents.length === 0) {
-            eventsContainer.innerHTML = '<div class="text-center text-gray-400 py-4">Chưa có sự kiện nào</div>';
+            eventsContainer.innerHTML = '<div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center"><p class="text-red-400 font-medium">Trận đấu chưa có dữ liệu !</p></div>';
             return;
         }
         
-        // Sort events by period, then by minute
+        // Sort events by minute
         relevantEvents.sort((a, b) => {
-            const periodA = (a.period || '').toLowerCase();
-            const periodB = (b.period || '').toLowerCase();
-            
-            // First half comes before second half
-            if (periodA.includes('1st') || periodA.includes('1')) {
-                if (periodB.includes('2nd') || periodB.includes('2')) return -1;
-            } else if (periodA.includes('2nd') || periodA.includes('2')) {
-                if (periodB.includes('1st') || periodB.includes('1')) return 1;
+            const minuteA = parseInt(a.minute || 0);
+            const minuteB = parseInt(b.minute || 0);
+            if (minuteA === minuteB) {
+                const extraA = parseInt(a.extra_minute || 0);
+                const extraB = parseInt(b.extra_minute || 0);
+                return extraA - extraB;
             }
-            
-            // Within same period, sort by minute
-            const minuteA = parseInt(a.minute || 0) + parseInt(a.extra_minute || 0);
-            const minuteB = parseInt(b.minute || 0) + parseInt(b.extra_minute || 0);
             return minuteA - minuteB;
         });
         
-        // Group events by period and calculate scores
-        const eventsByPeriod = {
-            '1st half': [],
-            '2nd half': [],
-            'other': []
-        };
+        // Build table HTML
+        let html = '<div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 mb-4">';
+        html += '<h2 class="text-sm font-bold text-white mb-2">Diễn biến - Kết quả ' + homeTeamName + ' vs ' + awayTeamName + '</h2>';
+        html += '<div class="border border-slate-700 rounded-lg overflow-hidden">';
+        html += '<table class="w-full text-xs">';
+        html += '<thead class="bg-slate-700">';
+        html += '<tr>';
         
-        let homeScore = 0;
-        let awayScore = 0;
+        // Home team header
+        html += '<th class="px-2 py-2 text-left">';
+        html += '<div class="flex items-center space-x-2">';
+        if (homeTeamLogo) {
+            html += '<img src="' + homeTeamLogo + '" alt="' + homeTeamName + '" class="w-5 h-5" onerror="this.style.display=\'none\'">';
+        }
+        html += '<span class="font-medium">' + homeTeamName + '</span>';
+        html += '</div>';
+        html += '</th>';
         
+        // Minute header
+        html += '<th class="px-2 py-2 text-center w-16 font-medium">Phút</th>';
+        
+        // Away team header
+        html += '<th class="px-2 py-2 text-right">';
+        html += '<div class="flex items-center justify-end space-x-2">';
+        html += '<span class="font-medium">' + awayTeamName + '</span>';
+        if (awayTeamLogo) {
+            html += '<img src="' + awayTeamLogo + '" alt="' + awayTeamName + '" class="w-5 h-5" onerror="this.style.display=\'none\'">';
+        }
+        html += '</div>';
+        html += '</th>';
+        
+        html += '</tr>';
+        html += '</thead>';
+        html += '<tbody class="divide-y divide-slate-700">';
+        
+        // Render events
         relevantEvents.forEach(event => {
-            const period = event.period || 'other';
-            const periodKey = period.includes('1st') || period.includes('1') ? '1st half' : 
-                           period.includes('2nd') || period.includes('2') ? '2nd half' : 'other';
+            const eventType = (event.type || '').toLowerCase();
+            const eventTeamId = event.team_id;
+            const playerName = event.player_name || '';
+            const relatedPlayerName = event.related_player_name || '';
+            const minute = event.minute || '';
+            const extraMinute = event.extra_minute || '';
+            const minuteDisplay = minute + (extraMinute ? '+' + extraMinute : '');
             
-            // Calculate score for goals
-            if (event.type === 'goal' && !event.own_goal) {
-                if (event.team_id === homeTeamId) {
-                    homeScore++;
-                } else if (event.team_id === awayTeamId) {
-                    awayScore++;
+            const isHomeEvent = (eventTeamId == homeTeamId);
+            const isAwayEvent = (eventTeamId == awayTeamId);
+            
+            // Determine event icon and color
+            let eventIcon = '';
+            let eventColor = '';
+            let eventText = playerName || 'N/A';
+            
+            if (eventType === 'goal') {
+                eventIcon = '⚽';
+                eventColor = 'text-blue-600';
+                if (relatedPlayerName) {
+                    eventText += ' (Assist: ' + relatedPlayerName + ')';
                 }
-            } else if (event.type === 'goal' && event.own_goal) {
-                // Own goal - opposite team gets the goal
-                if (event.team_id === homeTeamId) {
-                    awayScore++;
-                } else if (event.team_id === awayTeamId) {
-                    homeScore++;
+            } else if (eventType === 'yellowcard') {
+                eventIcon = '🟨';
+                eventColor = 'text-yellow-600';
+            } else if (eventType === 'redcard') {
+                eventIcon = '🟥';
+                eventColor = 'text-red-400';
+            } else if (eventType === 'yellowredcard') {
+                eventIcon = '🟨🟥';
+                eventColor = 'text-orange-600';
+            } else if (eventType === 'substitution') {
+                eventIcon = '🔄';
+                eventColor = 'text-green-600';
+                if (relatedPlayerName) {
+                    eventText = relatedPlayerName + ' → ' + playerName;
                 }
             }
             
-            eventsByPeriod[periodKey].push({
-                ...event,
-                currentHomeScore: homeScore,
-                currentAwayScore: awayScore
-            });
+            html += '<tr>';
+            
+            if (isHomeEvent) {
+                html += '<td class="px-2 py-2">';
+                html += '<div class="flex items-center space-x-1">';
+                html += '<span class="text-sm">' + eventIcon + '</span>';
+                html += '<span class="' + eventColor + '">' + eventText + '</span>';
+                html += '</div>';
+                html += '</td>';
+                html += '<td class="px-2 py-2 text-center font-medium">' + minuteDisplay + '</td>';
+                html += '<td class="px-2 py-2"></td>';
+            } else if (isAwayEvent) {
+                html += '<td class="px-2 py-2"></td>';
+                html += '<td class="px-2 py-2 text-center font-medium">' + minuteDisplay + '</td>';
+                html += '<td class="px-2 py-2 text-right">';
+                html += '<div class="flex items-center justify-end space-x-2">';
+                html += '<span class="' + eventColor + '">' + eventText + '</span>';
+                html += '<span class="text-lg">' + eventIcon + '</span>';
+                html += '</div>';
+                html += '</td>';
+            }
+            
+            html += '</tr>';
         });
         
-        // Render events by period
-        let html = '';
+        html += '</tbody>';
+        html += '</table>';
+        html += '</div>';
         
-        // First Half
-        if (eventsByPeriod['1st half'].length > 0) {
-            html += '<div class="mb-6">';
-            html += '<h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">';
-            html += '<span class="w-1 h-4 bg-green-500"></span>';
-            html += 'HIỆP 1';
-            html += '</h4>';
-            html += '<div class="space-y-2">';
-            
-            eventsByPeriod['1st half'].forEach(event => {
-                html += renderEventItem(event, homeTeamId, awayTeamId);
-            });
-            
-            html += '</div>';
-            html += '</div>';
-        }
+        // Event Legend
+        html += '<div class="mt-2 flex flex-wrap gap-3 text-xs text-gray-400">';
+        html += '<div class="flex items-center space-x-1">';
+        html += '<span class="text-lg">⚽</span>';
+        html += '<span>Bàn thắng</span>';
+        html += '</div>';
+        html += '<div class="flex items-center space-x-1">';
+        html += '<span class="text-lg">🟨</span>';
+        html += '<span>Thẻ vàng</span>';
+        html += '</div>';
+        html += '<div class="flex items-center space-x-1">';
+        html += '<span class="text-lg">🟥</span>';
+        html += '<span>Thẻ đỏ</span>';
+        html += '</div>';
+        html += '<div class="flex items-center space-x-1">';
+        html += '<span class="text-lg">🔄</span>';
+        html += '<span>Thay người</span>';
+        html += '</div>';
+        html += '</div>';
         
-        // Half-time separator
-        if (eventsByPeriod['1st half'].length > 0 && eventsByPeriod['2nd half'].length > 0) {
-            html += '<div class="text-center py-3 mb-6">';
-            html += '<span class="text-sm text-gray-400 italic">Giao bóng giữa sân</span>';
-            html += '</div>';
-        }
-        
-        // Second Half
-        if (eventsByPeriod['2nd half'].length > 0) {
-            html += '<div class="mb-6">';
-            html += '<h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">';
-            html += '<span class="w-1 h-4 bg-green-500"></span>';
-            html += 'HIỆP 2';
-            html += '</h4>';
-            html += '<div class="space-y-2">';
-            
-            eventsByPeriod['2nd half'].forEach(event => {
-                html += renderEventItem(event, homeTeamId, awayTeamId);
-            });
-            
-            html += '</div>';
-            html += '</div>';
-        }
+        html += '</div>';
         
         eventsContainer.innerHTML = html;
     } else {
-        eventsContainer.innerHTML = '<div class="text-center text-gray-400 py-4">Chưa có sự kiện nào</div>';
+        eventsContainer.innerHTML = '<div class="bg-slate-700 border border-red-500 rounded-lg p-4 text-center"><p class="text-red-400 font-medium">Trận đấu chưa có dữ liệu !</p></div>';
     }
 }
 
-function renderEventItem(event, homeTeamId, awayTeamId) {
-    const minute = event.minute || '';
-    const extraMinute = event.extra_minute || '';
-    const minuteDisplay = minute + (extraMinute ? '+' + extraMinute : '') + "'";
-    const type = (event.type || '').toLowerCase();
-    const playerName = event.player_name || '';
-    const relatedPlayerName = event.related_player_name || '';
-    const isHomeTeam = event.team_id === homeTeamId;
-    
-    // Determine icon and styling based on event type
-    let icon = '⚽';
-    let bgColor = 'bg-slate-900';
-    let textColor = 'text-white';
-    let eventText = '';
-    
-    if (type === 'goal') {
-        icon = '⚽';
-        bgColor = 'bg-blue-900';
-        const score = `${event.currentHomeScore} - ${event.currentAwayScore}`;
-        eventText = event.own_goal ? 
-            `${score} (Phản lưới nhà) ${playerName}` : 
-            `${score} ${playerName}`;
-    } else if (type === 'yellowcard') {
-        icon = '🟨';
-        bgColor = 'bg-yellow-900';
-        eventText = playerName || 'Thẻ vàng';
-    } else if (type === 'redcard') {
-        icon = '🟥';
-        bgColor = 'bg-red-900';
-        eventText = playerName || 'Thẻ đỏ';
-    } else if (type === 'yellowredcard') {
-        icon = '🟨🟥';
-        bgColor = 'bg-orange-900';
-        eventText = playerName || 'Thẻ vàng thứ 2';
-    } else if (type === 'substitution') {
-        icon = '↕️';
-        bgColor = 'bg-green-900';
-        eventText = relatedPlayerName ? `${relatedPlayerName} → ${playerName}` : playerName || 'Thay người';
-    } else {
-        eventText = playerName || type;
-    }
-    
-    return `
-        <div class="flex items-center gap-3 p-3 ${bgColor} rounded border border-slate-700 hover:border-slate-600 transition-colors">
-            <span class="text-xs text-gray-300 font-medium min-w-[50px] text-right">${minuteDisplay}</span>
-            <span class="text-lg flex-shrink-0">${icon}</span>
-            <span class="text-sm ${textColor} flex-1">${eventText}</span>
-        </div>
-    `;
-}
 
 function renderMatchOdds() {
     const oddsContainer = document.getElementById('modal-tab-odds');
@@ -862,6 +970,7 @@ function renderMatchOdds() {
     
     // Debug logging
     console.log('renderMatchOdds - matchOddsPrematch:', matchOddsPrematch);
+    console.log('renderMatchOdds - matchOddsPrematch type:', typeof matchOddsPrematch, 'isArray:', Array.isArray(matchOddsPrematch));
     
     if (!matchOddsPrematch) {
         oddsContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu odds</div>';
@@ -971,18 +1080,61 @@ function renderMatchOdds() {
             }
         });
     }
-    // If it's already a processed object (from reconstructOddsPrematch)
-    else if (typeof matchOddsPrematch === 'object') {
-        // Use the object directly
-        extractedOdds = {
-            '1X2': matchOddsPrematch['1x2'] || matchOddsPrematch['1X2'] || matchOddsPrematch,
-            'Asian Handicap': matchOddsPrematch.asian_handicap || matchOddsPrematch.handicap || matchOddsPrematch,
-            'Over/Under': matchOddsPrematch.over_under || matchOddsPrematch.total || matchOddsPrematch
-        };
+    // If it's already a processed object (from convertOddsDataFormat or reconstructOddsPrematch)
+    else if (typeof matchOddsPrematch === 'object' && !Array.isArray(matchOddsPrematch)) {
+        // Check if it's in converted format (has 1X2 with bookmaker_id/opening/current)
+        const isConverted = matchOddsPrematch['1X2'] && 
+                           typeof matchOddsPrematch['1X2'] === 'object' &&
+                           (matchOddsPrematch['1X2'].bookmaker_id || matchOddsPrematch['1X2'].opening || matchOddsPrematch['1X2'].current);
+        
+        if (isConverted) {
+            // Already in the right format from convertOddsDataFormat
+            console.log('renderMatchOdds - using already converted format');
+            extractedOdds = {
+                '1X2': matchOddsPrematch['1X2'] || null,
+                'Asian Handicap': matchOddsPrematch['Asian Handicap'] || null,
+                'Over/Under': matchOddsPrematch['Over/Under'] || null
+            };
+        } else {
+            // Need to convert - check if it has 1X2/A Asian Handicap/Over/Under keys (raw format)
+            if (matchOddsPrematch['1X2'] || matchOddsPrematch['Asian Handicap'] || matchOddsPrematch['Over/Under']) {
+                console.log('renderMatchOdds - converting odds_data format');
+                // Convert from {1X2: {Bet365: {...}}} format
+                const converted = convertOddsDataFormat(matchOddsPrematch);
+                if (converted) {
+                    extractedOdds = {
+                        '1X2': converted['1X2'] || null,
+                        'Asian Handicap': converted['Asian Handicap'] || null,
+                        'Over/Under': converted['Over/Under'] || null
+                    };
+                } else {
+                    // Fallback: try direct assignment
+                    extractedOdds = {
+                        '1X2': matchOddsPrematch['1X2'] || null,
+                        'Asian Handicap': matchOddsPrematch['Asian Handicap'] || null,
+                        'Over/Under': matchOddsPrematch['Over/Under'] || null
+                    };
+                }
+            } else {
+                // Try other formats
+                extractedOdds = {
+                    '1X2': matchOddsPrematch['1x2'] || matchOddsPrematch['1X2'] || matchOddsPrematch,
+                    'Asian Handicap': matchOddsPrematch.asian_handicap || matchOddsPrematch.handicap || matchOddsPrematch,
+                    'Over/Under': matchOddsPrematch.over_under || matchOddsPrematch.total || matchOddsPrematch
+                };
+            }
+        }
     }
+    
+    // Debug logging
+    console.log('renderMatchOdds - extractedOdds:', extractedOdds);
+    console.log('renderMatchOdds - 1X2:', extractedOdds['1X2']);
+    console.log('renderMatchOdds - Asian Handicap:', extractedOdds['Asian Handicap']);
+    console.log('renderMatchOdds - Over/Under:', extractedOdds['Over/Under']);
     
     // Check if we have any odds data
     if (!extractedOdds['1X2'] && !extractedOdds['Asian Handicap'] && !extractedOdds['Over/Under']) {
+        console.warn('renderMatchOdds - No odds data extracted');
         oddsContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu odds</div>';
         return;
     }
@@ -1001,8 +1153,15 @@ function renderMatchOdds() {
     const openingOverUnder = extractedOdds['Over/Under']?.opening || extractedOdds['Over/Under'] || {};
     const prematchOverUnder = extractedOdds['Over/Under']?.current || extractedOdds['Over/Under'] || {};
     
+    // For 1X2, get opening and prematch odds
+    // If opening/current are objects, use them directly; otherwise use the main 1X2 object
     const opening1X2 = extractedOdds['1X2']?.opening || extractedOdds['1X2'] || {};
     const prematch1X2 = extractedOdds['1X2']?.current || extractedOdds['1X2'] || {};
+    
+    // If opening1X2/prematch1X2 don't have home/draw/away, try to get from the main 1X2 object
+    const main1X2 = extractedOdds['1X2'] || {};
+    const opening1X2Final = (opening1X2.home || opening1X2.draw || opening1X2.away) ? opening1X2 : main1X2;
+    const prematch1X2Final = (prematch1X2.home || prematch1X2.draw || prematch1X2.away) ? prematch1X2 : main1X2;
     
     let html = '<div class="space-y-4">';
     
@@ -1058,9 +1217,12 @@ function renderMatchOdds() {
     </td>`;
     
     // 1X2 Opening
-    const opening1 = opening1X2.home || opening1X2['1'] || '-';
-    const openingX = opening1X2.draw || opening1X2['X'] || '-';
-    const opening2 = opening1X2.away || opening1X2['2'] || '-';
+    console.log('renderMatchOdds - opening1X2Final:', opening1X2Final);
+    console.log('renderMatchOdds - main1X2:', main1X2);
+    const opening1 = opening1X2Final.home || opening1X2Final['1'] || main1X2.home || '-';
+    const openingX = opening1X2Final.draw || opening1X2Final['X'] || main1X2.draw || '-';
+    const opening2 = opening1X2Final.away || opening1X2Final['2'] || main1X2.away || '-';
+    console.log('renderMatchOdds - 1X2 Opening values:', { opening1, openingX, opening2 });
     html += `<td class="px-4 py-3 text-center text-xs text-white border-l border-slate-700">
         <div class="flex flex-col gap-1">
             <div>${opening1}</div>
@@ -1104,9 +1266,9 @@ function renderMatchOdds() {
     </td>`;
     
     // 1X2 Pre-match
-    const prematch1 = prematch1X2.home || prematch1X2['1'] || '-';
-    const prematchX = prematch1X2.draw || prematch1X2['X'] || '-';
-    const prematch2 = prematch1X2.away || prematch1X2['2'] || '-';
+    const prematch1 = prematch1X2Final.home || prematch1X2Final['1'] || main1X2.home || '-';
+    const prematchX = prematch1X2Final.draw || prematch1X2Final['X'] || main1X2.draw || '-';
+    const prematch2 = prematch1X2Final.away || prematch1X2Final['2'] || main1X2.away || '-';
     html += `<td class="px-4 py-3 text-center text-xs text-white border-l border-slate-700">
         <div class="flex flex-col gap-1">
             <div>${prematch1}</div>

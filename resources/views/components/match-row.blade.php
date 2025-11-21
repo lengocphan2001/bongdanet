@@ -94,7 +94,6 @@
 <!-- Mobile Card Layout -->
 <div class="md:hidden border-b border-slate-700 hover:bg-slate-800 transition-colors p-3 cursor-pointer" 
      onclick="openMatchModal({{ $matchId }})"
-     onmouseenter="prefetchMatchData({{ $matchId }})"
      data-match-id="{{ $matchId }}">
     <div class="flex items-center justify-between mb-2">
         <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-500' : 'text-gray-400') }} font-medium" data-time>{{ $timeDisplay }}</div>
@@ -105,7 +104,7 @@
     <div class="space-y-2 mb-3">
         <div class="flex items-center gap-2">
             @if($homeLogo)
-                <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($homeTeam, 0, 1) }}</div>
             @else
                 <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
@@ -114,7 +113,7 @@
         </div>
         <div class="flex items-center gap-2">
             @if($awayLogo)
-                <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($awayTeam, 0, 1) }}</div>
             @else
                 <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
@@ -179,7 +178,6 @@
 <!-- Desktop Table Row -->
 <div class="hidden md:grid md:grid-cols-11 gap-2 px-4 py-3 border-b border-slate-700 hover:bg-slate-800 transition-colors cursor-pointer" 
      onclick="openMatchModal({{ $matchId }})"
-     onmouseenter="prefetchMatchData({{ $matchId }})"
      data-match-id="{{ $matchId }}">
     <!-- Match Info -->
     <div class="col-span-3 flex items-center gap-2 min-w-0">
@@ -188,7 +186,7 @@
             <!-- Home Team -->
             <div class="flex items-center gap-2 mb-1 min-w-0">
                 @if($homeLogo)
-                    <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($homeTeam, 0, 1) }}</div>
                 @else
                     <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
@@ -198,7 +196,7 @@
             <!-- Away Team -->
             <div class="flex items-center gap-2 min-w-0">
                 @if($awayLogo)
-                    <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-5 h-5 object-contain flex-shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($awayTeam, 0, 1) }}</div>
                 @else
                     <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>

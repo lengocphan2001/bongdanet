@@ -72,7 +72,7 @@
                                 <tbody class="bg-slate-800">
                                     @foreach($groupedByLeague as $leagueGroup)
                                         {{-- League Header --}}
-                                        <tr>
+                                    <tr>
                                             <td colspan="5" class="px-4 py-2 bg-slate-900 text-white">
                                                 <div class="flex items-center justify-between">
                                                     <div class="flex items-center space-x-2">
@@ -97,16 +97,16 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr>
+                                    </tr>
                                         
                                         @foreach($leagueGroup['matches'] as $match)
-                                            @php
-                                                $matchId = $match['match_id'] ?? null;
-                                                $homeTeam = $match['home_team'] ?? '-';
-                                                $awayTeam = $match['away_team'] ?? '-';
+                                        @php
+                                            $matchId = $match['match_id'] ?? null;
+                                            $homeTeam = $match['home_team'] ?? '-';
+                                            $awayTeam = $match['away_team'] ?? '-';
                                                 
                                                 // Format time and date
-                                                $timeDisplay = $match['time'] ?? '-';
+                                            $timeDisplay = $match['time'] ?? '-';
                                                 $dateDisplay = '';
                                                 if (isset($match['starting_datetime']) && $match['starting_datetime']) {
                                                     try {
@@ -117,52 +117,52 @@
                                                         // Keep original timeDisplay
                                                     }
                                                 }
-                                                
-                                                // Get odds data
-                                                $oddsData = $match['odds_data'] ?? [];
-                                                
-                                                // Asian Handicap
-                                                $asianHandicapValue = null;
+                                            
+                                            // Get odds data
+                                            $oddsData = $match['odds_data'] ?? [];
+                                            
+                                            // Asian Handicap
+                                            $asianHandicapValue = null;
                                                 $asianHomeOdds = '-';
                                                 $asianAwayOdds = '-';
-                                                if (!empty($oddsData['Asian Handicap'])) {
-                                                    $firstBookmaker = array_key_first($oddsData['Asian Handicap']);
-                                                    if ($firstBookmaker) {
-                                                        $ahData = $oddsData['Asian Handicap'][$firstBookmaker];
-                                                        $asianHandicapValue = $ahData['handicap'] ?? null;
+                                            if (!empty($oddsData['Asian Handicap'])) {
+                                                $firstBookmaker = array_key_first($oddsData['Asian Handicap']);
+                                                if ($firstBookmaker) {
+                                                    $ahData = $oddsData['Asian Handicap'][$firstBookmaker];
+                                                    $asianHandicapValue = $ahData['handicap'] ?? null;
                                                         $asianHomeOdds = $ahData['home'] ?? '-';
                                                         $asianAwayOdds = $ahData['away'] ?? '-';
-                                                    }
                                                 }
-                                                
-                                                // Over/Under
-                                                $overUnderHandicap = null;
+                                            }
+                                            
+                                            // Over/Under
+                                            $overUnderHandicap = null;
                                                 $overOdds = '-';
                                                 $underOdds = '-';
-                                                if (!empty($oddsData['Over/Under'])) {
-                                                    $firstBookmaker = array_key_first($oddsData['Over/Under']);
-                                                    if ($firstBookmaker) {
-                                                        $ouData = $oddsData['Over/Under'][$firstBookmaker];
-                                                        $overUnderHandicap = $ouData['handicap'] ?? null;
-                                                        $overOdds = $ouData['over'] ?? '-';
-                                                        $underOdds = $ouData['under'] ?? '-';
-                                                    }
+                                            if (!empty($oddsData['Over/Under'])) {
+                                                $firstBookmaker = array_key_first($oddsData['Over/Under']);
+                                                if ($firstBookmaker) {
+                                                    $ouData = $oddsData['Over/Under'][$firstBookmaker];
+                                                    $overUnderHandicap = $ouData['handicap'] ?? null;
+                                                    $overOdds = $ouData['over'] ?? '-';
+                                                    $underOdds = $ouData['under'] ?? '-';
                                                 }
-                                                
-                                                // 1X2 (European)
+                                            }
+                                            
+                                            // 1X2 (European)
                                                 $homeOdds = '-';
                                                 $drawOdds = '-';
                                                 $awayOdds = '-';
-                                                if (!empty($oddsData['1X2'])) {
-                                                    $firstBookmaker = array_key_first($oddsData['1X2']);
-                                                    if ($firstBookmaker) {
-                                                        $euroData = $oddsData['1X2'][$firstBookmaker];
-                                                        $homeOdds = $euroData['home'] ?? '-';
-                                                        $drawOdds = $euroData['draw'] ?? '-';
-                                                        $awayOdds = $euroData['away'] ?? '-';
-                                                    }
+                                            if (!empty($oddsData['1X2'])) {
+                                                $firstBookmaker = array_key_first($oddsData['1X2']);
+                                                if ($firstBookmaker) {
+                                                    $euroData = $oddsData['1X2'][$firstBookmaker];
+                                                    $homeOdds = $euroData['home'] ?? '-';
+                                                    $drawOdds = $euroData['draw'] ?? '-';
+                                                    $awayOdds = $euroData['away'] ?? '-';
                                                 }
-                                            @endphp
+                                            }
+                                        @endphp
                                             {{-- Single Row per Match --}}
                                             <tr class="{{ $loop->index % 2 === 0 ? 'bg-white' : 'bg-gray-50' }} {{ !$loop->last ? 'border-b border-gray-200' : '' }}">
                                                 {{-- Time Column --}}
@@ -175,7 +175,7 @@
                                                 <td class="px-1.5 py-1.5 text-gray-100 border-r border-slate-600">
                                                     <div class="font-medium">{{ $homeTeam }}</div>
                                                     <div class="font-medium">{{ $awayTeam }}</div>
-                                                </td>
+                                            </td>
                                                 
                                                 {{-- Asian Handicap Column --}}
                                                 <td class="px-1.5 py-1.5 border-r border-slate-600">
@@ -187,8 +187,8 @@
                                                             <div class="text-gray-100">{{ $asianHomeOdds }}</div>
                                                             <div class="text-gray-100">{{ $asianAwayOdds }}</div>
                                                         </div>
-                                                    </div>
-                                                </td>
+                                                </div>
+                                            </td>
                                                 
                                                 {{-- Over/Under Column --}}
                                                 <td class="px-1.5 py-1.5 border-r border-slate-600">
@@ -199,17 +199,17 @@
                                                         <div class="flex-1 flex flex-col text-center">
                                                             <div class="text-gray-100">{{ $overOdds }}</div>
                                                             <div class="text-gray-100">{{ $underOdds }}</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                </div>
+                                                </div>
+                                            </td>
                                                 
                                                 {{-- 1X2 Column --}}
                                                 <td class="px-1.5 py-1.5 text-center text-gray-100">
                                                     <div>{{ $homeOdds }}</div>
                                                     <div>{{ $drawOdds }}</div>
                                                     <div>{{ $awayOdds }}</div>
-                                                </td>
-                                            </tr>
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     @endforeach
                                 </tbody>
