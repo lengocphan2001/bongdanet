@@ -11,16 +11,6 @@
                 
                 {{-- Navigation Links --}}
                 <div class="flex items-center space-x-1 flex-1">
-                <a href="{{ route('predictions') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('predictions*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
-                    <svg class="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                        <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <circle cx="11" cy="11" r="4" fill="currentColor" opacity="0.3"/>
-                        <path d="M9 9l1 1m4-2l-1 1" stroke="white" stroke-width="1" stroke-linecap="round"/>
-                    </svg>
-                    <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
-                </a>
-
                 <a href="{{ route('livescore') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group relative {{ request()->routeIs('livescore*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                     <div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
                     <span class="text-sm font-semibold" style="color: white !important;">TRỰC TIẾP</span>
@@ -56,6 +46,16 @@
                     </svg>
                     <span class="text-sm font-semibold" style="color: white !important;">KÈO BÓNG ĐÁ</span>
                 </a>
+
+                <a href="{{ route('predictions') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('predictions*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                    <svg class="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                        <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="11" cy="11" r="4" fill="currentColor" opacity="0.3"/>
+                        <path d="M9 9l1 1m4-2l-1 1" stroke="white" stroke-width="1" stroke-linecap="round"/>
+                    </svg>
+                    <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
+                </a>
                 </div>
             </div>
 
@@ -75,14 +75,6 @@
             {{-- Mobile Menu Dropdown --}}
             <div id="mobile-menu" class="lg:hidden hidden bg-slate-900">
                 <div class="py-4 space-y-1">
-                    <a href="{{ route('predictions') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('predictions*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
-                        <svg class="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
-                    </a>
-
                     <a href="{{ route('livescore') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 relative {{ request()->routeIs('livescore*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                         <div class="w-5 h-5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
                         <span class="text-sm font-semibold" style="color: white !important;">TRỰC TIẾP</span>
@@ -116,6 +108,14 @@
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                         </svg>
                         <span class="text-sm font-semibold" style="color: white !important;">KÈO BÓNG ĐÁ</span>
+                    </a>
+
+                    <a href="{{ route('predictions') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('predictions*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                        <svg class="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
                     </a>
                 </div>
             </div>

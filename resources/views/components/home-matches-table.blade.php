@@ -66,8 +66,13 @@
     }
 @endphp
 
-<div class="bg-slate-800 rounded p-3 sm:p-4 md:p-6 overflow-hidden">
-    <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 uppercase break-words">Lịch Thi Đấu Bóng Đá Hôm Nay</h1>
+<div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
+    <div class="flex items-center gap-3 mb-6">
+        <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
+            <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">Lịch Thi Đấu Bóng Đá Hôm Nay</span>
+        </h1>
+    </div>
     
     <!-- Matches Section -->
     <div class="space-y-4 sm:space-y-6">
@@ -81,38 +86,35 @@
                     $leagueName = $league['name'] ?? 'Unknown League';
                 @endphp
                 
-                <div class="mb-4 sm:mb-6">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3">
-                        <div class="flex items-center gap-2 flex-1 min-w-0">
-                            <button onclick="toggleLeagueTable('live-{{ $leagueId }}')" 
-                                    class="flex-shrink-0 p-1 text-gray-400 hover:text-white transition-colors"
-                                    aria-label="Toggle table">
-                                <svg id="toggle-icon-live-{{ $leagueId }}" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <h2 class="text-base sm:text-lg font-bold text-white truncate pr-2">
-                                <span class="truncate block">{{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
-                                    @if(count($matches) > 0)
-                                        <span class="text-gray-400 text-xs sm:text-sm font-normal">({{ count($matches) }})</span>
-                                    @endif
-                                </span>
-                            </h2>
-                        </div>
-                        <div class="flex items-center gap-2 flex-shrink-0">
+                <div class="mb-6 sm:mb-8">
+                    <div class="flex items-center gap-2 sm:gap-3 mb-2 p-1 sm:p-2 bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+                        <button onclick="toggleLeagueTable('live-{{ $leagueId }}')" 
+                                class="flex-shrink-0 p-1.5 sm:p-2 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-lg transition-all duration-200 group"
+                                aria-label="Toggle table">
+                            <svg id="toggle-icon-live-{{ $leagueId }}" class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-red-500/20 text-red-400 text-[10px] sm:text-xs font-semibold animate-pulse flex-shrink-0">LIVE</span>
+                        <h2 class="flex text-sm sm:text-base md:text-lg font-bold text-white overflow-hidden text-ellipsis whitespace-nowrap flex-1 min-w-0">
+                            <span class="inline-block truncate">
+                                {{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
+                                @if(count($matches) > 0)
+                                    <span class="text-emerald-400 text-[10px] sm:text-xs md:text-sm font-normal ml-1 sm:ml-2">({{ count($matches) }})</span>
+                                @endif
+                            </span>
+                        </h2>
+                        @if($leagueId && $leagueId !== 'unknown' && is_numeric($leagueId))
                             <a href="{{ route('standings.show', $leagueId) }}" 
-                               class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm text-white rounded transition-colors">
+                               class="hidden sm:inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 flex-shrink-0">
                                 <span>BXH</span>
-                                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg>
                             </a>
-                        </div>
+                        @endif
                     </div>
                     
-                    <div id="live-{{ $leagueId }}" class="bg-slate-900 rounded overflow-hidden">
+                    <div id="live-{{ $leagueId }}" class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
                         <!-- Desktop Table Header -->
-                        <div class="hidden md:grid md:grid-cols-11 gap-2 bg-slate-700 px-4 py-2 text-xs font-semibold text-gray-300">
+                        <div class="hidden md:grid md:grid-cols-11 gap-2 bg-gradient-to-r from-slate-800/90 to-slate-700/90 px-4 py-3 text-xs font-bold text-gray-200 border-b border-slate-600/50 backdrop-blur-sm">
                             <div class="col-span-3">Trận đấu</div>
                             <div class="col-span-1 text-center">Tỷ số</div>
                             <div class="col-span-1 text-center">Hiệp 1</div>
@@ -140,38 +142,42 @@
                     $leagueName = $league['name'] ?? 'Unknown League';
                 @endphp
                 
-                <div class="mb-4 sm:mb-6">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3">
-                        <div class="flex items-center gap-2 flex-1 min-w-0">
-                            <button onclick="toggleLeagueTable('upcoming-{{ $leagueId }}')" 
-                                    class="flex-shrink-0 p-1 text-gray-400 hover:text-white transition-colors"
-                                    aria-label="Toggle table">
-                                <svg id="toggle-icon-upcoming-{{ $leagueId }}" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <h2 class="text-base sm:text-lg font-bold text-white truncate pr-2">
-                                <span class="truncate block">{{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
-                                    @if(count($matches) > 0)
-                                        <span class="text-gray-400 text-xs sm:text-sm font-normal">({{ count($matches) }})</span>
-                                    @endif
-                                </span>
-                            </h2>
-                        </div>
-                        <div class="flex items-center gap-2 flex-shrink-0">
-                            <a href="{{ route('standings.show', $leagueId) }}" 
-                               class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm text-white rounded transition-colors">
-                                <span>BXH</span>
-                                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg>
-                            </a>
-                        </div>
+                <div class="mb-6 sm:mb-8">
+                    <div class="flex items-center gap-2 sm:gap-3 mb-2 p-1 sm:p-2 bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+                        <button onclick="toggleLeagueTable('upcoming-{{ $leagueId }}')" 
+                                class="flex-shrink-0 p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-all duration-200 group"
+                                aria-label="Toggle table">
+                            <svg id="toggle-icon-upcoming-{{ $leagueId }}" class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-blue-500/20 text-blue-400 text-[10px] sm:text-xs font-semibold flex-shrink-0">SẮP BẮT ĐẦU</span>
+                        <h2 class="flex text-sm sm:text-base md:text-lg font-bold text-white overflow-hidden text-ellipsis whitespace-nowrap flex-1 min-w-0">
+                            <span class="inline-block truncate">
+                                {{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
+                                @if(count($matches) > 0)
+                                    <span class="text-blue-400 text-[10px] sm:text-xs md:text-sm font-normal ml-1 sm:ml-2">({{ count($matches) }})</span>
+                                @endif
+                            </span>
+                        </h2>
+                        @if($leagueId && $leagueId !== 'unknown' && is_numeric($leagueId))
+                            <div class="hidden sm:flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                                <a href="{{ route('schedule.league', $leagueId) }}" class="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105">
+                                    <span>Lịch</span>
+                                </a>
+                                <a href="{{ route('results.league', $leagueId) }}" class="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
+                                    <span>KQ</span>
+                                </a>
+                                <a href="{{ route('standings.show', $leagueId) }}" class="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105">
+                                    <span>BXH</span>
+                                </a>
+                            </div>
+                        @endif
                     </div>
                     
-                    <div id="upcoming-{{ $leagueId }}" class="bg-slate-900 rounded overflow-hidden">
+                    <div id="upcoming-{{ $leagueId }}" class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
                         <!-- Desktop Table Header -->
-                        <div class="hidden md:grid md:grid-cols-11 gap-2 bg-slate-700 px-4 py-2 text-xs font-semibold text-gray-300">
+                        <div class="hidden md:grid md:grid-cols-11 gap-2 bg-gradient-to-r from-slate-800/90 to-slate-700/90 px-4 py-3 text-xs font-bold text-gray-200 border-b border-slate-600/50 backdrop-blur-sm">
                             <div class="col-span-3">Trận đấu</div>
                             <div class="col-span-1 text-center">Tỷ số</div>
                             <div class="col-span-1 text-center">Hiệp 1</div>
@@ -190,8 +196,13 @@
         @endif
         
         @if(empty($liveGrouped) && empty($upcomingGrouped))
-            <div class="text-center py-8 sm:py-12 text-gray-400 text-sm sm:text-base">
-                <p>Không có trận đấu nào hôm nay</p>
+            <div class="text-center py-12 sm:py-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/50 border border-slate-700/50 mb-4">
+                    <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <p class="text-gray-400 text-sm sm:text-base font-medium">Không có trận đấu nào hôm nay</p>
             </div>
         @endif
     </div>

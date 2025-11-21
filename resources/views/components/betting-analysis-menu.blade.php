@@ -27,24 +27,37 @@
     ];
 @endphp
 
-<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-fit">
+<div class="bg-gradient-to-br from-slate-800/95 to-slate-900/95 shadow-xl border border-slate-700/50 rounded-xl overflow-hidden w-fit backdrop-blur-sm">
     {{-- Header --}}
-    <div class="bg-amber-600 py-3 px-4">
-        <h2 class="text-base font-bold text-white uppercase text-center">NHẬN ĐỊNH BÓNG ĐÁ</h2>
+    <div class="bg-gradient-to-r from-amber-600/90 to-orange-700/90 py-3.5 px-4 border-b border-amber-500/30">
+        <div class="flex items-center justify-center space-x-2">
+            <div class="w-1 h-5 bg-gradient-to-b from-white/80 to-white/40 rounded-full"></div>
+            <h2 class="text-sm font-bold text-white uppercase tracking-wide">NHẬN ĐỊNH BÓNG ĐÁ</h2>
+        </div>
     </div>
     
     {{-- List Items --}}
-    <nav>
-        <ul>
-            @foreach ($items as $index => $item)
-                <li class="hover:bg-slate-700">
-                    <a href="{{ $item['url'] }}" 
-                       class="block py-2 px-4 text-xs text-gray-300 font-medium transition-colors duration-150
-                              {{ $index < count($items) - 1 ? 'border-b border-slate-700' : '' }}">
-                        {{ $item['label'] }}
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-    </nav>
+    <div class="bg-slate-800/50">
+        <nav>
+            <ul>
+                @foreach ($items as $index => $item)
+                    @php
+                        $isActive = ($activeItem && str_contains($item['label'], $activeItem));
+                    @endphp
+                    <li>
+                        <a href="{{ $item['url'] }}" 
+                           class="block py-2.5 px-4 text-xs {{ $isActive ? 'text-amber-400 font-bold' : 'text-gray-300' }} font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-600/10 hover:to-orange-700/10 hover:text-amber-400
+                                  {{ $index < count($items) - 1 ? 'border-b border-slate-700/50' : '' }} relative">
+                            @if($isActive)
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500 to-orange-600 rounded-r-full"></div>
+                                <span class="ml-1">{{ $item['label'] }}</span>
+                            @else
+                                {{ $item['label'] }}
+                            @endif
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </nav>
+    </div>
 </div>

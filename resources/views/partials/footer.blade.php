@@ -27,7 +27,7 @@
                     <p class="text-gray-400 mb-2"><span class="text-gray-500">Số điện thoại:</span> <a href="tel:0822889972" class="text-blue-400 hover:text-blue-300 transition-colors duration-200">0978471074</a></p>
                 </div>
                 <div>
-                    <p class="text-gray-400 text-xs sm:text-sm mb-2"><span class="text-gray-500">Quảng cáo:</span> <span class="text-gray-300">Muốn đặt quảng cáo vui lòng liên hệ 0978471074</span></p>
+                    <p class="text-gray-400 text-xs sm:text-sm mb-2"><span class="text-gray-500">Quảng cáo:</span> <span class="text-gray-300">Muốn đặt quảng cáo vui lòng liên hệ <a href="mailto:info@keobongda.co" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobongda.co</a></span></p>
                     <p class="text-amber-400 text-xs sm:text-sm font-medium mb-2">⚠️ Cẩn thận các nick giả mạo, đặt tên tương tự</p>
                     <p class="text-gray-400 break-words text-xs sm:text-sm"><span class="text-gray-500">keobongda.co</span> là chuyên trang tin tức bóng đá thuộc quản lý của Công ty cổ phần Truyền thông & Công nghệ KEOBONGDA</p>
                 </div>
@@ -52,7 +52,9 @@
                 </a>
             </div>
             
-            <p class="text-gray-400 text-center pt-4">Liên hệ quảng cáo: <a href="mailto:keobongda.co" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">keobongda.co</a></p>
+            <p class="text-gray-400 text-center pt-4">Liên hệ quảng cáo: 
+                <a href="mailto:info@keobongda.co" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium">info@keobongda.co</a>
+            </p>
         </div>
     </div>
 

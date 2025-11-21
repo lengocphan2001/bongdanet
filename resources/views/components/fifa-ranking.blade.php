@@ -21,37 +21,54 @@
     }
 @endphp
 
-<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-full">
-    {{-- Header with green background --}}
-    <div class="bg-slate-900 px-4 py-3">
-        <h2 class="text-base font-bold text-white uppercase text-center">BXH FIFA (bóng đá nam Việt Nam)</h2>
+<div class="bg-gradient-to-br from-slate-800/95 to-slate-900/95 shadow-xl border border-slate-700/50 rounded-xl overflow-hidden w-full backdrop-blur-sm">
+    {{-- Header with gradient --}}
+    <div class="bg-gradient-to-r from-purple-600/90 to-indigo-700/90 px-4 py-3.5 border-b border-purple-500/30">
+        <div class="flex items-center space-x-3">
+            <div class="w-1 h-6 bg-gradient-to-b from-white/80 to-white/40 rounded-full"></div>
+            <h2 class="text-sm font-bold text-white uppercase tracking-wide">BXH FIFA (bóng đá nam Việt Nam)</h2>
+        </div>
     </div>
 
     {{-- Table --}}
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-slate-700">
-            <thead class="bg-slate-700">
+        <table class="min-w-full">
+            <thead class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/50 backdrop-blur-sm">
                 <tr>
-                    <th class="px-3 py-2 text-center text-xs font-bold text-gray-300 uppercase">XH</th>
-                    <th class="px-3 py-2 text-left text-xs font-bold text-gray-300 uppercase">Tuyển QG</th>
-                    <th class="px-3 py-2 text-center text-xs font-bold text-gray-300 uppercase">+/-</th>
-                    <th class="px-3 py-2 text-right text-xs font-bold text-gray-300 uppercase">Điểm</th>
+                    <th class="px-3 py-2.5 text-center text-xs font-bold text-gray-200 uppercase">XH</th>
+                    <th class="px-3 py-2.5 text-left text-xs font-bold text-gray-200 uppercase">Tuyển QG</th>
+                    <th class="px-3 py-2.5 text-center text-xs font-bold text-gray-200 uppercase">+/-</th>
+                    <th class="px-3 py-2.5 text-right text-xs font-bold text-gray-200 uppercase">Điểm</th>
                 </tr>
             </thead>
-            <tbody class="bg-slate-800 divide-y divide-slate-700">
+            <tbody class="divide-y divide-slate-700/50">
                 @foreach ($rankings as $index => $ranking)
-                    <tr class="{{ ($ranking['highlight'] ?? false) ? 'bg-amber-900' : ($index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-700') }}">
-                        <td class="px-3 py-2 text-center text-xs text-gray-100">{{ $ranking['rank'] }}</td>
-                        <td class="px-3 py-2 text-left text-xs text-gray-100">
+                    <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ ($ranking['highlight'] ?? false) ? 'bg-gradient-to-r from-amber-900/30 to-orange-900/30 border-l-2 border-amber-500' : '' }}">
+                        <td class="px-3 py-2.5 text-center">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full {{ ($ranking['highlight'] ?? false) ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold' : 'bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold' }} text-xs">
+                                {{ $ranking['rank'] }}
+                            </span>
+                        </td>
+                        <td class="px-3 py-2.5 text-left">
                             <div class="flex items-center space-x-2">
                                 <span class="text-lg">{{ $ranking['flag'] ?? '' }}</span>
-                                <span>{{ $ranking['country'] }}</span>
+                                <span class="text-xs sm:text-sm text-white font-medium {{ ($ranking['highlight'] ?? false) ? 'text-amber-300 font-bold' : '' }}">{{ $ranking['country'] }}</span>
                             </div>
                         </td>
-                        <td class="px-3 py-2 text-center text-xs {{ ($ranking['change'] ?? 0) >= 0 ? 'text-green-400' : 'text-red-400' }}">
-                            {{ ($ranking['change'] ?? 0) > 0 ? '+' : '' }}{{ $ranking['change'] ?? 0 }}
+                        <td class="px-3 py-2.5 text-center">
+                            @php
+                                $change = $ranking['change'] ?? 0;
+                                $isPositive = $change > 0;
+                                $isNegative = $change < 0;
+                            @endphp
+                            <span class="inline-flex items-center justify-center px-2 py-1 rounded-md text-xs font-semibold
+                                {{ $isPositive ? 'bg-emerald-500/20 text-emerald-400' : ($isNegative ? 'bg-red-500/20 text-red-400' : 'bg-gray-500/20 text-gray-400') }}">
+                                {{ $change > 0 ? '+' : '' }}{{ $change }}
+                            </span>
                         </td>
-                        <td class="px-3 py-2 text-right text-xs text-gray-100">{{ number_format($ranking['points'] ?? 0) }}</td>
+                        <td class="px-3 py-2.5 text-right">
+                            <span class="text-xs sm:text-sm text-white font-semibold {{ ($ranking['highlight'] ?? false) ? 'text-amber-300' : '' }}">{{ number_format($ranking['points'] ?? 0) }}</span>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

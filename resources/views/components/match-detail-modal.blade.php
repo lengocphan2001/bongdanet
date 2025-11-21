@@ -1,13 +1,13 @@
 {{-- Match Detail Modal --}}
-<div id="match-detail-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
-    <div class="bg-slate-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col my-2 sm:my-8">
+<div id="match-detail-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-2xl shadow-2xl border border-slate-700/50 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col my-2 sm:my-8 backdrop-blur-xl">
         {{-- Modal Header --}}
-        <div class="bg-slate-900 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-slate-700">
+        <div class="bg-gradient-to-r from-slate-900/95 to-slate-800/95 px-2 sm:px-4 py-3 sm:py-4 flex items-center justify-between border-b border-slate-700/50 backdrop-blur-sm">
             <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                 {{-- Status Indicator --}}
-                <div id="modal-status-indicator" class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                    <span class="text-xs text-gray-300 truncate" id="modal-status-text">Chưa bắt đầu</span>
+                <div id="modal-status-indicator" class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-lg shadow-red-500/50"></div>
+                    <span class="text-xs font-semibold text-gray-200 truncate" id="modal-status-text">Chưa bắt đầu</span>
                 </div>
                 
                 {{-- League Info --}}
@@ -20,59 +20,59 @@
             </div>
             
             {{-- Close Button --}}
-            <button onclick="closeMatchModal()" class="text-gray-400 hover:text-white transition-colors flex-shrink-0 ml-2 sm:ml-4">
-                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="closeMatchModal()" class="text-gray-400 hover:text-white hover:bg-slate-700/50 rounded-lg p-1.5 transition-all duration-200 flex-shrink-0 ml-2 sm:ml-4 group">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-90 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
         </div>
         
         {{-- Match Info Section --}}
-        <div class="px-2 sm:px-4 py-3 sm:py-6 bg-slate-800">
+        <div class="px-2 sm:px-4 py-4 sm:py-6 bg-gradient-to-b from-slate-800/50 to-slate-900/50">
             <div class="text-center mb-3 sm:mb-4">
-                <div class="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 truncate px-2" id="modal-match-datetime">20/11/2025 lúc 15:30</div>
+                <div class="text-xs sm:text-sm text-gray-400 mb-4 sm:mb-5 truncate px-2 font-medium" id="modal-match-datetime">20/11/2025 lúc 15:30</div>
                 
                 {{-- Teams and Score --}}
-                <div class="flex items-center justify-center gap-2 sm:gap-6 mb-3 sm:mb-4">
+                <div class="flex items-center justify-center gap-4 sm:gap-8 mb-3 sm:mb-4">
                     {{-- Home Team --}}
                     <div class="flex flex-col items-center flex-1 min-w-0">
-                        <div id="modal-home-logo" class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-700 rounded-full mb-1 sm:mb-2 flex items-center justify-center flex-shrink-0">
-                            <span class="text-white text-xs">Logo</span>
+                        <div id="modal-home-logo" class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl mb-2 sm:mb-3 flex items-center justify-center flex-shrink-0 border-2 border-slate-600/50 shadow-lg p-2">
+                            <span class="text-white text-xs font-bold">Logo</span>
                         </div>
-                        <div class="text-white font-medium text-center text-xs sm:text-base truncate w-full px-1" id="modal-home-team">Team 1</div>
+                        <div class="text-white font-bold text-center text-sm sm:text-lg truncate w-full px-1" id="modal-home-team">Team 1</div>
                     </div>
                     
                     {{-- Score --}}
                     <div class="flex flex-col items-center flex-shrink-0">
-                        <div class="text-xl sm:text-3xl font-bold text-white mb-1 sm:mb-2" id="modal-score">--- ---</div>
-                        <div class="text-xs sm:text-sm text-gray-400">Kết quả hiệp 1</div>
-                        <div class="text-sm sm:text-lg text-gray-300" id="modal-ht-score">---</div>
+                        <div class="text-2xl sm:text-4xl font-black text-white mb-2 sm:mb-3 bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent" id="modal-score">--- ---</div>
+                        <div class="text-xs sm:text-sm text-gray-400 font-medium mb-1">Kết quả hiệp 1</div>
+                        <div class="text-base sm:text-xl text-emerald-400 font-bold" id="modal-ht-score">---</div>
                     </div>
                     
                     {{-- Away Team --}}
                     <div class="flex flex-col items-center flex-1 min-w-0">
-                        <div id="modal-away-logo" class="w-12 h-12 sm:w-16 sm:h-16 bg-slate-700 rounded-full mb-1 sm:mb-2 flex items-center justify-center flex-shrink-0">
-                            <span class="text-white text-xs">Logo</span>
+                        <div id="modal-away-logo" class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl mb-2 sm:mb-3 flex items-center justify-center flex-shrink-0 border-2 border-slate-600/50 shadow-lg p-2">
+                            <span class="text-white text-xs font-bold">Logo</span>
                         </div>
-                        <div class="text-white font-medium text-center text-xs sm:text-base truncate w-full px-1" id="modal-away-team">Team 2</div>
+                        <div class="text-white font-bold text-center text-sm sm:text-lg truncate w-full px-1" id="modal-away-team">Team 2</div>
                     </div>
                 </div>
             </div>
         </div>
         
         {{-- Navigation Tabs --}}
-        <div class="bg-slate-900 border-b border-slate-700 px-2 sm:px-4">
+        <div class="bg-gradient-to-r from-slate-900/95 to-slate-800/95 border-b border-slate-700/50 px-2 sm:px-4 backdrop-blur-sm">
             <div class="flex items-center gap-1 overflow-x-auto scrollbar-hide">
-                <button onclick="switchModalTab('overview')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white border-b-2 border-green-500 transition-colors whitespace-nowrap flex-shrink-0" data-tab="overview">
+                <button onclick="switchModalTab('overview')" class="modal-tab px-3 sm:px-5 py-3 text-xs sm:text-sm font-bold text-white border-b-2 border-emerald-500 transition-all duration-200 whitespace-nowrap flex-shrink-0 hover:bg-slate-800/30" data-tab="overview">
                     TỔNG QUAN
                 </button>
-                <button onclick="switchModalTab('stats')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0" data-tab="stats">
+                <button onclick="switchModalTab('stats')" class="modal-tab px-3 sm:px-5 py-3 text-xs sm:text-sm font-semibold text-gray-400 hover:text-white hover:bg-slate-800/30 transition-all duration-200 whitespace-nowrap flex-shrink-0" data-tab="stats">
                     THỐNG KÊ
                 </button>
-                <button onclick="switchModalTab('odds')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0" data-tab="odds">
+                <button onclick="switchModalTab('odds')" class="modal-tab px-3 sm:px-5 py-3 text-xs sm:text-sm font-semibold text-gray-400 hover:text-white hover:bg-slate-800/30 transition-all duration-200 whitespace-nowrap flex-shrink-0" data-tab="odds">
                     ODDS
                 </button>
-                <button onclick="switchModalTab('h2h')" class="modal-tab px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0" data-tab="h2h">
+                <button onclick="switchModalTab('h2h')" class="modal-tab px-3 sm:px-5 py-3 text-xs sm:text-sm font-semibold text-gray-400 hover:text-white hover:bg-slate-800/30 transition-all duration-200 whitespace-nowrap flex-shrink-0" data-tab="h2h">
                     H2H
                 </button>
             </div>
@@ -462,12 +462,18 @@ function processMatchDetail(match) {
     
     // Update status indicator
     const statusIndicator = document.getElementById('modal-status-indicator');
-    if (match.status_name === 'LIVE' || match.status?.name === 'LIVE') {
-        statusIndicator.querySelector('.w-2').classList.remove('bg-red-500');
-        statusIndicator.querySelector('.w-2').classList.add('bg-red-500', 'animate-pulse');
-    } else {
-        statusIndicator.querySelector('.w-2').classList.remove('bg-red-500', 'animate-pulse');
-        statusIndicator.querySelector('.w-2').classList.add('bg-gray-500');
+    if (statusIndicator) {
+        // Try to find the status dot element (could be w-2, w-2.5, or rounded-full)
+        const statusDot = statusIndicator.querySelector('.rounded-full') || statusIndicator.querySelector('.w-2') || statusIndicator.querySelector('.w-2\\.5');
+        if (statusDot) {
+            if (match.status_name === 'LIVE' || match.status?.name === 'LIVE') {
+                statusDot.classList.remove('bg-gray-500');
+                statusDot.classList.add('bg-red-500', 'animate-pulse');
+            } else {
+                statusDot.classList.remove('bg-red-500', 'animate-pulse');
+                statusDot.classList.add('bg-gray-500');
+            }
+        }
     }
     
     document.getElementById('modal-league-name').textContent = match.league?.name || 'Unknown League';

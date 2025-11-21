@@ -6,13 +6,13 @@
 ])
 
 @php
-    $baseClasses = 'inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200';
+    $baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95';
     
     $variantClasses = [
-        'primary' => 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-        'secondary' => 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-        'danger' => 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
-        'outline' => 'border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-gray-500',
+        'primary' => 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 focus:ring-blue-500 shadow-blue-500/25',
+        'secondary' => 'bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-500 hover:to-gray-600 focus:ring-gray-500 shadow-gray-500/25',
+        'danger' => 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-500 hover:to-red-600 focus:ring-red-500 shadow-red-500/25',
+        'outline' => 'border-2 border-slate-600 text-gray-300 hover:bg-slate-700/50 hover:border-slate-500 focus:ring-slate-500 shadow-slate-500/10',
     ];
     
     $sizeClasses = [

@@ -16,17 +16,17 @@
     ];
 @endphp
 
-<div class="bg-slate-800 shadow-sm border border-slate-700 overflow-hidden w-full">
-    {{-- Header with green bar --}}
-    <div class="bg-slate-700 px-4 py-3 border-b border-slate-600">
-        <div class="flex items-center space-x-2">
-            <div class="w-1 h-5 bg-blue-500"></div>
-            <h2 class="text-sm font-bold text-white uppercase">KÈO BÓNG ĐÁ</h2>
+<div class="bg-gradient-to-br from-slate-800/95 to-slate-900/95 shadow-xl border border-slate-700/50 rounded-xl overflow-hidden w-full backdrop-blur-sm">
+    {{-- Header with gradient bar --}}
+    <div class="bg-gradient-to-r from-amber-600/90 to-orange-700/90 px-4 py-3.5 border-b border-amber-500/30">
+        <div class="flex items-center space-x-3">
+            <div class="w-1 h-6 bg-gradient-to-b from-white/80 to-white/40 rounded-full"></div>
+            <h2 class="text-sm font-bold text-white uppercase tracking-wide">KÈO BÓNG ĐÁ</h2>
         </div>
     </div>
     
     {{-- List Items --}}
-    <div class="bg-slate-800">
+    <div class="bg-slate-800/50">
         <nav>
             <ul>
                 @foreach ($items as $index => $item)
@@ -34,11 +34,16 @@
                         $isActive = ($activeLeagueId && isset($item['id']) && $item['id'] == $activeLeagueId);
                     @endphp
                     <li>
-                        <a href="{{ $item['url'] }}" 
-                           class="block px-4 py-2 {{ $index < count($items) - 1 ? 'border-b border-slate-700' : '' }} hover:bg-slate-700 transition-colors duration-200 cursor-pointer group">
-                            <p class="text-xs {{ $isActive ? 'text-blue-400 font-bold' : 'text-gray-300 group-hover:text-blue-400' }} leading-relaxed">
+                        <a href="{{ $item['url'] }}"
+                           class="block py-2.5 px-4 text-xs transition-all duration-200 relative
+                                  {{ $index < count($items) - 1 ? 'border-b border-slate-700/50' : '' }}
+                                  {{ $isActive ? 'text-amber-400 font-bold bg-gradient-to-r from-amber-600/10 to-orange-700/10' : 'text-gray-300 hover:bg-gradient-to-r hover:from-amber-600/10 hover:to-orange-700/10 hover:text-amber-400' }}">
+                            @if($isActive)
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500 to-orange-600 rounded-r-full"></div>
+                                <span class="ml-1">{{ $item['label'] }}</span>
+                            @else
                                 {{ $item['label'] }}
-                            </p>
+                            @endif
                         </a>
                     </li>
                 @endforeach

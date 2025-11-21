@@ -92,66 +92,73 @@
 @endphp
 
 <!-- Mobile Card Layout -->
-<div class="md:hidden border-b border-slate-700 hover:bg-slate-800 transition-colors p-3 cursor-pointer" 
+<div class="md:hidden border-b border-slate-700/50 hover:bg-gradient-to-r hover:from-slate-800/80 hover:to-slate-900/80 transition-all duration-200 p-4 cursor-pointer group backdrop-blur-sm" 
      onclick="openMatchModal({{ $matchId }})"
      data-match-id="{{ $matchId }}">
-    <div class="flex items-center justify-between mb-2">
-        <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-500' : 'text-gray-400') }} font-medium" data-time>{{ $timeDisplay }}</div>
-        <div class="text-gray-400 text-sm" data-score>{{ $score }}</div>
+    <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+            @if($isLive)
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-xs font-bold animate-pulse">LIVE</span>
+            @endif
+            <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-400 font-bold' : 'text-gray-400') }} font-semibold" data-time>{{ $timeDisplay }}</div>
+        </div>
+        <div class="text-white text-lg font-bold bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent" data-score>{{ $score }}</div>
     </div>
     
     <!-- Teams -->
-    <div class="space-y-2 mb-3">
-        <div class="flex items-center gap-2">
+    <div class="space-y-3 mb-4">
+        <div class="flex items-center gap-3 group/team">
             @if($homeLogo)
-                <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($homeTeam, 0, 1) }}</div>
+                <div class="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 p-1 flex items-center justify-center flex-shrink-0 group-hover/team:border-emerald-500/50 transition-colors">
+                    <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-full h-full object-contain" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-xs text-white font-bold\'>{{ substr($homeTeam, 0, 1) }}</div>';">
+                </div>
             @else
-                <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-xs text-white font-bold flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
             @endif
-            <span class="text-white text-sm truncate min-w-0 flex-1">{{ $homeTeam }}</span>
+            <span class="text-white text-sm font-medium truncate min-w-0 flex-1 group-hover/team:text-emerald-400 transition-colors">{{ $homeTeam }}</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3 group/team">
             @if($awayLogo)
-                <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($awayTeam, 0, 1) }}</div>
+                <div class="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 p-1 flex items-center justify-center flex-shrink-0 group-hover/team:border-emerald-500/50 transition-colors">
+                    <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-full h-full object-contain" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-xs text-white font-bold\'>{{ substr($awayTeam, 0, 1) }}</div>';">
+                </div>
             @else
-                <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-xs text-white font-bold flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
             @endif
-            <span class="text-white text-sm truncate min-w-0 flex-1">{{ $awayTeam }}</span>
+            <span class="text-white text-sm font-medium truncate min-w-0 flex-1 group-hover/team:text-emerald-400 transition-colors">{{ $awayTeam }}</span>
         </div>
     </div>
     
     <!-- Odds - Mobile -->
     <div class="grid grid-cols-3 gap-3 text-xs">
-        <div>
-                                    <div class="text-gray-400 mb-1">Hiệp 1</div>
-                                    <div class="text-gray-500" data-ht-score>{{ $htScore }}</div>
+        <div class="bg-slate-800/50 rounded-lg p-2 border border-slate-700/50">
+            <div class="text-gray-400 mb-1.5 text-[10px] font-semibold uppercase">Hiệp 1</div>
+            <div class="text-emerald-400 font-bold" data-ht-score>{{ $htScore }}</div>
         </div>
-        <div>
-            <div class="text-gray-400 mb-1">Cược chấp</div>
+        <div class="bg-slate-800/50 rounded-lg p-2 border border-slate-700/50">
+            <div class="text-gray-400 mb-1.5 text-[10px] font-semibold uppercase">Cược chấp</div>
             @if($handicap && is_array($handicap))
                 @php
                     $handicapValue = $handicap['handicap'] ?? '0';
                     $homeOdds = $handicap['home'] ?? '-';
                     $awayOdds = $handicap['away'] ?? '-';
                 @endphp
-                <div class="text-gray-300">{{ $handicapValue }}</div>
-                <div class="text-green-400">{{ $homeOdds }} / {{ $awayOdds }}</div>
+                <div class="text-gray-300 font-semibold mb-1">{{ $handicapValue }}</div>
+                <div class="text-emerald-400 font-bold text-[11px]">{{ $homeOdds }} / {{ $awayOdds }}</div>
             @else
                 <div class="text-gray-500">-</div>
             @endif
         </div>
-        <div>
-            <div class="text-gray-400 mb-1">Tài/Xỉu</div>
+        <div class="bg-slate-800/50 rounded-lg p-2 border border-slate-700/50">
+            <div class="text-gray-400 mb-1.5 text-[10px] font-semibold uppercase">Tài/Xỉu</div>
             @if($overUnder && is_array($overUnder))
                 @php
                     $totalValue = $overUnder['handicap'] ?? '2.5';
                     $overOdds = $overUnder['over'] ?? '-';
                     $underOdds = $overUnder['under'] ?? '-';
                 @endphp
-                <div class="text-gray-300">{{ $totalValue }}</div>
-                <div class="text-green-400">{{ $overOdds }} / {{ $underOdds }}</div>
+                <div class="text-gray-300 font-semibold mb-1">{{ $totalValue }}</div>
+                <div class="text-emerald-400 font-bold text-[11px]">{{ $overOdds }} / {{ $underOdds }}</div>
             @else
                 <div class="text-gray-500">-</div>
             @endif
@@ -164,50 +171,66 @@
             $draw = $odds1X2['draw'] ?? '-';
             $awayWin = $odds1X2['away'] ?? '-';
         @endphp
-        <div class="mt-3 pt-3 border-t border-slate-700">
-            <div class="text-gray-400 text-xs mb-2">1X2</div>
-            <div class="flex gap-4 text-green-400 text-xs">
-                <div>1: {{ $homeWin }}</div>
-                <div>X: {{ $draw }}</div>
-                <div>2: {{ $awayWin }}</div>
+        <div class="mt-4 pt-4 border-t border-slate-700/50">
+            <div class="text-gray-400 text-xs mb-2 font-semibold uppercase">1X2</div>
+            <div class="flex gap-3">
+                <div class="flex-1 bg-slate-800/50 rounded-lg p-2 border border-slate-700/50 text-center">
+                    <div class="text-gray-400 text-[10px] mb-1">1</div>
+                    <div class="text-emerald-400 font-bold text-sm">{{ $homeWin }}</div>
+                </div>
+                <div class="flex-1 bg-slate-800/50 rounded-lg p-2 border border-slate-700/50 text-center">
+                    <div class="text-gray-400 text-[10px] mb-1">X</div>
+                    <div class="text-emerald-400 font-bold text-sm">{{ $draw }}</div>
+                </div>
+                <div class="flex-1 bg-slate-800/50 rounded-lg p-2 border border-slate-700/50 text-center">
+                    <div class="text-gray-400 text-[10px] mb-1">2</div>
+                    <div class="text-emerald-400 font-bold text-sm">{{ $awayWin }}</div>
+                </div>
             </div>
         </div>
     @endif
 </div>
 
 <!-- Desktop Table Row -->
-<div class="hidden md:grid md:grid-cols-11 gap-2 px-4 py-3 border-b border-slate-700 hover:bg-slate-800 transition-colors cursor-pointer" 
+<div class="hidden md:grid md:grid-cols-11 gap-2 px-4 py-4 border-b border-slate-700/50 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 cursor-pointer group backdrop-blur-sm" 
      onclick="openMatchModal({{ $matchId }})"
      data-match-id="{{ $matchId }}">
     <!-- Match Info -->
-    <div class="col-span-3 flex items-center gap-2 min-w-0">
-                                <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-500' : 'text-gray-400') }} font-medium mb-2 hidden lg:block" data-time>{{ $timeDisplay }}</div>
+    <div class="col-span-3 flex items-center gap-3 min-w-0">
+        <div class="text-xs {{ $shouldBlink ? 'live-minute-blink' : ($isLive ? 'text-red-400 font-bold' : 'text-gray-400') }} font-semibold mb-2 hidden lg:block" data-time>
+            @if($isLive)
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px] font-bold mr-1">LIVE</span>
+            @endif
+            {{ $timeDisplay }}
+        </div>
         <div class="flex-1 min-w-0">
             <!-- Home Team -->
-            <div class="flex items-center gap-2 mb-1 min-w-0">
+            <div class="flex items-center gap-2 mb-2 min-w-0 group/team">
                 @if($homeLogo)
-                    <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($homeTeam, 0, 1) }}</div>
+                    <div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover/team:border-emerald-500/50 transition-colors">
+                        <img src="{{ $homeLogo }}" alt="{{ $homeTeam }}" class="w-full h-full object-contain" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>{{ substr($homeTeam, 0, 1) }}</div>';">
+                    </div>
                 @else
-                    <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">{{ substr($homeTeam, 0, 1) }}</div>
                 @endif
-                <span class="text-white text-sm truncate min-w-0">{{ $homeTeam }}</span>
+                <span class="text-white text-sm font-medium truncate min-w-0 group-hover/team:text-emerald-400 transition-colors">{{ $homeTeam }}</span>
             </div>
             <!-- Away Team -->
-            <div class="flex items-center gap-2 min-w-0">
+            <div class="flex items-center gap-2 min-w-0 group/team">
                 @if($awayLogo)
-                    <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-5 h-5 object-contain flex-shrink-0" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0" style="display: none;">{{ substr($awayTeam, 0, 1) }}</div>
+                    <div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover/team:border-emerald-500/50 transition-colors">
+                        <img src="{{ $awayLogo }}" alt="{{ $awayTeam }}" class="w-full h-full object-contain" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>{{ substr($awayTeam, 0, 1) }}</div>';">
+                    </div>
                 @else
-                    <div class="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">{{ substr($awayTeam, 0, 1) }}</div>
                 @endif
-                <span class="text-white text-sm truncate min-w-0">{{ $awayTeam }}</span>
+                <span class="text-white text-sm font-medium truncate min-w-0 group-hover/team:text-emerald-400 transition-colors">{{ $awayTeam }}</span>
             </div>
         </div>
     </div>
     
     <!-- Score (FT) -->
-    <div class="col-span-1 text-center text-gray-400 text-sm flex items-center justify-center" data-score>
+    <div class="col-span-1 text-center text-white text-base font-bold bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent flex items-center justify-center" data-score>
         {{ $score }}
     </div>
     
@@ -231,8 +254,8 @@
                 </div>
                 <!-- Cột 2: 2 dòng odds -->
                 <div class="flex flex-col gap-1 items-start min-w-0">
-                    <div class="text-green-400 truncate w-full">{{ $homeOdds }}</div>
-                    <div class="text-green-400 truncate w-full">{{ $awayOdds }}</div>
+                    <div class="text-emerald-400 font-bold truncate w-full">{{ $homeOdds }}</div>
+                    <div class="text-emerald-400 font-bold truncate w-full">{{ $awayOdds }}</div>
                 </div>
             </div>
         @else
@@ -255,8 +278,8 @@
                 </div>
                 <!-- Cột 2: 2 dòng odds -->
                 <div class="flex flex-col gap-1 items-start min-w-0">
-                    <div class="text-green-400 truncate w-full">{{ $overOdds }}</div>
-                    <div class="text-green-400 truncate w-full">{{ $underOdds }}</div>
+                    <div class="text-emerald-400 font-bold truncate w-full">{{ $overOdds }}</div>
+                    <div class="text-emerald-400 font-bold truncate w-full">{{ $underOdds }}</div>
                 </div>
             </div>
         @else
@@ -273,9 +296,9 @@
                 $awayWin = $odds1X2['away'] ?? '-';
             @endphp
             <div class="flex flex-col gap-1 items-end">
-                <div class="text-green-400 truncate w-full text-right">{{ $homeWin }}</div>
-                <div class="text-green-400 truncate w-full text-right">{{ $draw }}</div>
-                <div class="text-green-400 truncate w-full text-right">{{ $awayWin }}</div>
+                <div class="text-emerald-400 font-bold truncate w-full text-right">{{ $homeWin }}</div>
+                <div class="text-emerald-400 font-bold truncate w-full text-right">{{ $draw }}</div>
+                <div class="text-emerald-400 font-bold truncate w-full text-right">{{ $awayWin }}</div>
             </div>
         @else
             <div class="text-end text-gray-500">-</div>

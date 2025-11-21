@@ -16,93 +16,93 @@
         <div class="flex flex-col lg:flex-row gap-4">
             {{-- Left Column - Main Content --}}
             <main class="flex-1 min-w-0 order-1 lg:order-1">
-
-                {{-- Page Title --}}
-                <h1 class="text-xl sm:text-2xl font-bold text-white mb-4 break-words">
-                    Bảng xếp hạng {{ $league['name'] ?? 'N/A' }} - BXH bóng đá mới nhất
-                </h1>
-
-                {{-- League Selection Tabs --}}
-                <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-3 sm:p-4 mb-4">
-                    <div class="flex flex-wrap gap-2">
-                        <a href="{{ route('standings.show', $league['id']) }}" 
-                           class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm">
-                            {{ $league['name'] ?? 'N/A' }}
-                        </a>
-                        {{-- Add more league tabs here if needed --}}
+                {{-- Main Container --}}
+                <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl shadow-2xl border border-slate-700/50 p-4 sm:p-6 md:p-8 overflow-hidden backdrop-blur-sm">
+                    {{-- Page Title --}}
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-1 h-8 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+                        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0 uppercase break-words tracking-tight">
+                            <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">Bảng Xếp Hạng {{ $league['name'] ?? 'N/A' }}</span>
+                        </h1>
                     </div>
-                </div>
 
-
-                {{-- Standings View Tabs -- Only show for non-CUP leagues --}}
-                @php
-                    $hasGroups = ($leagueInfo['has_groups'] ?? 0) == 1 || count($groupedStandings ?? []) > 1;
-                @endphp
-                
-                @if(!($isCupFormat ?? false))
-                    <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-4 mb-4">
-                        <div class="flex space-x-2">
-                            <button onclick="showStandings('all')" 
-                                    id="tab-all"
-                                    class="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 transition-colors">
-                                Tất cả
-                            </button>
-                            <button onclick="showStandings('home')" 
-                                    id="tab-home"
-                                    class="px-4 py-2 text-sm font-medium text-gray-300 bg-slate-700 border border-slate-600 rounded hover:bg-slate-600 transition-colors">
-                                Sân nhà
-                            </button>
-                            <button onclick="showStandings('away')" 
-                                    id="tab-away"
-                                    class="px-4 py-2 text-sm font-medium text-gray-300 bg-slate-700 border border-slate-600 rounded hover:bg-slate-600 transition-colors">
-                                Sân khách
-                            </button>
+                    {{-- Standings View Tabs -- Only show for non-CUP leagues --}}
+                    @php
+                        $hasGroups = ($leagueInfo['has_groups'] ?? 0) == 1 || count($groupedStandings ?? []) > 1;
+                    @endphp
+                    
+                    @if(!($isCupFormat ?? false))
+                        <div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 rounded-lg border border-slate-700/50 p-2.5 mb-4 backdrop-blur-sm">
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="showStandings('all')" 
+                                        id="tab-all"
+                                        class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 text-white bg-gradient-to-r from-purple-600 to-purple-700 shadow-md shadow-purple-500/20">
+                                    Tất cả
+                                </button>
+                                <button onclick="showStandings('home')" 
+                                        id="tab-home"
+                                        class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 text-gray-300 bg-slate-700/50 hover:bg-slate-700 hover:text-white">
+                                    Sân nhà
+                                </button>
+                                <button onclick="showStandings('away')" 
+                                        id="tab-away"
+                                        class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 text-gray-300 bg-slate-700/50 hover:bg-slate-700 hover:text-white">
+                                    Sân khách
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
 
-                {{-- Standings Table --}}
-                <div class="space-y-6" id="standings-container">
-                    @if(empty($standings) && empty($groupedStandings))
-                        <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 p-8 text-center text-gray-400">
-                            Không có dữ liệu bảng xếp hạng
-                        </div>
-                    @else
-                        @php
-                            $hasGroups = ($leagueInfo['has_groups'] ?? 0) == 1 || count($groupedStandings ?? []) > 1;
-                            $standingsToRender = $hasGroups ? ($groupedStandings ?? []) : ['default' => ($standings ?? [])];
-                        @endphp
-                        
-                        @foreach($standingsToRender as $groupName => $groupTeams)
-                            <div class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden group-table" data-group="{{ $groupName }}">
-                                {{-- Group Header --}}
-                                @if($hasGroups && $groupName !== 'default')
-                                    <div class="bg-slate-900 px-4 py-3">
-                                        <h3 class="text-sm font-bold text-white uppercase">{{ $groupName }}</h3>
-                                    </div>
-                                @endif
-                                
-                                {{-- Table --}}
-                                <div class="overflow-x-auto">
-                                    <table class="w-full">
-                                        <thead class="bg-slate-700 border-b border-slate-600">
-                                            <tr>
-                                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">XH</th>
-                                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Đội bóng</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Trận</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Thắng</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Hòa</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Thua</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">BT</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">BB</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">H/s</th>
-                                                <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Điểm</th>
-                                                @if(!($isCupFormat ?? false))
-                                                    <th class="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider form-column">Phong độ gần nhất</th>
-                                                @endif
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-slate-800 divide-y divide-slate-700 standings-body" data-group="{{ $groupName }}">
+                    {{-- Standings Table --}}
+                    <div class="space-y-6" id="standings-container">
+                        @if(empty($standings) && empty($groupedStandings))
+                            <div class="text-center py-12 sm:py-16">
+                                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/50 border border-slate-700/50 mb-4">
+                                    <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-400 text-sm sm:text-base font-medium">Không có dữ liệu bảng xếp hạng</p>
+                            </div>
+                        @else
+                            @php
+                                $hasGroups = ($leagueInfo['has_groups'] ?? 0) == 1 || count($groupedStandings ?? []) > 1;
+                                $standingsToRender = $hasGroups ? ($groupedStandings ?? []) : ['default' => ($standings ?? [])];
+                            @endphp
+                            
+                            @foreach($standingsToRender as $groupName => $groupTeams)
+                                <div class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl border border-slate-700/50 shadow-xl backdrop-blur-sm overflow-hidden group-table" data-group="{{ $groupName }}">
+                                    {{-- Group Header --}}
+                                    @if($hasGroups && $groupName !== 'default')
+                                        <div class="bg-gradient-to-r from-slate-800/80 to-slate-900/80 px-4 py-3 border-b border-slate-700/50">
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-1 h-5 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+                                                <h3 class="text-sm font-bold text-purple-400 uppercase">{{ $groupName }}</h3>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    {{-- Table --}}
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full">
+                                            <thead class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/50 backdrop-blur-sm">
+                                                <tr>
+                                                    <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase tracking-wider">XH</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase tracking-wider">Đội bóng</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Trận</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Thắng</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Hòa</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Thua</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">BT</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">BB</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">H/s</th>
+                                                    <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider">Điểm</th>
+                                                    @if(!($isCupFormat ?? false))
+                                                        <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase tracking-wider form-column">Phong độ</th>
+                                                    @endif
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-slate-700/50 standings-body" data-group="{{ $groupName }}">
                                             
                                             @foreach($groupTeams as $index => $team)
                                                 @php
@@ -115,40 +115,40 @@
                                                     $status = $team['status'] ?? null;
                                                     $result = $team['result'] ?? null;
                                                 @endphp
-                                                <tr class="hover:bg-slate-700 standings-row {{ ($index % 2 === 0) ? 'bg-slate-800' : 'bg-slate-700' }}" data-type="all">
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm font-medium text-gray-100">{{ $position }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-100">
+                                                <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 standings-row {{ ($index % 2 === 0) ? '' : 'bg-slate-800/30' }}" data-type="all">
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm font-bold text-purple-400">{{ $position }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-white font-medium">
                                                         {{ $team['team_name'] ?? 'N/A' }}
                                                         @if($status)
                                                             <span class="ml-2 text-xs text-gray-400">({{ $status }})</span>
                                                         @endif
                                                         @if($result)
-                                                            <span class="ml-1 text-xs text-blue-600">{{ $result }}</span>
+                                                            <span class="ml-1 text-xs text-purple-400 font-semibold">{{ $result }}</span>
                                                         @endif
                                                     </td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['games_played'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['won'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['draw'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['lost'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['goals_scored'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['goals_against'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['goals_diff'] ?? 0 }}</td>
-                                                    <td class="px-2 py-3 whitespace-nowrap text-sm font-semibold text-center text-white">{{ $points }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['games_played'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-emerald-400 text-center font-semibold">{{ $overall['won'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-amber-400 text-center font-semibold">{{ $overall['draw'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-red-400 text-center font-semibold">{{ $overall['lost'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['goals_scored'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $overall['goals_against'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center font-semibold">{{ $overall['goals_diff'] ?? 0 }}</td>
+                                                    <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm font-bold text-center text-white bg-gradient-to-r from-purple-600/20 to-purple-700/20 border border-purple-500/30 rounded">{{ $points }}</td>
                                                     @if(!($isCupFormat ?? false))
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-center form-column">
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-center form-column">
                                                             <div class="flex items-center justify-center space-x-1">
                                                                 @if($recentForm)
                                                                     @foreach(str_split($recentForm) as $formResult)
                                                                         @if($formResult == 'W')
-                                                                            <span class="w-6 h-6 bg-green-500 text-white text-xs font-bold rounded flex items-center justify-center">T</span>
+                                                                            <span class="w-5 h-5 bg-gradient-to-r from-emerald-500 to-green-600 text-white text-[10px] font-bold rounded flex items-center justify-center shadow-md shadow-emerald-500/25">T</span>
                                                                         @elseif($formResult == 'D')
-                                                                            <span class="w-6 h-6 bg-orange-500 text-white text-xs font-bold rounded flex items-center justify-center">H</span>
+                                                                            <span class="w-5 h-5 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-[10px] font-bold rounded flex items-center justify-center shadow-md shadow-amber-500/25">H</span>
                                                                         @elseif($formResult == 'L')
-                                                                            <span class="w-6 h-6 bg-red-500 text-white text-xs font-bold rounded flex items-center justify-center">B</span>
+                                                                            <span class="w-5 h-5 bg-gradient-to-r from-red-500 to-red-600 text-white text-[10px] font-bold rounded flex items-center justify-center shadow-md shadow-red-500/25">B</span>
                                                                         @endif
                                                                     @endforeach
                                                                 @else
-                                                                    <span class="text-gray-400">-</span>
+                                                                    <span class="text-gray-500">-</span>
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -156,45 +156,46 @@
                                                 </tr>
                                                 @if(!($isCupFormat ?? false))
                                                     {{-- Home row (hidden by default) --}}
-                                                    <tr class="hidden hover:bg-slate-700 standings-row {{ ($index % 2 === 0) ? 'bg-slate-800' : 'bg-slate-700' }}" data-type="home">
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm font-medium text-gray-100">{{ $home['position'] ?? $position }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-100">{{ $team['team_name'] ?? 'N/A' }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['games_played'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['won'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['draw'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['lost'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['goals_scored'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['goals_against'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['goals_diff'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm font-semibold text-center text-white">{{ $home['points'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-center form-column">
-                                                            <span class="text-gray-400">-</span>
+                                                    <tr class="hidden hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 standings-row {{ ($index % 2 === 0) ? '' : 'bg-slate-800/30' }}" data-type="home">
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm font-bold text-purple-400">{{ $home['position'] ?? $position }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-white font-medium">{{ $team['team_name'] ?? 'N/A' }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['games_played'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-emerald-400 text-center font-semibold">{{ $home['won'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-amber-400 text-center font-semibold">{{ $home['draw'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-red-400 text-center font-semibold">{{ $home['lost'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['goals_scored'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $home['goals_against'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center font-semibold">{{ $home['goals_diff'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm font-bold text-center text-white bg-gradient-to-r from-purple-600/20 to-purple-700/20 border border-purple-500/30 rounded">{{ $home['points'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-center form-column">
+                                                            <span class="text-gray-500">-</span>
                                                         </td>
                                                     </tr>
                                                     {{-- Away row (hidden by default) --}}
-                                                    <tr class="hidden hover:bg-slate-700 standings-row {{ ($index % 2 === 0) ? 'bg-slate-800' : 'bg-slate-700' }}" data-type="away">
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm font-medium text-gray-100">{{ $away['position'] ?? $position }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-100">{{ $team['team_name'] ?? 'N/A' }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['games_played'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['won'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['draw'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['lost'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['goals_scored'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['goals_against'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['goals_diff'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm font-semibold text-center text-white">{{ $away['points'] ?? 0 }}</td>
-                                                        <td class="px-2 py-3 whitespace-nowrap text-sm text-center form-column">
-                                                            <span class="text-gray-400">-</span>
+                                                    <tr class="hidden hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 standings-row {{ ($index % 2 === 0) ? '' : 'bg-slate-800/30' }}" data-type="away">
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm font-bold text-purple-400">{{ $away['position'] ?? $position }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-white font-medium">{{ $team['team_name'] ?? 'N/A' }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['games_played'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-emerald-400 text-center font-semibold">{{ $away['won'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-amber-400 text-center font-semibold">{{ $away['draw'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-red-400 text-center font-semibold">{{ $away['lost'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['goals_scored'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center">{{ $away['goals_against'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-gray-300 text-center font-semibold">{{ $away['goals_diff'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm font-bold text-center text-white bg-gradient-to-r from-purple-600/20 to-purple-700/20 border border-purple-500/30 rounded">{{ $away['points'] ?? 0 }}</td>
+                                                        <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-sm text-center form-column">
+                                                            <span class="text-gray-500">-</span>
                                                         </td>
                                                     </tr>
                                                 @endif
                                             @endforeach
                                         </tbody>
-                                    </table>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    @endif
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
             </main>
 
@@ -237,11 +238,11 @@ function showStandings(type) {
         const tab = document.getElementById(`tab-${tabType}`);
         if (tab) {
             if (tabType === type) {
-                tab.classList.remove('text-gray-300', 'bg-slate-700', 'border-slate-600');
-                tab.classList.add('text-white', 'bg-gray-600');
+                tab.classList.remove('text-gray-300', 'bg-slate-700/50', 'hover:bg-slate-700', 'hover:text-white');
+                tab.classList.add('text-white', 'bg-gradient-to-r', 'from-purple-600', 'to-purple-700', 'shadow-md', 'shadow-purple-500/20');
             } else {
-                tab.classList.remove('text-white', 'bg-gray-600');
-                tab.classList.add('text-gray-300', 'bg-slate-700', 'border', 'border-slate-600');
+                tab.classList.remove('text-white', 'bg-gradient-to-r', 'from-purple-600', 'to-purple-700', 'shadow-md', 'shadow-purple-500/20');
+                tab.classList.add('text-gray-300', 'bg-slate-700/50', 'hover:bg-slate-700', 'hover:text-white');
             }
         }
     });
