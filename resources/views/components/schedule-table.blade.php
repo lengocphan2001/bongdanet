@@ -88,51 +88,51 @@
                             </a>
                         </div>
                     @endif
-                </div>
-                
-                {{-- Schedule Table --}}
+            </div>
+            
+            {{-- Schedule Table --}}
                 <div id="schedule-{{ $leagueKey }}" class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/50 backdrop-blur-sm">
-                                <tr>
+                            <tr>
                                     <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Giờ</th>
                                     <th class="px-3 sm:px-4 py-3 text-right text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Đội nhà</th>
                                     <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Tỷ số</th>
                                     <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Đội khách</th>
-                                </tr>
-                            </thead>
+                            </tr>
+                        </thead>
                             <tbody class="divide-y divide-slate-700/50">
-                                @foreach ($matches as $match)
+                            @foreach ($matches as $match)
                                     @php
                                         $matchId = $match['match_id'] ?? null;
                                     @endphp
                                     <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ $matchId ? 'cursor-pointer group' : '' }}"
                                         @if($matchId) onclick="openMatchModal({{ $matchId }})" @endif>
-                                        {{-- Time --}}
+                                    {{-- Time --}}
                                         <td class="px-3 sm:px-4 py-3 whitespace-nowrap">
                                             <div class="text-xs sm:text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded inline-block">
-                                                {{ $match['time'] ?? '-' }}
+                                        {{ $match['time'] ?? '-' }}
                                             </div>
-                                        </td>
-                                        
-                                        {{-- Home Team --}}
+                                    </td>
+                                    
+                                    {{-- Home Team --}}
                                         <td class="px-3 sm:px-4 py-3 text-right">
                                             <div class="flex items-center justify-end space-x-2 group-hover:text-emerald-400 transition-colors">
                                                 <span class="text-xs sm:text-sm text-white font-medium truncate">{{ $match['home_team'] ?? '-' }}</span>
-                                                @if (!empty($match['home_team_info']['img'] ?? null))
+                                            @if (!empty($match['home_team_info']['img'] ?? null))
                                                     <div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
-                                                        <img src="{{ $match['home_team_info']['img'] }}" 
-                                                             alt="{{ $match['home_team'] }}" 
+                                                <img src="{{ $match['home_team_info']['img'] }}" 
+                                                     alt="{{ $match['home_team'] }}" 
                                                              class="w-full h-full object-contain"
                                                              onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>';">
                                                     </div>
                                                 @else
                                                     <div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">{{ substr($match['home_team'] ?? 'H', 0, 1) }}</div>
-                                                @endif
-                                            </div>
-                                        </td>
-                                        
+                                            @endif
+                                        </div>
+                                    </td>
+                                    
                                         {{-- Score button --}}
                                         <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-center">
                                             @if($matchId)
@@ -142,31 +142,31 @@
                                                 </button>
                                             @else
                                                 <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] sm:min-w-[60px] inline-block shadow-lg shadow-emerald-500/25">
-                                                    ?-?
-                                                </div>
+                                            ?-?
+                                        </div>
                                             @endif
-                                        </td>
-                                        
-                                        {{-- Away Team --}}
+                                    </td>
+                                    
+                                    {{-- Away Team --}}
                                         <td class="px-3 sm:px-4 py-3 text-left">
                                             <div class="flex items-center space-x-2 group-hover:text-emerald-400 transition-colors">
-                                                @if (!empty($match['away_team_info']['img'] ?? null))
+                                            @if (!empty($match['away_team_info']['img'] ?? null))
                                                     <div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors">
-                                                        <img src="{{ $match['away_team_info']['img'] }}" 
-                                                             alt="{{ $match['away_team'] }}" 
+                                                <img src="{{ $match['away_team_info']['img'] }}" 
+                                                     alt="{{ $match['away_team'] }}" 
                                                              class="w-full h-full object-contain"
                                                              onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\'>{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>';">
                                                     </div>
                                                 @else
                                                     <div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">{{ substr($match['away_team'] ?? 'A', 0, 1) }}</div>
-                                                @endif
+                                            @endif
                                                 <span class="text-xs sm:text-sm text-white font-medium truncate">{{ $match['away_team'] ?? '-' }}</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                     </div>
                 </div>
             </div>
@@ -232,13 +232,13 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full">
                                     <thead class="bg-gradient-to-r from-slate-800/90 to-slate-700/90 border-b border-slate-600/50 backdrop-blur-sm">
-                                        <tr>
+                                    <tr>
                                             <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Giờ</th>
                                             <th class="px-3 sm:px-4 py-3 text-right text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Đội nhà</th>
                                             <th class="px-3 sm:px-4 py-3 text-center text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Tỷ số</th>
                                             <th class="px-3 sm:px-4 py-3 text-left text-xs font-bold text-gray-200 uppercase whitespace-nowrap">Đội khách</th>
-                                        </tr>
-                                    </thead>
+                                    </tr>
+                                </thead>
                                     <tbody class="divide-y divide-slate-700/50">
                                         ${matches.map(match => {
                                             const matchId = match.match_id || null;
@@ -248,15 +248,15 @@
                                             <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 ${cursorClass}" ${onClick}>
                                                 <td class="px-3 sm:px-4 py-3 whitespace-nowrap">
                                                     <div class="text-xs sm:text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded inline-block">
-                                                        ${match.time || '-'}
-                                                    </div>
-                                                </td>
+                                                ${match.time || '-'}
+                                                </div>
+                                            </td>
                                                 <td class="px-3 sm:px-4 py-3 text-right">
                                                     <div class="flex items-center justify-end space-x-2 group-hover:text-emerald-400 transition-colors">
                                                         <span class="text-xs sm:text-sm text-white font-medium truncate">${match.home_team || '-'}</span>
                                                         ${match.home_team_info?.img ? `<div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors"><img src="${match.home_team_info.img}" alt="${match.home_team}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\\'>${(match.home_team || 'H').charAt(0)}</div>';"></div>` : `<div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">${(match.home_team || 'H').charAt(0)}</div>`}
-                                                    </div>
-                                                </td>
+                                                </div>
+                                            </td>
                                                 <td class="px-3 sm:px-4 py-3 whitespace-nowrap text-center">
                                                     ${matchId ? `<button onclick="event.stopPropagation(); openMatchModal(${matchId})" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] sm:min-w-[60px] transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">?-?</button>` : `<div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg min-w-[50px] sm:min-w-[60px] inline-block shadow-lg shadow-emerald-500/25">?-?</div>`}
                                                 </td>
@@ -264,13 +264,13 @@
                                                     <div class="flex items-center space-x-2 group-hover:text-emerald-400 transition-colors">
                                                         ${match.away_team_info?.img ? `<div class="w-6 h-6 rounded bg-slate-800/50 border border-slate-700/50 p-0.5 flex items-center justify-center flex-shrink-0 group-hover:border-emerald-500/50 transition-colors"><img src="${match.away_team_info.img}" alt="${match.away_team}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'w-full h-full bg-gradient-to-br from-slate-600 to-slate-700 rounded flex items-center justify-center text-[10px] text-white font-bold\\'>${(match.away_team || 'A').charAt(0)}</div>';"></div>` : `<div class="w-6 h-6 rounded bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-700/50 flex items-center justify-center text-[10px] text-white font-bold flex-shrink-0">${(match.away_team || 'A').charAt(0)}</div>`}
                                                         <span class="text-xs sm:text-sm text-white font-medium truncate">${match.away_team || '-'}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         `;
                                         }).join('')}
-                                    </tbody>
-                                </table>
+                                </tbody>
+                            </table>
                             </div>
                         </div>
                     </div>

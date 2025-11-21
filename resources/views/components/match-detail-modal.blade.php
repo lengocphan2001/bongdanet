@@ -79,22 +79,26 @@
         </div>
         
         {{-- Tab Content --}}
-        <div class="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-4 min-h-0 modal-tab-container">
+        <div class="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-4 min-h-0 max-h-full modal-tab-container" style="flex: 1 1 0%;">
             {{-- Overview Tab --}}
             <div id="modal-tab-overview" class="modal-tab-content">
-                <div class="mb-4">
-                    <h3 class="text-base font-bold text-white mb-4">THÔNG TIN TRẬN ĐẤU</h3>
-                </div>
-                
-                {{-- Match Events will be loaded here --}}
-                <div id="modal-match-events">
-                    <div class="text-center text-gray-400 py-8">Đang tải dữ liệu...</div>
+                <div id="overview-content" class="space-y-6">
+                    <div class="mb-4">
+                        <h3 class="text-base font-bold text-white mb-4">THÔNG TIN TRẬN ĐẤU</h3>
+                    </div>
+                    
+                    {{-- Match Events will be loaded here --}}
+                    <div id="modal-match-events">
+                        <div class="text-center text-gray-400 py-8">Đang tải dữ liệu...</div>
+                    </div>
                 </div>
             </div>
             
             {{-- Other Tabs --}}
             <div id="modal-tab-stats" class="modal-tab-content hidden">
-                <div class="text-center text-gray-400 py-8">Nội dung THỐNG KÊ</div>
+                <div id="stats-content" class="space-y-6">
+                    <div class="text-center text-gray-400 py-8">Nội dung THỐNG KÊ</div>
+                </div>
             </div>
             
             <div id="modal-tab-odds" class="modal-tab-content hidden">
@@ -701,6 +705,12 @@ function clearModalData() {
         h2hContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Đang tải dữ liệu H2H...</div>';
     }
     
+    // Clear stats data
+    const statsContent = document.getElementById('stats-content');
+    if (statsContent) {
+        statsContent.innerHTML = '<div class="text-center text-gray-400 py-8 pb-10">Nội dung THỐNG KÊ</div>';
+    }
+    
     // Clear cached data
     matchEventsData = null;
     matchOddsPrematch = null;
@@ -710,11 +720,6 @@ function clearModalData() {
     cachedTeamNames = { home: null, away: null };
     
     // Clear other tab contents
-    const statsTab = document.getElementById('modal-tab-stats');
-    if (statsTab) {
-        statsTab.innerHTML = '<div class="text-center text-gray-400 py-8">Nội dung THỐNG KÊ</div>';
-    }
-    
     const oddsTab = document.getElementById('modal-tab-odds');
     if (oddsTab) {
         oddsTab.innerHTML = '<div class="text-center text-gray-400 py-8">Nội dung ODDS</div>';
@@ -798,8 +803,9 @@ async function loadMatchEventsAndOdds(matchId) {
 }
 
 function renderMatchEvents() {
+    const overviewContent = document.getElementById('overview-content');
     const eventsContainer = document.getElementById('modal-match-events');
-    if (!eventsContainer) return;
+    if (!eventsContainer || !overviewContent) return;
     
     if (matchEventsData && Array.isArray(matchEventsData) && matchEventsData.length > 0) {
         const homeTeamId = matchTeamIds.home_team_id;
@@ -1293,13 +1299,13 @@ function renderMatchOdds() {
 }
 
 function renderMatchStats() {
-    const statsContainer = document.getElementById('modal-tab-stats');
-    if (!statsContainer) {
+    const statsContent = document.getElementById('stats-content');
+    if (!statsContent) {
         return;
     }
     
     if (!matchStatsData || !matchStatsData.home || !matchStatsData.away) {
-        statsContainer.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu thống kê</div>';
+        statsContent.innerHTML = '<div class="text-center text-gray-400 py-8">Không có dữ liệu thống kê</div>';
         return;
     }
     
@@ -1311,7 +1317,7 @@ function renderMatchStats() {
     const awayTeamName = cachedTeamNames.away || awayStats.team_name || 'Đội khách';
     
     // Render directly without API call
-    renderStatsTable(statsContainer, homeStats, awayStats, homeTeamName, awayTeamName);
+    renderStatsTable(statsContent, homeStats, awayStats, homeTeamName, awayTeamName);
 }
 
 function renderStatsTable(container, homeStats, awayStats, homeTeamName, awayTeamName) {
@@ -1329,7 +1335,7 @@ function renderStatsTable(container, homeStats, awayStats, homeTeamName, awayTea
         { key: 'key_passes', label: 'Đường chuyền chủ chốt', home: homeStats.key_passes || 0, away: awayStats.key_passes || 0 },
     ];
     
-    let html = '<div class="space-y-4">';
+    let html = '';
     html += '<div class="bg-slate-900 rounded-lg overflow-hidden">';
     html += '<table class="w-full border-collapse">';
     html += '<thead>';
@@ -1364,7 +1370,6 @@ function renderStatsTable(container, homeStats, awayStats, homeTeamName, awayTea
     
     html += '</tbody>';
     html += '</table>';
-    html += '</div>';
     html += '</div>';
     
     container.innerHTML = html;
@@ -1695,12 +1700,26 @@ function renderH2HData() {
 <style>
 .modal-tab-content {
     min-height: 200px;
+    width: 100%;
 }
 
-/* Tab container - ensure scroll works on mobile */
+/* Tab container - ensure scroll works on all devices */
 .modal-tab-container {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Ensure all tab contents can scroll properly */
+.modal-tab-content {
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Hide scrollbar for tabs on mobile */
@@ -1730,12 +1749,17 @@ function renderH2HData() {
         overscroll-behavior: contain;
         max-height: calc(98vh - 200px); /* Subtract header + tabs height */
         height: auto;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     
     .modal-tab-content {
         word-wrap: break-word;
         overflow-wrap: break-word;
         width: 100%;
+        min-height: 0;
     }
     
     /* Prevent text overflow in tables */
@@ -1748,6 +1772,17 @@ function renderH2HData() {
         padding: 0.5rem 0.25rem;
         word-break: break-word;
         overflow-wrap: break-word;
+    }
+}
+
+/* Desktop adjustments */
+@media (min-width: 641px) {
+    .modal-tab-container {
+        max-height: calc(90vh - 250px); /* Subtract header + tabs + match info height */
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 </style>

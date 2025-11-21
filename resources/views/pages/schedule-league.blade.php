@@ -110,14 +110,25 @@
                                                     $formattedDate = $matchDate;
                                                 }
                                             @endphp
-                                            {{-- Date Header --}}
+                                            {{-- Date Header with Toggle --}}
+                                            @php
+                                                $dateSectionId = 'date-section-' . str_replace(['/', '-', ' '], ['-', '-', '-'], $matchDate);
+                                            @endphp
                                             <tr class="bg-gradient-to-r from-slate-800/60 to-slate-900/60">
                                                 <td colspan="3" class="px-4 py-3">
                                                     <div class="flex items-center gap-2">
+                                                        <button onclick="toggleDateSection('{{ $dateSectionId }}')" 
+                                                                class="flex-shrink-0 p-1.5 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-lg transition-all duration-200 group"
+                                                                aria-label="Toggle date section">
+                                                            <svg id="toggle-icon-{{ $dateSectionId }}" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                            </svg>
+                                                        </button>
                                                         <div class="w-1 h-5 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
                                                         <span class="text-sm font-bold text-blue-400">
                                                             {{ $dayName }}, Ngày {{ $formattedDate }}
                                                         </span>
+                                                        <span class="text-xs text-emerald-400 font-normal ml-2">({{ count($matches) }})</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -154,6 +165,7 @@
                                                     }
                                                 @endphp
                                                 <tr class="hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-900/60 transition-all duration-200 {{ $matchId ? 'cursor-pointer group' : '' }}" 
+                                                    data-date-section="{{ $dateSectionId }}"
                                                     @if($matchId) onclick="openMatchModal({{ $matchId }})" @endif>
                                                     <td class="px-3 sm:px-4 py-3 whitespace-nowrap">
                                                         <div class="text-xs sm:text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded inline-block">
@@ -284,5 +296,32 @@
         </div>
     </div>
 </div>
+
+<script>
+// Toggle date section function
+function toggleDateSection(dateSectionId) {
+    const icon = document.getElementById('toggle-icon-' + dateSectionId);
+    const rows = document.querySelectorAll(`[data-date-section="${dateSectionId}"]`);
+    
+    if (!icon || rows.length === 0) return;
+    
+    const isHidden = rows[0].classList.contains('hidden');
+    
+    if (isHidden) {
+        // Show rows
+        rows.forEach(row => row.classList.remove('hidden'));
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        // Hide rows
+        rows.forEach(row => row.classList.add('hidden'));
+        icon.style.transform = 'rotate(-90deg)';
+    }
+}
+
+// Make it globally available
+if (typeof window !== 'undefined') {
+    window.toggleDateSection = toggleDateSection;
+}
+</script>
 @endsection
 

@@ -35,7 +35,7 @@
                     </div>
                     
                     <div class="space-y-4 sm:space-y-6" id="livescore-content">
-                        @if(empty($groupedMatches))
+                    @if(empty($groupedMatches))
                             <div class="text-center py-12 sm:py-16">
                                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/50 border border-slate-700/50 mb-4">
                                     <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,17 +43,17 @@
                                     </svg>
                                 </div>
                                 <p class="text-gray-400 text-sm sm:text-base font-medium">Không có trận đấu nào đang diễn ra</p>
-                            </div>
-                        @else
-                            @foreach($groupedMatches as $leagueKey => $leagueData)
-                                @php
-                                    $leagueId = $leagueData['league_id'] ?? null;
-                                    $leagueName = $leagueData['league_name'] ?? 'N/A';
-                                    $countryName = $leagueData['country_name'] ?? '';
-                                    $matches = $leagueData['matches'] ?? [];
-                                @endphp
-                                
-                                {{-- League Section --}}
+                        </div>
+                    @else
+                        @foreach($groupedMatches as $leagueKey => $leagueData)
+                            @php
+                                $leagueId = $leagueData['league_id'] ?? null;
+                                $leagueName = $leagueData['league_name'] ?? 'N/A';
+                                $countryName = $leagueData['country_name'] ?? '';
+                                $matches = $leagueData['matches'] ?? [];
+                            @endphp
+                            
+                            {{-- League Section --}}
                                 @php
                                     $leagueKeyId = 'live-' . ($leagueId ?? str_replace(['|', ' '], ['-', ''], $leagueKey));
                                 @endphp
@@ -72,7 +72,7 @@
                                                 {{ $countryName ? $countryName . ': ' : '' }}{{ $leagueName }}
                                                 @if(count($matches) > 0)
                                                     <span class="text-emerald-400 text-[10px] sm:text-xs md:text-sm font-normal ml-1 sm:ml-2">({{ count($matches) }})</span>
-                                                @endif
+                                        @endif
                                             </span>
                                         </h2>
                                         @if($leagueId && $leagueId !== 'unknown' && is_numeric($leagueId))
@@ -81,9 +81,9 @@
                                                 <span>BXH</span>
                                             </a>
                                         @endif
-                                    </div>
-                                    
-                                    {{-- Matches List --}}
+                                </div>
+                                
+                                {{-- Matches List --}}
                                     <div id="{{ $leagueKeyId }}" class="bg-gradient-to-br from-slate-900/95 to-slate-950/95 rounded-xl overflow-hidden border border-slate-700/50 shadow-xl backdrop-blur-sm">
                                     @foreach($matches as $match)
                                         @php
@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${matches.length > 0 ? `<span class="text-emerald-400 text-[10px] sm:text-xs md:text-sm font-normal ml-1 sm:ml-2">(${matches.length})</span>` : ''}
                             </span>
                         </h2>
-                        ${(leagueId && leagueId !== 'unknown' && leagueId !== null && !isNaN(leagueId)) ? `
+                            ${(leagueId && leagueId !== 'unknown' && leagueId !== null && !isNaN(leagueId)) ? `
                             <a href="${standingsShowBaseUrl}/${leagueId}" 
                                class="hidden sm:inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-[10px] sm:text-xs text-white rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 flex-shrink-0">
                                 <span>BXH</span>
