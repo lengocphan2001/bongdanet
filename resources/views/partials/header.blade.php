@@ -47,6 +47,13 @@
                     <span class="text-sm font-semibold" style="color: white !important;">BẢNG XẾP HẠNG</span>
                 </a>
 
+                <a href="{{ route('top-scorers') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('top-scorers*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                    <svg class="w-5 h-5 text-emerald-400 group-hover:text-emerald-300 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span class="text-sm font-semibold" style="color: white !important;">TOP GHI BÀN</span>
+                </a>
+
                 <a href="{{ route('odds') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('odds*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
                     <svg class="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -115,6 +122,13 @@
                             <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                         </svg>
                         <span class="text-sm font-semibold" style="color: white !important;">BẢNG XẾP HẠNG</span>
+                    </a>
+
+                    <a href="{{ route('top-scorers') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('top-scorers*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                        <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span class="text-sm font-semibold" style="color: white !important;">TOP GHI BÀN</span>
                     </a>
 
                     <a href="{{ route('odds') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('odds*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">

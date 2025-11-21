@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Bảng xếp hạng bóng đá - Keobongda')
+@section('title', 'keobong88 - Bảng xếp hạng bóng đá')
 
 @section('content')
 <div class="min-h-screen bg-slate-900">
     {{-- Breadcrumbs --}}
     <x-breadcrumbs :items="[
-        ['label' => 'keobongda.co', 'url' => route('home')],
+        ['label' => 'keobong88', 'url' => route('home')],
         ['label' => 'Bảng xếp hạng bóng đá', 'url' => null],
     ]" />
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'keobongda.co - Kèo bóng đá - Tỷ lệ kèo nhà cái')
+@section('title', 'keobong88 - Kèo bóng đá - Tỷ lệ kèo nhà cái')
 
 @section('content')
 <div class="min-h-screen bg-slate-900">

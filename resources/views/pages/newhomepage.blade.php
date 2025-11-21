@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lịch Thi Đấu Bóng Đá Hôm Nay, LTĐ Bóng Đá Anh, C1, C2, La Liga - XOILAC TV')
+@section('title', 'keobong88 - Lịch Thi Đấu Bóng Đá Hôm Nay, LTĐ Bóng Đá Anh, C1, C2, La Liga')
 
 @section('content')
 <div class="bg-gray-800 rounded-lg p-3 sm:p-4 md:p-6 overflow-hidden">

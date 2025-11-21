@@ -227,6 +227,36 @@ class SoccerApiService
     }
 
     /**
+     * Get top scorers for a season
+     *
+     * @param int|string $seasonId
+     * @return array|null
+     */
+    public function getTopScorers($seasonId): ?array
+    {
+        $cacheKey = 'soccer_api:top_scorers:' . $seasonId;
+        
+        // Cache for 1 hour (top scorers data doesn't change frequently)
+        return Cache::remember($cacheKey, 3600, function () use ($seasonId) {
+            $response = $this->makeRequest('leaders', [
+                't' => 'topscorers',
+                'season_id' => $seasonId,
+            ]);
+            
+            if ($response && isset($response['data']) && is_array($response['data'])) {
+                // Limit to top 30 scorers
+                $scorers = array_slice($response['data'], 0, 30);
+                return [
+                    'data' => $scorers,
+                    'meta' => $response['meta'] ?? [],
+                ];
+            }
+            
+            return $response;
+        });
+    }
+
+    /**
      * Get league info
      *
      * @param int|string $leagueId
