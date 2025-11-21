@@ -34,13 +34,21 @@ class OddsController extends Controller
             $date = $today;
         }
 
+        // Determine cache time based on date
+        // For today and live: cache for 5 minutes (frequent updates)
+        // For future dates: cache for 1 hour
+        $isToday = ($date === $today);
+        $cacheTime = $isToday ? 300 : 3600; // 5 minutes for today, 1 hour for future dates
+        
         // Cache transformed data
         $cacheKey = 'odds:transformed_matches:' . $date;
         
-        // Cache for 1 week (7 days) for odds page
-        $data = Cache::remember($cacheKey, 604800, function () use ($date) {
+        $data = Cache::remember($cacheKey, $cacheTime, function () use ($date, $isToday) {
+            // For today, bypass cache in API service to get fresh data
+            $apiParams = $isToday ? ['_bypass_cache' => true] : [];
+            
             // Fetch schedule matches with odds from API
-            $scheduleResponse = $this->soccerApiService->getScheduleMatchesWithOdds($date);
+            $scheduleResponse = $this->soccerApiService->getScheduleMatchesWithOdds($date, $apiParams);
             
             $scheduleMatches = [];
             
@@ -98,11 +106,12 @@ class OddsController extends Controller
             ];
         }
 
-        // Get live matches if "live" is selected
+        // Get live matches if "live" is selected - bypass cache for fresh data
         $liveMatches = [];
         if ($date === 'live') {
             $liveResponse = $this->soccerApiService->getLivescores([
-                'include' => 'odds_prematch'
+                'include' => 'odds_prematch',
+                '_bypass_cache' => true, // Always get fresh data for live matches
             ]);
             
             if ($liveResponse && isset($liveResponse['data']) && is_array($liveResponse['data'])) {
@@ -111,6 +120,7 @@ class OddsController extends Controller
                     $statusName = $apiMatch['status_name'] ?? null;
                     $isLive = ($status == 1 || $status === '1' || $statusName === 'Inplay');
                     
+                    // Include all live matches
                     if ($isLive) {
                         $transformedMatch = $this->soccerApiService->transformMatchToTableFormat($apiMatch);
                         if ($transformedMatch) {
@@ -129,11 +139,19 @@ class OddsController extends Controller
         $matchesToShow = ($date ?? '') === 'live' ? $liveMatches : ($data['scheduleMatches'] ?? []);
         
         // Additional filter to ensure no finished matches (double check)
+        // But be more lenient - only filter if clearly finished
         $filteredMatches = array_filter($matchesToShow, function($match) {
             // Check if match has status information
-            // If time display is 'FT', it's finished
             $timeDisplay = $match['time'] ?? '';
-            return $timeDisplay !== 'FT';
+            $status = $match['status'] ?? null;
+            
+            // Only exclude if explicitly finished
+            if ($timeDisplay === 'FT' || $status === 2 || $status === '2') {
+                return false;
+            }
+            
+            // Include all other matches (including live, not started, etc.)
+            return true;
         });
         
         $groupedByLeague = [];

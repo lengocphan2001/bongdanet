@@ -7,10 +7,13 @@
 
     <title>@yield('title', config('app.name', 'Laravel'))</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('assets/images/bongdanet-logo.png') }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/bongdanet-logo.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('assets/images/bongdanet-logo.png') }}">
+    <!-- Favicon - Multiple sizes for better display -->
+    <link rel="icon" type="image/png" sizes="227x227" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/logo-icon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

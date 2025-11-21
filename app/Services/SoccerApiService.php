@@ -561,11 +561,25 @@ class SoccerApiService
 
         $params = array_merge($defaultParams, $params);
         
+        // Check if cache should be bypassed
+        $bypassCache = isset($params['_bypass_cache']) && $params['_bypass_cache'];
+        unset($params['_bypass_cache']); // Remove from params before making request
+        
         // Create cache key based on params
         $cacheKey = 'soccer_api:schedule_odds:' . md5(json_encode($params));
         
-        // Cache for 1 week (7 days) for odds page
-        return Cache::remember($cacheKey, 604800, function () use ($params) {
+        // If bypass cache, fetch fresh data directly without cache
+        if ($bypassCache) {
+            // Clear cache to ensure fresh data
+            Cache::forget($cacheKey);
+            return $this->makeRequest('fixtures', $params);
+        }
+        
+        // Determine cache time: shorter for today, longer for future dates
+        $isToday = ($date === date('Y-m-d'));
+        $cacheTime = $isToday ? 300 : 3600; // 5 minutes for today, 1 hour for future dates
+        
+        return Cache::remember($cacheKey, $cacheTime, function () use ($params) {
             return $this->makeRequest('fixtures', $params);
         });
     }
