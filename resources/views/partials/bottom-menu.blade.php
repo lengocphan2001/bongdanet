@@ -61,6 +61,13 @@
                         'icon' => '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="4" fill="currentColor" opacity="0.3"/><path d="M9 9l1 1m4-2l-1 1" stroke="white" stroke-width="1" stroke-linecap="round"/></svg>',
                         'shortLabel' => 'TTBD'
                     ],
+                    [
+                        'route' => 'top-bookmakers',
+                        'routePattern' => 'top-bookmakers*',
+                        'label' => 'TOP NHÀ CÁI',
+                        'icon' => '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+                        'shortLabel' => 'TNC'
+                    ],
                 ];
             @endphp
 
@@ -71,7 +78,8 @@
                     $displayLabel = $item['label'];
                 @endphp
                 <a href="{{ route($item['route']) }}" 
-                   class="flex flex-col items-center justify-center gap-1 px-2 py-2 min-w-[70px] rounded-lg transition-all duration-200 relative group {{ $isActive ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-slate-800' }}">
+                   class="flex flex-col items-center justify-center gap-1 px-2 py-2 min-w-[70px] rounded-lg transition-all duration-200 relative group {{ $isActive ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-slate-800' }}"
+                   @if($isActive) id="active-menu-item" @endif>
                     <div class="flex items-center justify-center {{ $isActive ? 'text-white' : 'text-blue-400 group-hover:text-blue-300' }}">
                         {!! $item['icon'] !!}
                     </div>
@@ -95,4 +103,33 @@
         }
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const activeItem = document.getElementById('active-menu-item');
+    const scrollContainer = document.querySelector('.overflow-x-auto');
+    
+    if (activeItem && scrollContainer) {
+        // Scroll to active item with smooth behavior
+        setTimeout(() => {
+            const containerRect = scrollContainer.getBoundingClientRect();
+            const itemRect = activeItem.getBoundingClientRect();
+            
+            // Calculate scroll position to center the active item
+            const scrollLeft = scrollContainer.scrollLeft;
+            const itemOffsetLeft = itemRect.left - containerRect.left;
+            const itemWidth = itemRect.width;
+            const containerWidth = containerRect.width;
+            
+            // Center the item in the container
+            const targetScroll = scrollLeft + itemOffsetLeft - (containerWidth / 2) + (itemWidth / 2);
+            
+            scrollContainer.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+        }, 100);
+    }
+});
+</script>
 

@@ -1,5 +1,6 @@
 @php
     use App\Models\Bookmaker;
+    use Illuminate\Support\Facades\Storage;
     $bookmakers = Bookmaker::active()->ordered()->get();
 @endphp
 
@@ -10,10 +11,10 @@
             @foreach($bookmakers as $bookmaker)
                 <div class="flex-shrink-0 bookmaker-item flex flex-col items-center gap-2">
                     {{-- Logo --}}
-                    <a href="{{ $bookmaker->link }}" target="{{ $bookmaker->target }}" class="block w-3/4 mx-auto aspect-square overflow-hidden">
+                    <a href="{{ $bookmaker->link }}" target="{{ $bookmaker->target }}" class="block w-1/2 mx-auto aspect-square overflow-hidden rounded-xl">
                         <img src="{{ Storage::url($bookmaker->image) }}" 
                              alt="{{ $bookmaker->name }}" 
-                             class="w-full h-full object-cover">
+                             class="w-full h-full object-cover rounded-xl">
                     </a>
                     
                     {{-- Bet Now Button --}}

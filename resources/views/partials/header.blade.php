@@ -70,6 +70,13 @@
                     </svg>
                     <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
                 </a>
+
+                <a href="{{ route('top-bookmakers') }}" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 whitespace-nowrap group {{ request()->routeIs('top-bookmakers*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                    <svg class="w-5 h-5 text-amber-400 group-hover:text-amber-300 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span class="text-sm font-semibold" style="color: white !important;">TOP NHÀ CÁI</span>
+                </a>
                 </div>
             </div>
 
@@ -144,6 +151,13 @@
                             <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         <span class="text-sm font-semibold" style="color: white !important;">TIN TỨC BÓNG ĐÁ</span>
+                    </a>
+
+                    <a href="{{ route('top-bookmakers') }}" class="flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('top-bookmakers*') ? 'bg-blue-600' : 'hover:bg-slate-800' }}" style="color: white !important;">
+                        <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span class="text-sm font-semibold" style="color: white !important;">TOP NHÀ CÁI</span>
                     </a>
                 </div>
             </div>

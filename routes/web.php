@@ -22,6 +22,7 @@ Route::get('/keo-bong-da', [\App\Http\Controllers\Web\OddsController::class, 'in
 Route::get('/keo-bong-da/{leagueId}', [\App\Http\Controllers\Web\OddsController::class, 'byLeague'])->name('odds.league');
 Route::get('/top-ghi-ban', [\App\Http\Controllers\Web\TopScorersController::class, 'index'])->name('top-scorers');
 Route::get('/api/top-scorers-data', [\App\Http\Controllers\Web\TopScorersController::class, 'getTopScorersData'])->name('api.top-scorers.data');
+Route::get('/top-nha-cai', [\App\Http\Controllers\Web\TopBookmakersController::class, 'index'])->name('top-bookmakers');
 
 // Test API route
 Route::get('/api/test-soccer', [\App\Http\Controllers\Api\SoccerApiController::class, 'test'])->name('api.test.soccer');
